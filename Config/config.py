@@ -11,7 +11,7 @@ class TestData:
     Exp_Name = "TEST EXP 123"
     Exp_Actual_Name = "TEST EXP 123 (NEW YORK)"
 
-    #  Live --
+    #  ------------- Details for live -------------------
     # BASE_URL = "https://spurexperiences.com/"
     # Registry_Url = "https://spurexperiences.com/registries/testandmiss"
     # Profile_Url = "https://spurexperiences.com/profile"
