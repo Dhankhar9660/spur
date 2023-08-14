@@ -27,6 +27,8 @@ class Test_Invite_Partner(BaseTest):
             # ------ reset to old partner's email -----------
             self.asd.invite_partner('partner@yopmail.com')
             time.sleep(2)
+
         except AssertionError:
             print('Partner Email is not updating')
             raise
+        self.asd.click_element(BasePage.Log_Out)

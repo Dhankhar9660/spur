@@ -30,19 +30,19 @@ def init_driver_here(request):
         })
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), chrome_options=chrome_options)
 
-        # Update for Mac based on the PATH or use web-driver manager
-    elif request.param == "edge":
-        # Comment or Uncomment as required for running on Mac
-        # desired_cap = {}
-        driver = webdriver.Edge(EdgeChromiumDriverManager().install())
-    elif request.param == "firefox":
-        # Comment or Uncomment as required for running on Mac
-        #   driver = webdriver.Firefox(executable_path='/Users/romabasnet/Downloads/geckodriver')
-        # options = Options()
-        # options.binary_location = r'C:\Users\RXB1002A\AppData\Local\Mozilla Firefox\firefox.exe'
-        driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
-    elif request.param == "safari":
-        driver = webdriver.Safari()
+    #     # Update for Mac based on the PATH or use web-driver manager
+    # elif request.param == "edge":
+    #     # Comment or Uncomment as required for running on Mac
+    #     # desired_cap = {}
+    #     driver = webdriver.Edge(EdgeChromiumDriverManager().install())
+    # elif request.param == "firefox":
+    #     # Comment or Uncomment as required for running on Mac
+    #     #   driver = webdriver.Firefox(executable_path='/Users/romabasnet/Downloads/geckodriver')
+    #     # options = Options()
+    #     # options.binary_location = r'C:\Users\RXB1002A\AppData\Local\Mozilla Firefox\firefox.exe'
+    #     driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
+    # elif request.param == "safari":
+    #     driver = webdriver.Safari()
     else:
         print("Please enter right browser name" + request.param)
     request.cls.driver = driver

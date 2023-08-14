@@ -29,7 +29,7 @@ class RegistryPage(BasePage):
 
         self.click_element(BasePage.Click_Home)
         self.send_keys(BasePage.Search_Box, expname)
-        self.click(BasePage.Click_Search)
+        self.click_on_hidden_element(BasePage.Click_Search)
         time.sleep(1)
         element = self.driver.find_element(By.XPATH, "//h2//a")
         self.driver.execute_script("arguments[0].scrollIntoView();", element)
@@ -37,11 +37,11 @@ class RegistryPage(BasePage):
             Product_Name = self.get_element_text(BasePage.Product_Name)
             print(Product_Name)
             assert Product_Name == actual_exp
-            self.click(BasePage.Click_On_Product)
+            self.click_on_hidden_element(BasePage.Click_On_Product)
         except AssertionError:
             print('Product name not found')
             raise
-        self.click(BasePage.Add_To_Registry)
+        self.click_on_hidden_element(BasePage.Add_To_Registry)
         self.click_element(BasePage.Click_MyDashboard)
         time.sleep(3)
 
@@ -50,16 +50,16 @@ class RegistryPage(BasePage):
 
         self.click_element(BasePage.HOME)
         self.send_keys(BasePage.Search_Box, expname)
-        self.click(BasePage.Click_Search)
+        self.click_on_hidden_element(BasePage.Click_Search)
         time.sleep(1)
         element = self.driver.find_element(By.XPATH, "//h2//a")
         self.driver.execute_script("arguments[0].scrollIntoView();", element)
         try:
             Product_Name = self.get_element_text(BasePage.Product_Name)
             assert Product_Name == actual_exp
-            self.click(BasePage.Click_On_Product)
+            self.click_on_hidden_element(BasePage.Click_On_Product)
         except AssertionError:
             print('Product name not found')
             raise
-        self.click(BasePage.Remove_From_Registry)
+        self.click_on_hidden_element(BasePage.Remove_From_Registry)
         time.sleep(2)

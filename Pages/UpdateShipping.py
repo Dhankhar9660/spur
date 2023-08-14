@@ -35,5 +35,5 @@ class Shipping(BasePage):
 
                 break
         time.sleep(4)
-        self.click(BasePage.Click_Update)
+        self.click_on_hidden_element(BasePage.Click_Update)
         time.sleep(4)

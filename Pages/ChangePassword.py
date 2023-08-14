@@ -11,7 +11,7 @@ class ChangePassword(BasePage):
     def Change_Password(self, old_pas, new_pas, confirm_pas):
         self.click_element(BasePage.Setting)
         time.sleep(3)
-        self.click(BasePage.Click_ChangePassword)
+        self.click_on_hidden_element(BasePage.Click_ChangePassword)
         self.clear_text_box(BasePage.Old_Password)
         self.send_keys(BasePage.Old_Password, old_pas)
         self.clear_text_box(BasePage.New_Password)

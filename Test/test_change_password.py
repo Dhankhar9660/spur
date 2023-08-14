@@ -31,7 +31,7 @@ class Test_Change_Password(BaseTest):
             assert Confirm_Pas_Validation == 'Confirm Password is required'
 
         except AssertionError:
-            print('password validation is incorrect')
+            print('password validation message is incorrect')
             raise
         self.asd.click_element(BasePage.Log_Out)
 

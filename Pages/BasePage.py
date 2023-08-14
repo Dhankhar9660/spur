@@ -284,8 +284,12 @@ class BasePage():
     def get_list_of_elements(self, by_locator):
         return WebDriverWait(self.driver, 15).until(EC.presence_of_all_elements_located(by_locator))
 
-    def click(self, locetor):
+    def click_on_hidden_element(self, locetor):
         element = self.driver.find_element(By.XPATH, locetor)
+        self.driver.execute_script("arguments[0].click();", element)
+        return element
+
+    def click_on_hidden_element_by_selector(self, element):
         self.driver.execute_script("arguments[0].click();", element)
         return element
 
