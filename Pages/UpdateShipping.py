@@ -5,8 +5,8 @@ from selenium.webdriver.common.by import By
 from Pages.BasePage import BasePage
 
 
-class Shipping(BasePage):
 
+class Shipping(BasePage):
     def __int__(self, driver):
         super.__init__(driver)
 
@@ -26,14 +26,9 @@ class Shipping(BasePage):
         counteries = self.driver.find_elements(By.XPATH, "//ul[@role = 'listbox']/li")
         for country in counteries:
 
-            if country.text == 'Johannesburg':
+            if country.text == "Aruba":
                 country.click()
-                # xc = (By.XPATH, f"//li[text() = '{country.text}']")
-                #
-                # self.hover_element(xc)
-                # self.click_element(xc)
-
                 break
-        time.sleep(4)
+        time.sleep(1)
         self.click_on_hidden_element(BasePage.Click_Update)
         time.sleep(4)

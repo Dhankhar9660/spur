@@ -11,7 +11,7 @@ class UpdateProfile(BasePage):
     def __int__(self, driver):
         super().__init__(driver)
 
-    def Update_Profile(self, Fname, Lname, Phone, PFname, PLname, Email, Date, Greet, Hastag, Region):
+    def Update_Profile(self, Fname, Lname, Phone, PFname, PLname, Email, Greet, Hastag, Region):
         self.click_element(BasePage.Setting)
         time.sleep(3)
         self.clear_text_box(BasePage.First_Name)
@@ -26,8 +26,8 @@ class UpdateProfile(BasePage):
         self.send_keys(BasePage.Partner_Last_Name, PLname)
         self.clear_text_box(BasePage.Partner_Email)
         self.send_keys(BasePage.Partner_Email, Email)
-        self.clear_text_box(BasePage.Wedding_Date)
-        self.send_keys(BasePage.Wedding_Date, Date)
+        # self.clear_text_box(BasePage.Wedding_Date)
+        # self.send_keys(BasePage.Wedding_Date, Date)
         self.clear_text_box(BasePage.Greetings)
         self.send_keys(BasePage.Greetings, Greet)
         self.clear_text_box(BasePage.Couple_Hashtag)

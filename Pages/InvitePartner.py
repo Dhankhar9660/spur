@@ -20,6 +20,7 @@ class InvitePartner(BasePage):
 
         try:
             self.driver.find_element(By.XPATH, "//input[@value = 'REVOKE']").click()
+            time.sleep(4)
             self.click_element(BasePage.Invite)
         except NoSuchElementException:
             pass

@@ -7,14 +7,12 @@
   "search_by_forloop.py::Test_Login::test_addtocart[chrome]": true,
   "whilesearch.py::Test_Login::test_addtocart[chrome]": true,
   "test_Create_Exp.py::Test_Create_Exp::test_create_exp[chrome]": true,
-  "test_UpdateProfile.py::Test_Update_Profile::test_update_profile[chrome]": true,
   "test_update_honeymoon.py::Test_Honeymoon::test_update_honeymoon": true,
   "test_update_invitepartner.py::Test_Invite_Partner::test_update_invite_partner[chrome]": true,
   "test_change_password.py::Test_Change_Password::test_change_password_h[chrome]": true,
   "test_url.py": true,
   "test_account.py::Test_Account::test_deactivate_account[chrome]": true,
-  "test_Loginpage.py::Test_Login::test_charity_login[chrome]": true,
-  "test_Loginpage.py::Test_Login::test_joy_login[chrome]": true,
-  "test_Loginpage.py::Test_Login::test_zola_login[chrome]": true,
-  "test_Loginpage.py::Test_Login::test_knot_login[chrome]": true
+  "test_Exp_proregister.py::Test_EXPRegistration::test_EXPRegistration[chrome]": true,
+  "test_Charity_reg_page.py::Test_EXPRegistration::test_EXPRegistration[chrome]": true,
+  "test_update_shipping.py": true
 }

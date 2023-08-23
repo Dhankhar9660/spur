@@ -14,27 +14,30 @@ class Test_Update_Shipping(BaseTest):
     @pytest.mark.alltest
     def test_update_shipping(self):
 
-        self.login = LoginPage(self.driver)
-        self.login.login(BasePage.COUPLE_EMAIL, BasePage.AUTOMATION_PASSWORD)
+        self.spur = LoginPage(self.driver)
+        self.spur.login(BasePage.COUPLE_EMAIL, BasePage.AUTOMATION_PASSWORD)
 
-        self.asd = Shipping(self.driver)
-        self.asd.UpdateShipping("Anil", "Kumar", "only for testing", "Johan")
+        self.spur = Shipping(self.driver)
+        self.spur.UpdateShipping("Test", "user", "only for testing", "Aruba")
 
         try:
-            FirstName = self.asd.get_element_value(BasePage.FirstName)
-            assert FirstName == 'Anil'
+            FirstName = self.spur.get_element_value(BasePage.FirstName)
+            assert FirstName == 'Test'
 
-            LastName = self.asd.get_element_value(BasePage.LastName)
-            assert LastName == 'Kumar'
+            LastName = self.spur.get_element_value(BasePage.LastName)
+            assert LastName == 'user'
 
-            Address = self.asd.get_element_value(BasePage.Address)
+            Address = self.spur.get_element_value(BasePage.Address)
             assert Address == 'only for testing'
 
-            Country = self.asd.get_element_text(BasePage.Country)
-            assert Country == 'Johannesburg'
+            Country = self.spur.get_element_text(BasePage.Country)
+            assert Country == "Aruba"
 
         except AssertionError:
             print('shipping page not updating')
             raise
         time.sleep(1)
-        self.asd.click_element(BasePage.Log_Out)
+        self.spur.UpdateShipping("QATest", "lastname", "only for testing Address", "Aruba")
+        time.sleep(4)
+        self.spur.click_element(BasePage.Log_Out)
+        time.sleep(2)

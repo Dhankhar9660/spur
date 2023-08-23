@@ -11,6 +11,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 import imaplib
 import email
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 
 class BasePage():
@@ -104,16 +105,7 @@ class BasePage():
     LOGIN_EMAIL_VALIDATION = (By.XPATH, "(//div[@class='ng-star-inserted'])[1]")
     LOGIN_PASSWORD_VALIDATION = (By.XPATH, "(//div[@class='ng-star-inserted'])[2]")
 
-    # login details for stage server
-    COUPLE_EMAIL = "coupleuser@yopmail.com"
-    INDIVIDUAL_EMAIL = "individualuser@yopmail.com"
-    EP_EMAIL = "testexperience@yopmail.com"
-    CHARITY_EMAIL = "testcharity@yopmail.com"
-    ZOLA_EMAIL = "zolauser@yopmail.com"
-    JOY_EMAIL = "joyuser@yopmail.com"
-    KNOT_EMAIL = "knotuser@yopmail.com"
-
-    # login details for live server
+    # --------------------------- login details for stage server-------------------
     # COUPLE_EMAIL = "coupleuser@yopmail.com"
     # INDIVIDUAL_EMAIL = "individualuser@yopmail.com"
     # EP_EMAIL = "testexperience@yopmail.com"
@@ -121,8 +113,18 @@ class BasePage():
     # ZOLA_EMAIL = "zolauser@yopmail.com"
     # JOY_EMAIL = "joyuser@yopmail.com"
     # KNOT_EMAIL = "knotuser@yopmail.com"
+    # AUTOMATION_PASSWORD = "System@123"
 
-    AUTOMATION_PASSWORD = "System@123"
+    # -----------------login details for live server---------------------
+    COUPLE_EMAIL = "Testuser76@yopmail.com"
+    INDIVIDUAL_EMAIL = "individualuser@yopmail.com"
+    EP_EMAIL = "testexperience@yopmail.com"
+    CHARITY_EMAIL = "testcharity@yopmail.com"
+    ZOLA_EMAIL = "testzola@yopmail.com"
+    JOY_EMAIL = "testjoy@yopmail.com"
+    KNOT_EMAIL = "knotuser@yopmail.com"
+    AUTOMATION_PASSWORD = "123123"
+
     # Login error message
     Email_error_message = "Please enter the username"
     Password_error_message = "Please enter the password."
@@ -148,7 +150,7 @@ class BasePage():
     Mobile_Number = (By.XPATH, "(//input[@id= 'phone'])[2]")
     Trip_Start_Date = (By.XPATH, "//input[@formcontrolname = 'honeymoon_start_time']")
     Trip_End_Date = (By.XPATH, "//input[@formcontrolname = 'honeymoon_end_time']")
-    Date = "//tbody//span[text() = '24']"
+
     Hotel_Loding = (By.XPATH, "//textarea[@name = 'honeymoon_hotel_lodge']")
     Update = "(//input[@value = 'Update'])[1]"
 

@@ -52,7 +52,7 @@ def init_driver_here(request):
     driver.set_window_position(500, 0)"""
     driver.get(TestData.BASE_URL)
     # driver.get(TestData.PROD_LOGIN_URL)
-    driver.implicitly_wait(15)
+    driver.implicitly_wait(20)
 
     yield
     """________________TEAR DOWN----------------"""

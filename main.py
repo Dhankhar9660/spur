@@ -5,9 +5,12 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 import pyperclip
+import re
+from datetime import datetime
+import datetime
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-driver.get("")
+# driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+# driver.get("")
 
 # driver.find_element(By.XPATH, " //input[@placeholder='Find by Name/Category']").send_keys("test")
 # time.sleep(6)
@@ -32,3 +35,11 @@ driver.get("")
 #
 # # Print the clipboard text
 # print("Clipboard text:", clipboard_text)
+
+# original_string = "This is an (dynamic wasdorld)"
+# result_string = re.sub(r'\([^)]*\)', '', original_string).strip()
+# print(result_string)
+
+
+today = datetime.datetime.now().strftime("%B %d, %Y")
+print(today)

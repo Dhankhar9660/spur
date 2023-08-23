@@ -17,8 +17,9 @@ class Test_EXPRegistration(BaseTest):
     Close = (By.XPATH, "//span[@class='closeImg']")
 
     @pytest.mark.signup
+    @pytest.mark.alltest
     @pytest.mark.regression
-    def test_EXPRegistration(self, request):
+    def test_ep_rgistration(self, request):
 
         self.expreg = ExpproPage(self.driver)
         self.expreg.expregister()
@@ -40,7 +41,41 @@ class Test_EXPRegistration(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/hp/PycharmProjects/Spurowebest/Screenshot/"
+            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+
+            # Create the full path by joining the directory path and file name
+            screenshot_path = os.path.join(directory, file_name)
+
+            # Save the screenshot
+            self.driver.save_screenshot(screenshot_path)
+            raise
+
+        try:
+            menu = (By.XPATH, "//ul[@class='navbar-nav ml-auto']//li//a")
+            mydashboard = (By.XPATH, "(//a[text()='My Dashboard'])[1]")
+            self.expreg.click_element(mydashboard)
+            time.sleep(2)
+            menuoption = self.expreg.get_list_of_elements(menu)
+            menulist = []
+            for name in menuoption:
+                menulist.append(name.text)
+
+            assert all(x == y for x, y in zip(TestData.menuoption_ep, menulist))
+            print("EP signup working fine.")
+            self.expreg.click_element(BasePage.LOGOUT)
+            time.sleep(3)
+
+        except AssertionError:
+            print("EP signup  not working.")
+            timestamp = str(int(time.time()))
+
+            # Get the current test name
+            test_name = request.node.name
+            # Create a unique file name using the test name and timestamp
+            file_name = f"{test_name}_{timestamp}.png"
+
+            # Specify the directory path to save the screenshot
+            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
