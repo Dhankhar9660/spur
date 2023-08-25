@@ -72,7 +72,7 @@ class BasePage():
     EXP_HEADING = (By.XPATH, "//h1[@class='main_heading mb-4']")
     Buy_AS_VOUCHER = (By.XPATH, "//button[text()='BUY AS A VOUCHER']")
 
-    EXP_Name = "Test Exp 123"
+    EXP_Name = "Test Auto Exp 123"
     Details = "Check out the complete schedule and route details of the 12935 Mumbai Bandra T Surat Intercity Exp on RailYatri."
     Include = "drink , food, hotel"
     Exclude = "Smokeing, fule"
@@ -191,10 +191,10 @@ class BasePage():
 
     # Xpaths for activate/deactivate account
     Click_Account = "(//a[text() = 'DEACTIVATE ACCOUNT'])[1]"
-    Deactivate_Account = (By.XPATH, "//input[@value = ' Deactivate Account']")
+    Deactivate_Account = (By.XPATH, "//input[@value = 'Deactivate Account']")
     AccountInactive = (By.XPATH, "(//div[@class = 'ng-star-inserted'])[2]")
-    Activate_Account = (By.XPATH, "//input[@value = ' Activate Account']")
-    AccountInactiveMsg = '  Account Inactive – You have deactivated your account and it is no longer active. To reactivate, please visit DEACTIVATE ACCOUNT.'
+    Activate_Account = (By.XPATH, "//input[@value = 'Activate Account']")
+    AccountInactiveMsg = 'Account Inactive – You have deactivated your account and it is no longer active. To reactivate, please visit DEACTIVATE ACCOUNT.'
 
     # Xpaths for GuestView ----------
     Click_Home = (By.XPATH, "(//a[text() = 'Home'])[1]")

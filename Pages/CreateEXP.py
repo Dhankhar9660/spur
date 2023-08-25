@@ -1,10 +1,13 @@
 import time
 from selenium.webdriver.common.by import By
 from Pages.BasePage import BasePage
+# from datetime import datetime
+import datetime
 
 
 class CreateExp(BasePage):
     # Create Locators for elements on Add new experience Page:
+    exp_name = "test auto " + datetime.datetime.now().strftime("%H%M%S%B%d%Y")
 
     # Constructor for this class :
     def __init__(self, driver):
@@ -13,12 +16,12 @@ class CreateExp(BasePage):
 
     # Page actions
     def Createexp(self):
-        time.sleep(5)
+
         self.driver.execute_script("window.scrollTo(0, 450)")
         time.sleep(2)
         self.click_element(BasePage.ADDNEWEXP)
         time.sleep(3)
-        self.send_keys(BasePage.EXPNAMEINPUT, BasePage.EXP_Name)
+        self.send_keys(BasePage.EXPNAMEINPUT, self.exp_name)
         self.click_element(BasePage.NEXT2)
         self.send_keys(BasePage.SUMMERY, BasePage.Summery)
         self.click_element(BasePage.NEXT3)

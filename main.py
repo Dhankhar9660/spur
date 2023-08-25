@@ -41,5 +41,9 @@ import datetime
 # print(result_string)
 
 
-today = datetime.datetime.now().strftime("%B %d, %Y")
-print(today)
+# EXP_Name = "test auto " + datetime.datetime.now().strftime("%H%M%S%B%d%Y")
+# print(EXP_Name)
+# ab = [3, 4, 55, 55]
+# b = 553
+# assert b in ab
+# print("b  in list")

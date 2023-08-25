@@ -20,8 +20,8 @@ NewPassword = "System@1234"
 
 
 class Test_forgot_password(BaseTest):
-
     @pytest.mark.forgotpassword
+    @pytest.mark.regression
     @pytest.mark.alltest
     def test_forgot_password(self, request):
         # ----------reset password-----------
@@ -31,18 +31,20 @@ class Test_forgot_password(BaseTest):
 
         try:
             # --------login with new password--------------
-            self.login = LoginPage(self.driver)
-            self.login.login(newemail, NewPassword)
+            self.forgot = LoginPage(self.driver)
+            self.forgot.login(newemail, NewPassword)
             time.sleep(5)
-            url = self.login.get_current_url()
+            url = self.forgot.get_current_url()
             assert url == TestData.Profile_Url
+
             # ---------- password change to old password--------
-            self.asd = ChangePassword(self.driver)
-            self.asd.Change_Password(NewPassword, "System@123", "System@123")
-            time.sleep(1)
-            self.asd.click_element(BasePage.Log_Out)
+            self.forgot = ChangePassword(self.driver)
+            self.forgot.Change_Password(NewPassword, "123123", "123123")
+            time.sleep(2)
+
         except AssertionError:
-            print('password not changed')
+            print('Forgot password not working.')
             raise
 
-        self.asd.click_element(BasePage.Log_Out)
+        self.forgot.click_element(BasePage.Log_Out)
+        time.sleep(2)

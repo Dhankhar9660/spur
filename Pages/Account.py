@@ -11,13 +11,13 @@ class Account(BasePage):
     def Dactive_Account(self):
         self.click_element(BasePage.Setting)
         time.sleep(3)
-        self.click(BasePage.Click_Account)
+        self.click_on_hidden_element(BasePage.Click_Account)
         self.click_element(BasePage.Deactivate_Account)
         time.sleep(2)
 
     def Active_Account(self):
         self.click_element(BasePage.Setting)
         time.sleep(3)
-        self.click(BasePage.Click_Account)
+        self.click_on_hidden_element(BasePage.Click_Account)
         self.click_element(BasePage.Activate_Account)
         time.sleep(1)

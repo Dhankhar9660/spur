@@ -3,17 +3,18 @@ import time
 import os
 import pytest
 from selenium.webdriver.common.by import By
-
 from Test.test_Base import BaseTest
 from Pages.BasePage import BasePage
 from Pages.LoginPage import LoginPage
 
 
-class Test_Price_Filter(BaseTest):
+class TestPriceFilter(BaseTest):
     remove_filter = (By.XPATH, "//a//i[@class = 'fa fa-times']")
 
+    # --------------------------------------50 <= item <= 100-----------------------------------------------------
     @pytest.mark.pricefilter
     @pytest.mark.alltest
+    @pytest.mark.regression
     def test_price_filter_a(self, request):
 
         login = LoginPage(self.driver)
@@ -54,12 +55,11 @@ class Test_Price_Filter(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/Spurowebest/Screenshot/"
-
+            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
 
-            # Save the screenshot
+            # ----------------------------Save the screenshot----------------------------------
             self.driver.save_screenshot(screenshot_path)
             raise
 
@@ -69,8 +69,10 @@ class Test_Price_Filter(BaseTest):
         login.click_element(self.remove_filter)
         time.sleep(3)
 
-        self.login.click_element(BasePage.Log_Out)
+        login.click_element(BasePage.Log_Out)
+        time.sleep(2)
 
+    # ------------------------------------100 <= item <= 200-----------------------------------------
     @pytest.mark.pricefilter
     @pytest.mark.alltest
     def test_price_filter_b(self, request):
@@ -84,8 +86,8 @@ class Test_Price_Filter(BaseTest):
         time.sleep(6)
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(8)
-        list = (By.XPATH, "//div[starts-with(text(), ' $')]")
-        all_price = login.get_list_of_elements(list)
+        itemlist = (By.XPATH, "//div[starts-with(text(), ' $')]")
+        all_price = login.get_list_of_elements(itemlist)
         pricelist = []
         for i in all_price:
             pricelist.append(i.text)
@@ -111,7 +113,7 @@ class Test_Price_Filter(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/Spurowebest/Screenshot/"
+            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -125,8 +127,9 @@ class Test_Price_Filter(BaseTest):
         login.click_element(self.remove_filter)
         time.sleep(3)
 
-        self.login.click_element(BasePage.Log_Out)
+        login.click_element(BasePage.Log_Out)
 
+    # -----------------------------------200 <= item ----------------------------------
     @pytest.mark.pricefilter
     @pytest.mark.alltest
     def test_price_filter_c(self, request):
@@ -140,8 +143,8 @@ class Test_Price_Filter(BaseTest):
         time.sleep(6)
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(8)
-        list = (By.XPATH, "//div[starts-with(text(), ' $')]")
-        all_price = login.get_list_of_elements(list)
+        itemlist = (By.XPATH, "//div[starts-with(text(), ' $')]")
+        all_price = login.get_list_of_elements(itemlist)
         pricelist = []
         for i in all_price:
             pricelist.append(i.text)
@@ -167,7 +170,7 @@ class Test_Price_Filter(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/Spurowebest/Screenshot/"
+            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -181,8 +184,9 @@ class Test_Price_Filter(BaseTest):
         login.click_element(self.remove_filter)
         time.sleep(3)
 
-        self.login.click_element(BasePage.Log_Out)
+        login.click_element(BasePage.Log_Out)
 
+    # -----------------------------------0 <= item <= 50--------------------------------------
     @pytest.mark.pricefilter
     @pytest.mark.alltest
     def test_price_filter_d(self, request):
@@ -197,9 +201,9 @@ class Test_Price_Filter(BaseTest):
         time.sleep(6)
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(8)
-        list = (By.XPATH, "//div[starts-with(text(), ' $')]")
+        itemlist = (By.XPATH, "//div[starts-with(text(), ' $')]")
 
-        all_price = login.get_list_of_elements(list)
+        all_price = login.get_list_of_elements(itemlist)
         pricelist = []
         for i in all_price:
             pricelist.append(i.text)
@@ -228,7 +232,7 @@ class Test_Price_Filter(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/Spurowebest/Screenshot/"
+            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -242,4 +246,4 @@ class Test_Price_Filter(BaseTest):
         login.click_element(self.remove_filter)
         time.sleep(3)
 
-        self.login.click_element(BasePage.Log_Out)
+        login.click_element(BasePage.Log_Out)

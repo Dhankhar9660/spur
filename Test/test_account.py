@@ -19,11 +19,11 @@ class Test_Account(BaseTest):
 
         self.account = Account(self.driver)
         self.account.Dactive_Account()
-        Text = self.account.get_element_text(BasePage.AccountInactive)
-        print(Text)
+        text = self.account.get_element_text(BasePage.AccountInactive)
         try:
-            assert Text == BasePage.AccountInactiveMsg
+            assert text == BasePage.AccountInactiveMsg
         except AssertionError:
+            print("Account not updating")
             self.account.click_element(BasePage.Log_Out)
             raise
 

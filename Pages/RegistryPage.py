@@ -59,7 +59,7 @@ class RegistryPage(BasePage):
             assert Product_Name == actual_exp
             self.click_on_hidden_element(BasePage.Click_On_Product)
         except AssertionError:
-            print('Product name not found')
+            print('Product not available in cart')
             raise
         self.click_on_hidden_element(BasePage.Remove_From_Registry)
         time.sleep(2)
