@@ -40,7 +40,7 @@ class Test_Registry(BaseTest):
 
             # print(title + " " + Remove)
             time.sleep(3)
-            self.registry.click_element(BasePage.Log_Out)
+
         except AssertionError:
             timestamp = str(int(time.time()))
 
@@ -58,6 +58,8 @@ class Test_Registry(BaseTest):
             # Save the screenshot
             self.driver.save_screenshot(screenshot_path)
             raise
+        self.registry.click_element(BasePage.Log_Out)
+        time.sleep(2)
 
     @pytest.mark.alltest
     @pytest.mark.regression
@@ -65,8 +67,8 @@ class Test_Registry(BaseTest):
     def test_add_to_bucket_list(self, request):
         self.regist = LoginPage(self.driver)
         self.regist.login(BasePage.INDIVIDUAL_EMAIL, BasePage.AUTOMATION_PASSWORD)
-        self.registry1 = RegistryPage(self.driver)
-        self.registry1.registry()
+        self.registry = RegistryPage(self.driver)
+        self.registry.registry()
         time.sleep(3)
         # title = self.regist.get_element_text(self.EXP_title)
         # print(title+" Added to registry")
@@ -80,7 +82,7 @@ class Test_Registry(BaseTest):
 
             # print(title + " " + Remove)
             time.sleep(3)
-            self.regist.click_element(BasePage.Log_Out)
+
         except AssertionError:
             timestamp = str(int(time.time()))
 
@@ -98,6 +100,8 @@ class Test_Registry(BaseTest):
             # Save the screenshot
             self.driver.save_screenshot(screenshot_path)
             raise
+        self.registry.click_element(BasePage.Log_Out)
+        time.sleep(2)
 
     @pytest.mark.alltest
     @pytest.mark.regression
@@ -110,7 +114,6 @@ class Test_Registry(BaseTest):
 
         self.regist = RegistryPage(self.driver)
         self.regist.Add_Registry(TestData.Exprience_Name, TestData.Exp_Actual_Name)
-
         self.regist.click_element(BasePage.View_Our_Url)
         time.sleep(1)
         self.regist.click_element(BasePage.Copy_Url)
@@ -120,7 +123,7 @@ class Test_Registry(BaseTest):
         self.regist.click_element(BasePage.Close_Popup)
 
         self.regist.click_element(BasePage.Log_Out)
-        time.sleep(2)
+        time.sleep(3)
         self.regist.driver.get(clipboard_text)
         time.sleep(5)
         self.regist.driver.execute_script("window.scrollTo(0,700)")

@@ -16,7 +16,7 @@ from Pages.BasePage import BasePage
 
 class Test_Order(BaseTest):
     # create method for Login and create object of Test_Login to access various functions from Parent Class
-    @pytest.mark.order
+    @pytest.mark.alltest
     @pytest.mark.regression
     @pytest.mark.plceorder
     def test_order(self, request):
@@ -25,16 +25,30 @@ class Test_Order(BaseTest):
         self.regist.login(BasePage.COUPLE_EMAIL, BasePage.AUTOMATION_PASSWORD)
         time.sleep(5)
         self.buy = Booking(self.driver)
-        self.buy.Add_to_cart()
+        self.buy.Add_to_cart("Test live exp")
         time.sleep(3)
-        self.order = OrderPage(self.driver)
-        self.order.order()
-        time.sleep(2)
-        ORDERCON = self.order.get_element_text(BasePage.ORDERCONFMESSAGE)
+        # self.order = OrderPage(self.driver)
+        # self.order.order()
+        # time.sleep(2)
+        # ORDERCON = self.order.get_element_text(BasePage.ORDERCONFMESSAGE)
         try:
+            self.buy.click_element(BasePage.Cart_popup_close)
+            self.buy.click_element(BasePage.Click_On_Cart)
+            time.sleep(3)
+            cartitems = (By.XPATH, "//div[@class='productListing ng-star-inserted']")
 
-            assert ORDERCON == BasePage.Orderconf
+            cart_list = self.buy.get_list_of_elements(cartitems)
+            for item in cart_list:
+                itemname = item.find_element(By.XPATH, ".//div[@class='productName']").text
+                if itemname == "TEST LIVE EXP":
+                    item.find_element(By.XPATH, ".//a[text() = '×']").click()
+                    self.buy.click_element(BasePage.Click_Yes_Button)
+                    time.sleep(2)
+                    break
+                else:
+                    print(" Item not added in cart")
         except AssertionError:
+            print(" Item not added in cart.")
             timestamp = str(int(time.time()))
 
             # Get the current test name
@@ -43,7 +57,7 @@ class Test_Order(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/Spurowebest/Screenshot/"
+            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)

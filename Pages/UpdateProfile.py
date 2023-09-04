@@ -32,6 +32,7 @@ class UpdateProfile(BasePage):
         self.send_keys(BasePage.Greetings, Greet)
         self.clear_text_box(BasePage.Couple_Hashtag)
         self.send_keys(BasePage.Couple_Hashtag, Hastag)
-        self.clear_text_box(BasePage.Home_Region)
+        # self.clear_text_box(BasePage.Home_Region)
+        time.sleep(2)
         self.send_keys(BasePage.Home_Region, Region)
         time.sleep(2)

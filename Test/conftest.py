@@ -14,14 +14,14 @@ def init_driver_here(request):
     """________________SETUP-----------------"""
     if request.param == "chrome":
         chrome_options = webdriver.ChromeOptions()
-        # chrome_options.add_argument("--incognito")
+        chrome_options.add_argument("--incognito")
 
         chrome_options.add_argument("--disable-infobars")
         chrome_options.add_argument("start-maximized")
         chrome_options.add_argument("--disable-extensions")
         # chrome_options.add_extension("C:/Users/HP/Downloads/Nimbus-Screenshot---Screen-Video-Recorder.crx")
 
-        # Pass the argument 1 to allow and 2 to block
+        # Pass the argument 1 to allow and 2 to block and 3 to ask
         chrome_options.add_experimental_option("prefs", {
             "profile.default_content_setting_values.media_stream_mic": 1,
             "profile.default_content_setting_values.media_stream_camera": 3,

@@ -66,8 +66,8 @@ class TestPriceFilter(BaseTest):
         login.driver.execute_script("window.scrollTo(0,0)")
         time.sleep(2)
 
-        login.click_element(self.remove_filter)
-        time.sleep(3)
+        # login.click_element(self.remove_filter)
+        # time.sleep(3)
 
         login.click_element(BasePage.Log_Out)
         time.sleep(2)
@@ -196,7 +196,7 @@ class TestPriceFilter(BaseTest):
         time.sleep(5)
         login.click_element(BasePage.ADDEXP)
         time.sleep(8)
-        ab = (By.XPATH, "(//ul[@class = 'filter_typeoption']//li)[3]")
+        ab = (By.XPATH, "(//ul[@class = 'filter_typeoption']//li)[2]")
         login.click_element(ab)
         time.sleep(6)
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")

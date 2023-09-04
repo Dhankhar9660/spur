@@ -1,5 +1,5 @@
 import time
-
+import os
 import pytest
 
 from Config.config import TestData
@@ -44,6 +44,21 @@ class Test_forgot_password(BaseTest):
 
         except AssertionError:
             print('Forgot password not working.')
+            timestamp = str(int(time.time()))
+
+            # Get the current test name
+            test_name = request.node.name
+            # Create a unique file name using the test name and timestamp
+            file_name = f"{test_name}_{timestamp}.png"
+
+            # Specify the directory path to save the screenshot
+            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+
+            # Create the full path by joining the directory path and file name
+            screenshot_path = os.path.join(directory, file_name)
+
+            # Save the screenshot
+            self.driver.save_screenshot(screenshot_path)
             raise
 
         self.forgot.click_element(BasePage.Log_Out)

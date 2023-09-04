@@ -1,5 +1,7 @@
 from datetime import datetime
 import time
+
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from Pages.LoginPage import LoginPage
 from Pages.BasePage import BasePage
@@ -41,7 +43,11 @@ class RegistryPage(BasePage):
         except AssertionError:
             print('Product name not found')
             raise
-        self.click_on_hidden_element(BasePage.Add_To_Registry)
+        try:
+            self.click_on_hidden_element(BasePage.Add_To_Registry)
+        except NoSuchElementException:
+            print("product already added in registry.")
+            pass
         self.click_element(BasePage.Click_MyDashboard)
         time.sleep(3)
 

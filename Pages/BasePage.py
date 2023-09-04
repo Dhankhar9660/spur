@@ -48,7 +48,7 @@ class BasePage():
     PLACE_ORDER = (By.XPATH, "//input[@value='Place order']")
     ORDERCONFMESSAGE = (By.XPATH, "//div[@class='col-12']//h1")
     SEARCHBOXEXP = (By.XPATH, "//div[@class='primeAutocomplete homeAutoCompCountryParent']//input")
-    SEARCHITEM = (By.XPATH, "//div[text()='Swimming']")
+    SEARCHITEM = (By.XPATH, "//div[text()='Test live exp']")
     QTY = (By.XPATH, "//option[text() ='Select Quantity']//parent::select")
     person = (By.XPATH, "//option[text() ='2 People']")
     CALENDER = (By.XPATH, "//input[@placeholder='Select Date']")
@@ -71,6 +71,7 @@ class BasePage():
     SUBMIT = (By.XPATH, "//button[@class='form-control submit-button']")
     EXP_HEADING = (By.XPATH, "//h1[@class='main_heading mb-4']")
     Buy_AS_VOUCHER = (By.XPATH, "//button[text()='BUY AS A VOUCHER']")
+    Cart_popup_close = (By.XPATH, "//div[@class='cartpopup_box']//i")
 
     EXP_Name = "Test Auto Exp 123"
     Details = "Check out the complete schedule and route details of the 12935 Mumbai Bandra T Surat Intercity Exp on RailYatri."
@@ -117,6 +118,7 @@ class BasePage():
 
     # -----------------login details for live server---------------------
     COUPLE_EMAIL = "Testuser76@yopmail.com"
+    COUPLE_USER_NAME = "Test44"
     INDIVIDUAL_EMAIL = "individualuser@yopmail.com"
     EP_EMAIL = "testexperience@yopmail.com"
     CHARITY_EMAIL = "testcharity@yopmail.com"

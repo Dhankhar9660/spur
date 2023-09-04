@@ -28,6 +28,9 @@ class Test_URL(BaseTest):
         except AssertionError:
             print('Url not found')
             raise
+
+        self.asd.click_element(BasePage.Close_Popup)
+        time.sleep(2)
         self.asd.click_element(BasePage.Log_Out)
 
         # Print the clipboard text

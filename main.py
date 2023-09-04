@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.service import Service
 import pyperclip
 import re
 from datetime import datetime
-import datetime
+# import datetime
 
 # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 # driver.get("")
@@ -47,3 +47,8 @@ import datetime
 # b = 553
 # assert b in ab
 # print("b  in list")
+now = datetime.now()
+today = "98899"
+print(type(today))
+str_value_without_zeros = today.lstrip('0')
+print(str_value_without_zeros)

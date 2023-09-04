@@ -15,7 +15,7 @@ file_name = f"{timestamp}.html"
 file_path = os.path.join(folder_path, file_name)
 
 # Run the test case with the specified marker
-pytest.main(["--html=" + file_path, "-m regression"])
+pytest.main(["--html=" + file_path, "-m alltest"])
 
 
 def send_email_with_report(report_file, recipient_email):

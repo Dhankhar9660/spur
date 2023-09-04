@@ -1,5 +1,5 @@
 import time
-
+import os
 import pytest
 
 from Pages.BasePage import BasePage
@@ -14,7 +14,7 @@ class Test_Honeymoon(BaseTest):
 
     @pytest.mark.honeymoon
     @pytest.mark.alltest
-    def test_update_honeymoon(self):
+    def test_update_honeymoon(self, request):
         self.honeymoon = LoginPage(self.driver)
         self.honeymoon.login(BasePage.COUPLE_EMAIL, BasePage.AUTOMATION_PASSWORD)
 
@@ -39,6 +39,21 @@ class Test_Honeymoon(BaseTest):
 
         except Exception:
             print("Honeymoon not updating")
+            timestamp = str(int(time.time()))
+
+            # Get the current test name
+            test_name = request.node.name
+            # Create a unique file name using the test name and timestamp
+            file_name = f"{test_name}_{timestamp}.png"
+
+            # Specify the directory path to save the screenshot
+            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+
+            # Create the full path by joining the directory path and file name
+            screenshot_path = os.path.join(directory, file_name)
+
+            # Save the screenshot
+            self.driver.save_screenshot(screenshot_path)
             raise
         self.honeymoon.Honeymoon("New York, NY, USA", 9898989898, "Testing hotel")
         time.sleep(5)

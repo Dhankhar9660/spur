@@ -13,12 +13,12 @@ class TestData:
 
     # ------------- Details for live -------------------
     BASE_URL = "https://spurexperiences.com/"
-    Registry_Url = "https://spurexperiences.com/registries/test44"
+    Registry_Url = "https://spurexperiences.com/registries/Test44"
     Profile_Url = "https://spurexperiences.com/profile"
     Exprience_Name = "test live exp"
     Exp_Actual_Name = "TEST LIVE EXP (NEW YORK)"
 
-    # ----------------- Commant details ---------------
+    # ----------------- Common details ---------------
     menuoption_couple = ['OUR REGISTRY', 'ADD EXPERIENCES', 'GIFT TRACKER', 'OUR FRIENDS', 'SPURTICKETING', 'SETTINGS']
     menuoption_individual = ['PROFILE', 'ADD EXPERIENCES', 'GIFT TRACKER', 'MY FRIENDS', 'SPURTICKETING', 'SETTINGS']
     menuoption_ep = ['EXPERIENCES', 'VOUCHERS/REDEEM', 'SETTINGS', 'BOOKINGS', 'AVAILABILITY']

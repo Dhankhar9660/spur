@@ -7,7 +7,8 @@ from datetime import datetime
 
 class Update_Honeymoon(BasePage):
     now = datetime.now()
-    today = now.strftime("%d")
+    todaydate = now.strftime("%d")
+    today = todaydate.lstrip('0')
     Date = f"//tbody//span[text() = '{today}']"
 
     def __int__(self, driver):

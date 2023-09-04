@@ -12,12 +12,12 @@ class Booking(BasePage):
 
     # Page action
 
-    def Add_to_cart(self):
+    def Add_to_cart(self, expname):
         # self.click_element(BasePage.DASHBOARD)
         self.click_element(BasePage.HOME)
         time.sleep(3)
         self.driver.execute_script("window.scrollTo(0, 800)")
-        self.send_keys(BasePage.SEARCHBOXEXP, BasePage.REZDYEXP)
+        self.send_keys(BasePage.SEARCHBOXEXP, expname)
         time.sleep(3)
         self.click_element(BasePage.SEARCHITEM)
         time.sleep(5)
