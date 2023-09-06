@@ -15,7 +15,7 @@ file_name = f"{timestamp}.html"
 file_path = os.path.join(folder_path, file_name)
 
 # Run the test case with the specified marker
-pytest.main(["--html=" + file_path, "-m alltest"])
+pytest.main(["--html=" + file_path, "-m login"])
 
 
 def send_email_with_report(report_file, recipient_email):
@@ -39,7 +39,10 @@ def send_email_with_report(report_file, recipient_email):
 
         # Add a custom message to the email
         custom_message = '''Hello sir,
-                            please find attached html file for the automation test report of Spur Experiences.'''
+                            please find attached html file for the automation test report of Spur Experiences.
+                            
+                            Thank you
+                            Balkishan Dhankhar'''
         message.attach(MIMEText(custom_message, "plain"))
 
     # Connect to SMTP server
@@ -59,4 +62,4 @@ report_file_path = file_path
 recipient_emails = "balkishan.dhankhar@owebest.in, bharat.singh@owebest.com, mahendra.singh@owebest.in"
 
 # Call the function to send the email with the report
-send_email_with_report(report_file_path, recipient_emails)
+# send_email_with_report(report_file_path, recipient_emails)

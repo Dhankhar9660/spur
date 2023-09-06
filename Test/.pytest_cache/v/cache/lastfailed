@@ -16,6 +16,5 @@
   "test_prcie_filter.py::TestPriceFilter::test_price_filter_a[chrome]": true,
   "test_prcie_filter.py::TestPriceFilter::test_price_filter_b[chrome]": true,
   "test_prcie_filter.py::TestPriceFilter::test_price_filter_c[chrome]": true,
-  "test_registry_page.py::Test_Registry::test_add_to_bucket_list[chrome]": true,
-  "test_friendrequest.py::Test_Friendreq::test_Friendreq[chrome]": true
+  "test_registry_page.py::Test_Registry::test_add_to_bucket_list[chrome]": true
 }
