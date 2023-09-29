@@ -16,7 +16,7 @@ from Pages.BasePage import BasePage
 
 class Test_Order(BaseTest):
     # create method for Login and create object of Test_Login to access various functions from Parent Class
-    @pytest.mark.alltest
+    @pytest.mark.alltesta
     @pytest.mark.regression
     @pytest.mark.plceorder
     def test_order(self, request):

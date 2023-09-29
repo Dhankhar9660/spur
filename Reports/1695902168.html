@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>1695902168.html</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onLoad="init()">
+<script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) { // eslint-disable-line no-redeclare
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function findAll(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sortColumn(elem) {
+    toggleSortStates(elem);
+    const colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    let key;
+    if (elem.classList.contains('result')) {
+        key = keyResult;
+    } else if (elem.classList.contains('links')) {
+        key = keyLink;
+    } else {
+        key = keyAlpha;
+    }
+    sortTable(elem, key(colIndex));
+}
+
+function showAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(showExtras);
+}
+
+function hideAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(hideExtras);
+}
+
+function showExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.remove('collapsed');
+    expandcollapse.classList.remove('expander');
+    expandcollapse.classList.add('collapser');
+}
+
+function hideExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.add('collapsed');
+    expandcollapse.classList.remove('collapser');
+    expandcollapse.classList.add('expander');
+}
+
+function showFilters() {
+    let visibleString = getQueryParameter('visible') || 'all';
+    visibleString = visibleString.toLowerCase();
+    const checkedItems = visibleString.split(',');
+
+    const filterItems = document.getElementsByClassName('filter');
+    for (let i = 0; i < filterItems.length; i++) {
+        filterItems[i].hidden = false;
+
+        if (visibleString != 'all') {
+            filterItems[i].checked = checkedItems.includes(filterItems[i].getAttribute('data-test-result'));
+            filterTable(filterItems[i]);
+        }
+    }
+}
+
+function addCollapse() {
+    // Add links for show/hide all
+    const resulttable = find('table#results-table');
+    const showhideall = document.createElement('p');
+    showhideall.innerHTML = '<a href="javascript:showAllExtras()">Show all details</a> / ' +
+                            '<a href="javascript:hideAllExtras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    findAll('.col-result').forEach(function(elem) {
+        const collapsed = getQueryParameter('collapsed') || 'Passed';
+        const extras = elem.parentNode.nextElementSibling;
+        const expandcollapse = document.createElement('span');
+        if (extras.classList.contains('collapsed')) {
+            expandcollapse.classList.add('expander');
+        } else if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add('collapsed');
+            expandcollapse.classList.add('expander');
+        } else {
+            expandcollapse.classList.add('collapser');
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener('click', function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains('collapsed')) {
+                showExtras(event.currentTarget);
+            } else {
+                hideExtras(event.currentTarget);
+            }
+        });
+    });
+}
+
+function getQueryParameter(name) {
+    const match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () { // eslint-disable-line no-unused-vars
+    resetSortHeaders();
+
+    addCollapse();
+
+    showFilters();
+
+    sortColumn(find('.initial-sort'));
+
+    findAll('.sortable').forEach(function(elem) {
+        elem.addEventListener('click',
+            function() {
+                sortColumn(elem);
+            }, false);
+    });
+}
+
+function sortTable(clicked, keyFunc) {
+    const rows = findAll('.results-table-row');
+    const reversed = !clicked.classList.contains('asc');
+    const sortedRows = sort(rows, keyFunc, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    const thead = document.getElementById('results-table-head');
+    document.getElementById('results-table').remove();
+    const parent = document.createElement('table');
+    parent.id = 'results-table';
+    parent.appendChild(thead);
+    sortedRows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName('BODY')[0].appendChild(parent);
+}
+
+function sort(items, keyFunc, reversed) {
+    const sortArray = items.map(function(item, i) {
+        return [keyFunc(item), i];
+    });
+
+    sortArray.sort(function(a, b) {
+        const keyA = a[0];
+        const keyB = b[0];
+
+        if (keyA == keyB) return 0;
+
+        if (reversed) {
+            return keyA < keyB ? 1 : -1;
+        } else {
+            return keyA > keyB ? 1 : -1;
+        }
+    });
+
+    return sortArray.map(function(item) {
+        const index = item[1];
+        return items[index];
+    });
+}
+
+function keyAlpha(colIndex) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[colIndex].firstChild.data.toLowerCase();
+    };
+}
+
+function keyLink(colIndex) {
+    return function(elem) {
+        const dataCell = elem.childNodes[1].childNodes[colIndex].firstChild;
+        return dataCell == null ? '' : dataCell.innerText.toLowerCase();
+    };
+}
+
+function keyResult(colIndex) {
+    return function(elem) {
+        const strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+            'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[colIndex].firstChild.data);
+    };
+}
+
+function resetSortHeaders() {
+    findAll('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    findAll('.sortable').forEach(function(elem) {
+        const icon = document.createElement('div');
+        icon.className = 'sort-icon';
+        icon.textContent = 'vvv';
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove('desc', 'active');
+        elem.classList.add('asc', 'inactive');
+    });
+}
+
+function toggleSortStates(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        resetSortHeaders();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function isAllRowsHidden(value) {
+    return value.hidden == false;
+}
+
+function filterTable(elem) { // eslint-disable-line no-unused-vars
+    const outcomeAtt = 'data-test-result';
+    const outcome = elem.getAttribute(outcomeAtt);
+    const classOutcome = outcome + ' results-table-row';
+    const outcomeRows = document.getElementsByClassName(classOutcome);
+
+    for(let i = 0; i < outcomeRows.length; i++){
+        outcomeRows[i].hidden = !elem.checked;
+    }
+
+    const rows = findAll('.results-table-row').filter(isAllRowsHidden);
+    const allRowsHidden = rows.length == 0 ? true : false;
+    const notFoundMessage = document.getElementById('not-found-message');
+    notFoundMessage.hidden = !allRowsHidden;
+}
+
+</script>
+<h1>1695902168.html</h1>
+<p>Report generated on 28-Sep-2023 at 17:28:30 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a>
+    v3.2.0</p>
+<h2>Summary</h2>
+<p>3 tests ran in 141.50 seconds. </p>
+<p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter"
+                                                                                     data-test-result="passed"
+                                                                                     hidden="true"
+                                                                                     name="filter_checkbox"
+                                                                                     onChange="filterTable(this)"
+                                                                                     type="checkbox"/><span
+        class="passed">1 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true"
+                                               hidden="true" name="filter_checkbox" onChange="filterTable(this)"
+                                               type="checkbox"/><span class="skipped">0 skipped</span>, <input
+        checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox"
+        onChange="filterTable(this)" type="checkbox"/><span class="failed">2 failed</span>, <input checked="true"
+                                                                                                   class="filter"
+                                                                                                   data-test-result="error"
+                                                                                                   disabled="true"
+                                                                                                   hidden="true"
+                                                                                                   name="filter_checkbox"
+                                                                                                   onChange="filterTable(this)"
+                                                                                                   type="checkbox"/><span
+        class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true"
+                                              hidden="true" name="filter_checkbox" onChange="filterTable(this)"
+                                              type="checkbox"/><span class="xfailed">0 expected failures</span>, <input
+        checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox"
+        onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+<h2>Results</h2>
+<table id="results-table">
+    <thead id="results-table-head">
+    <tr>
+        <th class="sortable result initial-sort" col="result">Result</th>
+        <th class="sortable" col="name">Test</th>
+        <th class="sortable" col="duration">Duration</th>
+        <th class="sortable links" col="links">Links</th>
+    </tr>
+    <tr hidden="true" id="not-found-message">
+        <th colspan="4">No results found. Try to check the filters</th>
+    </tr>
+    </thead>
+    <tbody class="failed results-table-row">
+    <tr>
+        <td class="col-result">Failed</td>
+        <td class="col-name">Test/test_Charity_reg_page.py::Test_CHARITY_SIGNUP::test_charity_signup[chrome]</td>
+        <td class="col-duration">49.16</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log">self = &lt;Test.test_Charity_reg_page.Test_CHARITY_SIGNUP object at
+                0x000002CA9C6C05E0&gt;<br/>request = &lt;FixtureRequest for &lt;Function test_charity_signup[chrome]&gt;&gt;<br/><br/>
+                @pytest.mark.alltest<br/> @pytest.mark.regression<br/> @pytest.mark.signup<br/> def
+                test_charity_signup(self, request):<br/> <br/> self.chareg = CharityregPage(self.driver)<br/>&gt;
+                self.chareg.charityregister()<br/><br/>Test\test_Charity_reg_page.py:26: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/>Pages\CharityRegisterPage.py:77: in
+                charityregister<br/> self.send_keys(self.Fname, self.FNAME)<br/>Pages\BasePage.py:244: in send_keys<br/>
+                WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(by_locator)).send_keys(text)<br/>_
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/><br/>self = &lt;selenium.webdriver.support.wait.WebDriverWait
+                (session=&quot;0cfa3d8b4ac76c3f3dbe8423deed7a06&quot;)&gt;<br/>method = &lt;function
+                visibility_of_element_located.&lt;locals&gt;._predicate at 0x000002CA9C576830&gt;<br/>message = &#x27;&#x27;<br/><br/>
+                def until(self, method, message: str = &quot;&quot;):<br/> &quot;&quot;&quot;Calls the method provided
+                with the driver as an argument until the \<br/> return value does not evaluate to ``False``.<br/> <br/>
+                :param method: callable(WebDriver)<br/> :param message: optional message for
+                :exc:`TimeoutException`<br/> :returns: the result of the last call to `method`<br/> :raises:
+                :exc:`selenium.common.exceptions.TimeoutException` if timeout occurs<br/> &quot;&quot;&quot;<br/> screen
+                = None<br/> stacktrace = None<br/> <br/> end_time = time.monotonic() + self._timeout<br/> while
+                True:<br/> try:<br/> value = method(self._driver)<br/> if value:<br/> return value<br/> except
+                self._ignored_exceptions as exc:<br/> screen = getattr(exc, &quot;screen&quot;, None)<br/> stacktrace =
+                getattr(exc, &quot;stacktrace&quot;, None)<br/> time.sleep(self._poll)<br/> if time.monotonic() &gt;
+                end_time:<br/> break<br/>&gt; raise TimeoutException(message, screen, stacktrace)<br/><span
+                        class="error">E       selenium.common.exceptions.TimeoutException: Message: </span><br/><span
+                        class="error">E       Stacktrace:</span><br/><span class="error">E       	GetHandleVerifier [0x00D3CEB3+45171]</span><br/><span
+                        class="error">E       	(No symbol) [0x00CC9101]</span><br/><span class="error">E       	(No symbol) [0x00BBBE1D]</span><br/><span
+                        class="error">E       	(No symbol) [0x00BEED40]</span><br/><span class="error">E       	(No symbol) [0x00BEF20B]</span><br/><span
+                        class="error">E       	(No symbol) [0x00C1F692]</span><br/><span class="error">E       	(No symbol) [0x00C0B094]</span><br/><span
+                        class="error">E       	(No symbol) [0x00C1DCFA]</span><br/><span class="error">E       	(No symbol) [0x00C0AE46]</span><br/><span
+                        class="error">E       	(No symbol) [0x00BE675E]</span><br/><span class="error">E       	(No symbol) [0x00BE78FD]</span><br/><span
+                        class="error">E       	GetHandleVerifier [0x00FF54B9+2897529]</span><br/><span class="error">E       	GetHandleVerifier [0x0103DC6B+3194411]</span><br/><span
+                        class="error">E       	GetHandleVerifier [0x01037A41+3169281]</span><br/><span class="error">E       	GetHandleVerifier [0x00DC6130+606960]</span><br/><span
+                        class="error">E       	(No symbol) [0x00CD2E7C]</span><br/><span class="error">E       	(No symbol) [0x00CCF008]</span><br/><span
+                        class="error">E       	(No symbol) [0x00CCF12F]</span><br/><span class="error">E       	(No symbol) [0x00CC1827]</span><br/><span
+                        class="error">E       	BaseThreadInitThunk [0x7555FCC9+25]</span><br/><span class="error">E       	RtlGetAppContainerNamedObjectPath [0x77657B1E+286]</span><br/><span
+                        class="error">E       	RtlGetAppContainerNamedObjectPath [0x77657AEE+238]</span><br/><br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\support\wait.py:95:
+                TimeoutException<br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="failed results-table-row">
+    <tr>
+        <td class="col-result">Failed</td>
+        <td class="col-name">Test/test_Create_Exp.py::Test_Create_Exp::test_create_exp[chrome]</td>
+        <td class="col-duration">60.04</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log">self = &lt;Test.test_Create_Exp.Test_Create_Exp object at 0x000002CA9C6C0DF0&gt;<br/>request
+                = &lt;FixtureRequest for &lt;Function test_create_exp[chrome]&gt;&gt;<br/><br/>
+                @pytest.mark.createxp<br/> @pytest.mark.alltest<br/> def test_create_exp(self, request):<br/> <br/>
+                self.regist = LoginPage(self.driver)<br/> self.regist.login(BasePage.EP_EMAIL,
+                BasePage.AUTOMATION_PASSWORD)<br/> time.sleep(5)<br/> self.exp = CreateExp(self.driver)<br/>
+                self.exp.Createexp()<br/> time.sleep(2)<br/> <br/> OUREXP =
+                self.exp.get_element_text(BasePage.EXP_HEADING)<br/> try:<br/> assert OUREXP == &quot;WELCOME, TEST
+                BUSINESS&quot;<br/> self.exp.click_element(BasePage.SUBMIT)<br/> time.sleep(4)<br/> <br/> except
+                AssertionError:<br/> timestamp = str(int(time.time()))<br/> <br/> # Get the current test name<br/>
+                test_name = request.node.name<br/> # Create a unique file name using the test name and timestamp<br/>
+                file_name = f&quot;{test_name}_{timestamp}.png&quot;<br/> <br/> # Specify the directory path to save the
+                screenshot<br/> directory = &quot;C:/Users/HP/PycharmProjects/spur-automations/Screenshot/&quot;<br/>
+                <br/> # Create the full path by joining the directory path and file name<br/> screenshot_path =
+                os.path.join(directory, file_name)<br/> <br/> # Save the screenshot<br/>
+                self.driver.save_screenshot(screenshot_path)<br/> raise<br/> <br/> try:<br/> exp_list = (By.XPATH,
+                &quot;//div[@class=&#x27;product-name&#x27;]//h2&quot;)<br/> all_experiences =
+                self.exp.get_list_of_elements(exp_list)<br/> name_all_exp = []<br/> for i in all_experiences:<br/>
+                name_all_exp.append(i.text)<br/>&gt; assert self.exp.exp_name.upper() in name_all_exp<br/><span
+                        class="error">E           AssertionError: assert &#x27;TEST AUTO 172609SEPTEMBER282023&#x27; in [&#x27;BALKISHAN&#x27;, &#x27;TEST AUTO 103224SEPTEMBER012023&#x27;, &#x27;TEST AUTO 120304SEPTEMBER042023&#x27;, &#x27;TEST AUTO 121309SEPTEMBER012023&#x27;, &#x27;TEST AUTO 132506SEPTEMBER112023&#x27;, &#x27;TEST AUTO 134612SEPTEMBER012023&#x27;, ...]</span><br/><span
+                        class="error">E            +  where &#x27;TEST AUTO 172609SEPTEMBER282023&#x27; = &lt;built-in method upper of str object at 0x000002CA9C6FB1E0&gt;()</span><br/><span
+                        class="error">E            +    where &lt;built-in method upper of str object at 0x000002CA9C6FB1E0&gt; = &#x27;test auto 172609September282023&#x27;.upper</span><br/><span
+                        class="error">E            +      where &#x27;test auto 172609September282023&#x27; = &lt;Pages.CreateEXP.CreateExp object at 0x000002CAA3DDCCA0&gt;.exp_name</span><br/><span
+                        class="error">E            +        where &lt;Pages.CreateEXP.CreateExp object at 0x000002CAA3DDCCA0&gt; = &lt;Test.test_Create_Exp.Test_Create_Exp object at 0x000002CA9C6C0DF0&gt;.exp</span><br/><br/>Test\test_Create_Exp.py:57:
+                AssertionError<br/> ------------------------------Captured stdout call------------------------------
+                <br/>experience is not created.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_EP_register.py::Test_EXPRegistration::test_ep_rgistration[chrome]</td>
+        <td class="col-duration">10.39</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

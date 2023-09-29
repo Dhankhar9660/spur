@@ -46,7 +46,8 @@ class RegistryPage(BasePage):
         try:
             self.click_on_hidden_element(BasePage.Add_To_Registry)
         except NoSuchElementException:
-            print("product already added in registry.")
+            self.click_on_hidden_element(BasePage.Remove_From_Registry)
+            self.click_on_hidden_element(BasePage.Add_To_Registry)
             pass
         self.click_element(BasePage.Click_MyDashboard)
         time.sleep(3)

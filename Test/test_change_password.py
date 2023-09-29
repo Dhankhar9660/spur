@@ -48,7 +48,7 @@ class Test_change_password(BaseTest):
 
             # Save the screenshot
             self.driver.save_screenshot(screenshot_path)
-
+            self.login.click_element(BasePage.Log_Out)
             raise
         self.login.click_element(BasePage.Log_Out)
 
@@ -81,13 +81,14 @@ class Test_change_password(BaseTest):
 
             # Save the screenshot
             self.driver.save_screenshot(screenshot_path)
+            self.login.click_element(BasePage.Log_Out)
             raise
         self.login.click_element(BasePage.Log_Out)
 
+    # ---------------------test change password  with incorrect old password--------------------------
     @pytest.mark.changepassword
     @pytest.mark.alltest
-    def test_change_password_c(self,
-                               request):  # test change password functionality with enter incorrect password into old password
+    def test_change_password_c(self, request):
         self.login = LoginPage(self.driver)
         self.login.login(BasePage.COUPLE_EMAIL, BasePage.AUTOMATION_PASSWORD)
 
@@ -113,12 +114,13 @@ class Test_change_password(BaseTest):
 
             # Save the screenshot
             self.driver.save_screenshot(screenshot_path)
+            self.login.click_element(BasePage.Log_Out)
             raise
         self.login.click_element(BasePage.Log_Out)
 
     @pytest.mark.changepassword
     @pytest.mark.alltest
-    # test change password functionality with enter diffrent password into new password and confirm password
+    # test change password functionality with enter different password into new password and confirm password
     def test_change_password_d(self, request):
         self.login = LoginPage(self.driver)
         self.login.login(BasePage.COUPLE_EMAIL, BasePage.AUTOMATION_PASSWORD)
@@ -145,6 +147,7 @@ class Test_change_password(BaseTest):
 
             # Save the screenshot
             self.driver.save_screenshot(screenshot_path)
+            self.login.click_element(BasePage.Log_Out)
             raise
         self.login.click_element(BasePage.Log_Out)
 
@@ -182,6 +185,7 @@ class Test_change_password(BaseTest):
 
             # Save the screenshot
             self.driver.save_screenshot(screenshot_path)
+            self.login.click_element(BasePage.Log_Out)
             raise
         self.login.click_element(BasePage.Log_Out)
 
@@ -226,5 +230,5 @@ class Test_change_password(BaseTest):
         # ---- reset to old password----------
         self.login = ChangePassword(self.driver)
         self.login.Change_Password("System@321", "123123", "123123")
-        time.sleep(1)
+        time.sleep(2)
         self.login.click_element(BasePage.Log_Out)

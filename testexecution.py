@@ -15,7 +15,7 @@ file_name = f"{timestamp}.html"
 file_path = os.path.join(folder_path, file_name)
 
 # Run the test case with the specified marker
-pytest.main(["--html=" + file_path, "-m login"])
+pytest.main(["--html=" + file_path, "-m alltest"])
 
 
 def send_email_with_report(report_file, recipient_email):
@@ -62,4 +62,4 @@ report_file_path = file_path
 recipient_emails = "balkishan.dhankhar@owebest.in, bharat.singh@owebest.com, mahendra.singh@owebest.in"
 
 # Call the function to send the email with the report
-# send_email_with_report(report_file_path, recipient_emails)
+send_email_with_report(report_file_path, recipient_emails)

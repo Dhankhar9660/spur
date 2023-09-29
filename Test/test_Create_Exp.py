@@ -49,13 +49,16 @@ class Test_Create_Exp(BaseTest):
             raise
 
         try:
+            self.exp.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(2)
+            self.exp.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             exp_list = (By.XPATH, "//div[@class='product-name']//h2")
             all_experiences = self.exp.get_list_of_elements(exp_list)
             name_all_exp = []
             for i in all_experiences:
                 name_all_exp.append(i.text)
             assert self.exp.exp_name.upper() in name_all_exp
-        except:
+        except AssertionError:
             print("experience is not created.")
             timestamp = str(int(time.time()))
 

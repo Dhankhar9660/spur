@@ -127,6 +127,7 @@ class Test_Registry(BaseTest):
         self.regist.driver.get(clipboard_text)
         time.sleep(5)
         self.regist.driver.execute_script("window.scrollTo(0,700)")
+        time.sleep(1)
         self.regist.send_keys(BasePage.Search_Product, TestData.Exprience_Name)
         time.sleep(5)
         self.regist.click_element(BasePage.Search)

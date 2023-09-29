@@ -54,6 +54,7 @@
   "test_invitepartner.py::Test_Invite_Partner::test_update_invite_partner[chrome]",
   "test_order.py::Test_Order::test_add_to_registry[chrome]",
   "test_order.py::Test_Order::test_order[chrome]",
+  "test_partiallypurchase.py::Test_PartiallyPurchase::test_partiallypurchase[chrome]",
   "test_prcie_filter.py::TestPriceFilter::test_price_filter_a[chrome]",
   "test_prcie_filter.py::TestPriceFilter::test_price_filter_b[chrome]",
   "test_prcie_filter.py::TestPriceFilter::test_price_filter_c[chrome]",

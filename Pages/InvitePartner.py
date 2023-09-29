@@ -27,3 +27,4 @@ class InvitePartner(BasePage):
 
         self.send_keys(BasePage.Email_Invitation, email)
         self.click_element(BasePage.Click_Invite)
+        time.sleep(3)
