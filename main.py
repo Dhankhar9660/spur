@@ -9,7 +9,7 @@ import re
 from datetime import datetime
 # import datetime
 
-# driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 # driver.get("")
 
 # driver.find_element(By.XPATH, " //input[@placeholder='Find by Name/Category']").send_keys("test")
@@ -52,3 +52,4 @@ today = "98899"
 print(type(today))
 str_value_without_zeros = today.lstrip('0')
 print(str_value_without_zeros)
+driver.switch_to.default_content()

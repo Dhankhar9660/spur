@@ -1,8 +1,6 @@
 """Author: Balkishan Dhankhar
     Date: 11/03/2022
 """
-from Config.config import TestData
-import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -10,11 +8,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 import imaplib
 import email
-from bs4 import BeautifulSoup
-from datetime import datetime
 
 
-class BasePage():
+class BasePage:
     # define our class constructor
     def __init__(self, driver):
         self.driver = driver
@@ -27,9 +23,13 @@ class BasePage():
     LOGIN_ICON = (By.XPATH, "//a[@class='nav-link ng-star-inserted']")
     LOGIN_BTN = (By.XPATH, "//input[@value='log in']")
     ABOUTUS = (By.XPATH, "(//a[text()='About'])[1]")
+    Wedding_registry = (By.XPATH, "(//a[text()='wedding registry'])[1]")
     ABOUT_HEADING = (By.XPATH, "//div[@class='nexExp_heading']")
     ABOUT_SPUR = (By.XPATH, "(//a[text()='ABOUT SPUR'])")
+    FAQ = (By.XPATH, "(//a[text()='FAQs'])")
     HOWITWORK = (By.XPATH, "(//a[text()='How registries work'])")
+    weddingregistry = (By.XPATH, "(//a[text()='why register with SPUR'])")
+    BLOGS = (By.XPATH, "(//a[text()='Blog'])[1]")
     LOGOUT = (By.XPATH, "(//a[@class='nav-link ng-star-inserted'])[1]")
     DASHBOARD = (By.XPATH, "(//li[@class='nav-item ng-star-inserted active'])[1]")
     ADDEXP = (By.XPATH, "(//ul[@class='navbar-nav ml-auto']//a)[2]")
@@ -74,7 +74,8 @@ class BasePage():
     Cart_popup_close = (By.XPATH, "//div[@class='cartpopup_box']//i")
 
     EXP_Name = "Test Auto Exp 123"
-    Details = "Check out the complete schedule and route details of the 12935 Mumbai Bandra T Surat Intercity Exp on RailYatri."
+    Details = "Check out the complete schedule and route details of the 12935 Mumbai Bandra T Surat Intercity Exp on " \
+              "RailYatri."
     Include = "drink , food, hotel"
     Exclude = "Smokeing, fule"
     Seasion = "Offered May – October"
@@ -196,7 +197,8 @@ class BasePage():
     Deactivate_Account = (By.XPATH, "//input[@value = 'Deactivate Account']")
     AccountInactive = (By.XPATH, "(//div[@class = 'ng-star-inserted'])[2]")
     Activate_Account = (By.XPATH, "//input[@value = 'Activate Account']")
-    AccountInactiveMsg = 'Account Inactive – You have deactivated your account and it is no longer active. To reactivate, please visit DEACTIVATE ACCOUNT.'
+    AccountInactiveMsg = 'Account Inactive – You have deactivated your account and it is no longer active. To ' \
+                         'reactivate, please visit DEACTIVATE ACCOUNT.'
 
     # Xpaths for GuestView ----------
     Click_Home = (By.XPATH, "(//a[text() = 'Home'])[1]")

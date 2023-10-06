@@ -8,11 +8,11 @@ from Pages.LoginPage import LoginPage
 from Test.test_Base import BaseTest
 
 
-class Test_Invite_Partner(BaseTest):
+class TestInvitePartner(BaseTest):
 
     @pytest.mark.partner
     @pytest.mark.alltest
-    def test_update_invite_partner(self):
+    def test_update_partner(self):
 
         self.spur = LoginPage(self.driver)
         self.spur.login(BasePage.COUPLE_EMAIL, BasePage.AUTOMATION_PASSWORD)

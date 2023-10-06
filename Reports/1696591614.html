@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>1695902168.html</title>
+    <title>1696591614.html</title>
     <link href="assets/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body onLoad="init()">
@@ -254,22 +254,22 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
 }
 
 </script>
-<h1>1695902168.html</h1>
-<p>Report generated on 28-Sep-2023 at 17:28:30 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a>
+<h1>1696591614.html</h1>
+<p>Report generated on 06-Oct-2023 at 17:01:34 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a>
     v3.2.0</p>
 <h2>Summary</h2>
-<p>3 tests ran in 141.50 seconds. </p>
+<p>5 tests ran in 278.58 seconds. </p>
 <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter"
                                                                                      data-test-result="passed"
                                                                                      hidden="true"
                                                                                      name="filter_checkbox"
                                                                                      onChange="filterTable(this)"
                                                                                      type="checkbox"/><span
-        class="passed">1 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true"
+        class="passed">4 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true"
                                                hidden="true" name="filter_checkbox" onChange="filterTable(this)"
                                                type="checkbox"/><span class="skipped">0 skipped</span>, <input
         checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox"
-        onChange="filterTable(this)" type="checkbox"/><span class="failed">2 failed</span>, <input checked="true"
+        onChange="filterTable(this)" type="checkbox"/><span class="failed">1 failed</span>, <input checked="true"
                                                                                                    class="filter"
                                                                                                    data-test-result="error"
                                                                                                    disabled="true"
@@ -298,26 +298,38 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
     <tbody class="failed results-table-row">
     <tr>
         <td class="col-result">Failed</td>
-        <td class="col-name">Test/test_Charity_reg_page.py::Test_CHARITY_SIGNUP::test_charity_signup[chrome]</td>
-        <td class="col-duration">49.16</td>
+        <td class="col-name">Test/test_EP_register.py::Test_EXPRegistration::test_ep_rgistration[chrome]</td>
+        <td class="col-duration">64.92</td>
         <td class="col-links"></td>
     </tr>
     <tr>
         <td class="extra" colspan="4">
-            <div class="log">self = &lt;Test.test_Charity_reg_page.Test_CHARITY_SIGNUP object at
-                0x000002CA9C6C05E0&gt;<br/>request = &lt;FixtureRequest for &lt;Function test_charity_signup[chrome]&gt;&gt;<br/><br/>
-                @pytest.mark.alltest<br/> @pytest.mark.regression<br/> @pytest.mark.signup<br/> def
-                test_charity_signup(self, request):<br/> <br/> self.chareg = CharityregPage(self.driver)<br/>&gt;
-                self.chareg.charityregister()<br/><br/>Test\test_Charity_reg_page.py:26: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _
-                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/>Pages\CharityRegisterPage.py:77: in
-                charityregister<br/> self.send_keys(self.Fname, self.FNAME)<br/>Pages\BasePage.py:244: in send_keys<br/>
-                WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(by_locator)).send_keys(text)<br/>_
-                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/><br/>self = &lt;selenium.webdriver.support.wait.WebDriverWait
-                (session=&quot;0cfa3d8b4ac76c3f3dbe8423deed7a06&quot;)&gt;<br/>method = &lt;function
-                visibility_of_element_located.&lt;locals&gt;._predicate at 0x000002CA9C576830&gt;<br/>message = &#x27;&#x27;<br/><br/>
-                def until(self, method, message: str = &quot;&quot;):<br/> &quot;&quot;&quot;Calls the method provided
-                with the driver as an argument until the \<br/> return value does not evaluate to ``False``.<br/> <br/>
-                :param method: callable(WebDriver)<br/> :param message: optional message for
+            <div class="log">self = &lt;Test.test_EP_register.Test_EXPRegistration object at 0x00000261424FDFC0&gt;<br/>request
+                = &lt;FixtureRequest for &lt;Function test_ep_rgistration[chrome]&gt;&gt;<br/><br/>
+                @pytest.mark.signup<br/> @pytest.mark.alltest<br/> @pytest.mark.regression<br/> def
+                test_ep_rgistration(self, request):<br/> <br/> self.expreg = ExpproPage(self.driver)<br/>
+                self.expreg.expregister()<br/> time.sleep(5)<br/> head = self.expreg.get_element_text(self.Head1)<br/>
+                heading = &quot;STEP TWO- PAYMENT INFO&quot;<br/> # print(head)<br/> try:<br/> assert head ==
+                heading<br/> self.expreg.click_element(self.Close)<br/> time.sleep(5)<br/> except AssertionError:<br/> #
+                Create a unique timestamp for the screenshot<br/> timestamp = str(int(time.time()))<br/> <br/> # Get the
+                current test name<br/> test_name = request.node.name<br/> # Create a unique file name using the test
+                name and timestamp<br/> file_name = f&quot;{test_name}_{timestamp}.png&quot;<br/> <br/> # Specify the
+                directory path to save the screenshot<br/> directory = &quot;C:/Users/HP/PycharmProjects/spur-automations/Screenshot/&quot;<br/>
+                <br/> # Create the full path by joining the directory path and file name<br/> screenshot_path =
+                os.path.join(directory, file_name)<br/> <br/> # Save the screenshot<br/>
+                self.driver.save_screenshot(screenshot_path)<br/> raise<br/> <br/> try:<br/> menu = (By.XPATH, &quot;//ul[@class=&#x27;navbar-nav
+                ml-auto&#x27;]//li//a&quot;)<br/> mydashboard = (By.XPATH, &quot;(//a[text()=&#x27;My Dashboard&#x27;])[1]&quot;)<br/>
+                self.expreg.click_element(mydashboard)<br/> time.sleep(2)<br/>&gt; menuoption =
+                self.expreg.get_list_of_elements(menu)<br/><br/>Test\test_EP_register.py:58: <br/>_ _ _ _ _ _ _ _ _ _ _
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/>Pages\BasePage.py:291: in
+                get_list_of_elements<br/> return WebDriverWait(self.driver,
+                15).until(EC.presence_of_all_elements_located(by_locator))<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/><br/>self = &lt;selenium.webdriver.support.wait.WebDriverWait
+                (session=&quot;146ad9c2933938ef573861548088dff3&quot;)&gt;<br/>method = &lt;function
+                presence_of_all_elements_located.&lt;locals&gt;._predicate at 0x0000026149682CB0&gt;<br/>message =
+                &#x27;&#x27;<br/><br/> def until(self, method, message: str = &quot;&quot;):<br/> &quot;&quot;&quot;Calls
+                the method provided with the driver as an argument until the \<br/> return value does not evaluate to
+                ``False``.<br/> <br/> :param method: callable(WebDriver)<br/> :param message: optional message for
                 :exc:`TimeoutException`<br/> :returns: the result of the last call to `method`<br/> :raises:
                 :exc:`selenium.common.exceptions.TimeoutException` if timeout occurs<br/> &quot;&quot;&quot;<br/> screen
                 = None<br/> stacktrace = None<br/> <br/> end_time = time.monotonic() + self._timeout<br/> while
@@ -325,57 +337,22 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
                 self._ignored_exceptions as exc:<br/> screen = getattr(exc, &quot;screen&quot;, None)<br/> stacktrace =
                 getattr(exc, &quot;stacktrace&quot;, None)<br/> time.sleep(self._poll)<br/> if time.monotonic() &gt;
                 end_time:<br/> break<br/>&gt; raise TimeoutException(message, screen, stacktrace)<br/><span
-                        class="error">E       selenium.common.exceptions.TimeoutException: Message: </span><br/><span
-                        class="error">E       Stacktrace:</span><br/><span class="error">E       	GetHandleVerifier [0x00D3CEB3+45171]</span><br/><span
-                        class="error">E       	(No symbol) [0x00CC9101]</span><br/><span class="error">E       	(No symbol) [0x00BBBE1D]</span><br/><span
-                        class="error">E       	(No symbol) [0x00BEED40]</span><br/><span class="error">E       	(No symbol) [0x00BEF20B]</span><br/><span
-                        class="error">E       	(No symbol) [0x00C1F692]</span><br/><span class="error">E       	(No symbol) [0x00C0B094]</span><br/><span
-                        class="error">E       	(No symbol) [0x00C1DCFA]</span><br/><span class="error">E       	(No symbol) [0x00C0AE46]</span><br/><span
-                        class="error">E       	(No symbol) [0x00BE675E]</span><br/><span class="error">E       	(No symbol) [0x00BE78FD]</span><br/><span
-                        class="error">E       	GetHandleVerifier [0x00FF54B9+2897529]</span><br/><span class="error">E       	GetHandleVerifier [0x0103DC6B+3194411]</span><br/><span
-                        class="error">E       	GetHandleVerifier [0x01037A41+3169281]</span><br/><span class="error">E       	GetHandleVerifier [0x00DC6130+606960]</span><br/><span
-                        class="error">E       	(No symbol) [0x00CD2E7C]</span><br/><span class="error">E       	(No symbol) [0x00CCF008]</span><br/><span
-                        class="error">E       	(No symbol) [0x00CCF12F]</span><br/><span class="error">E       	(No symbol) [0x00CC1827]</span><br/><span
-                        class="error">E       	BaseThreadInitThunk [0x7555FCC9+25]</span><br/><span class="error">E       	RtlGetAppContainerNamedObjectPath [0x77657B1E+286]</span><br/><span
-                        class="error">E       	RtlGetAppContainerNamedObjectPath [0x77657AEE+238]</span><br/><br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\support\wait.py:95:
+                        class="error">E       selenium.common.exceptions.TimeoutException: Message:</span><br/><br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\support\wait.py:95:
                 TimeoutException<br/></div>
         </td>
     </tr>
     </tbody>
-    <tbody class="failed results-table-row">
+    <tbody class="passed results-table-row">
     <tr>
-        <td class="col-result">Failed</td>
-        <td class="col-name">Test/test_Create_Exp.py::Test_Create_Exp::test_create_exp[chrome]</td>
-        <td class="col-duration">60.04</td>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Charity_reg_page.py::Test_CHARITY_SIGNUP::test_charity_signup[chrome]</td>
+        <td class="col-duration">101.40</td>
         <td class="col-links"></td>
     </tr>
     <tr>
         <td class="extra" colspan="4">
-            <div class="log">self = &lt;Test.test_Create_Exp.Test_Create_Exp object at 0x000002CA9C6C0DF0&gt;<br/>request
-                = &lt;FixtureRequest for &lt;Function test_create_exp[chrome]&gt;&gt;<br/><br/>
-                @pytest.mark.createxp<br/> @pytest.mark.alltest<br/> def test_create_exp(self, request):<br/> <br/>
-                self.regist = LoginPage(self.driver)<br/> self.regist.login(BasePage.EP_EMAIL,
-                BasePage.AUTOMATION_PASSWORD)<br/> time.sleep(5)<br/> self.exp = CreateExp(self.driver)<br/>
-                self.exp.Createexp()<br/> time.sleep(2)<br/> <br/> OUREXP =
-                self.exp.get_element_text(BasePage.EXP_HEADING)<br/> try:<br/> assert OUREXP == &quot;WELCOME, TEST
-                BUSINESS&quot;<br/> self.exp.click_element(BasePage.SUBMIT)<br/> time.sleep(4)<br/> <br/> except
-                AssertionError:<br/> timestamp = str(int(time.time()))<br/> <br/> # Get the current test name<br/>
-                test_name = request.node.name<br/> # Create a unique file name using the test name and timestamp<br/>
-                file_name = f&quot;{test_name}_{timestamp}.png&quot;<br/> <br/> # Specify the directory path to save the
-                screenshot<br/> directory = &quot;C:/Users/HP/PycharmProjects/spur-automations/Screenshot/&quot;<br/>
-                <br/> # Create the full path by joining the directory path and file name<br/> screenshot_path =
-                os.path.join(directory, file_name)<br/> <br/> # Save the screenshot<br/>
-                self.driver.save_screenshot(screenshot_path)<br/> raise<br/> <br/> try:<br/> exp_list = (By.XPATH,
-                &quot;//div[@class=&#x27;product-name&#x27;]//h2&quot;)<br/> all_experiences =
-                self.exp.get_list_of_elements(exp_list)<br/> name_all_exp = []<br/> for i in all_experiences:<br/>
-                name_all_exp.append(i.text)<br/>&gt; assert self.exp.exp_name.upper() in name_all_exp<br/><span
-                        class="error">E           AssertionError: assert &#x27;TEST AUTO 172609SEPTEMBER282023&#x27; in [&#x27;BALKISHAN&#x27;, &#x27;TEST AUTO 103224SEPTEMBER012023&#x27;, &#x27;TEST AUTO 120304SEPTEMBER042023&#x27;, &#x27;TEST AUTO 121309SEPTEMBER012023&#x27;, &#x27;TEST AUTO 132506SEPTEMBER112023&#x27;, &#x27;TEST AUTO 134612SEPTEMBER012023&#x27;, ...]</span><br/><span
-                        class="error">E            +  where &#x27;TEST AUTO 172609SEPTEMBER282023&#x27; = &lt;built-in method upper of str object at 0x000002CA9C6FB1E0&gt;()</span><br/><span
-                        class="error">E            +    where &lt;built-in method upper of str object at 0x000002CA9C6FB1E0&gt; = &#x27;test auto 172609September282023&#x27;.upper</span><br/><span
-                        class="error">E            +      where &#x27;test auto 172609September282023&#x27; = &lt;Pages.CreateEXP.CreateExp object at 0x000002CAA3DDCCA0&gt;.exp_name</span><br/><span
-                        class="error">E            +        where &lt;Pages.CreateEXP.CreateExp object at 0x000002CAA3DDCCA0&gt; = &lt;Test.test_Create_Exp.Test_Create_Exp object at 0x000002CA9C6C0DF0&gt;.exp</span><br/><br/>Test\test_Create_Exp.py:57:
-                AssertionError<br/> ------------------------------Captured stdout call------------------------------
-                <br/>experience is not created.
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>charity
+                signup working fine.
                 <br/></div>
         </td>
     </tr>
@@ -383,8 +360,34 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
     <tbody class="passed results-table-row">
     <tr>
         <td class="col-result">Passed</td>
-        <td class="col-name">Test/test_EP_register.py::Test_EXPRegistration::test_ep_rgistration[chrome]</td>
-        <td class="col-duration">10.39</td>
+        <td class="col-name">Test/test_Create_Exp.py::Test_Create_Exp::test_create_exp[chrome]</td>
+        <td class="col-duration">68.68</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_check_with_blank[chrome]</td>
+        <td class="col-duration">16.53</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_couple_login[chrome]</td>
+        <td class="col-duration">0.00</td>
         <td class="col-links"></td>
     </tr>
     <tr>

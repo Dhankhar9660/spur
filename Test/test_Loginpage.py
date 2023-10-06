@@ -54,6 +54,7 @@ class Test_Login(BaseTest):
     @pytest.mark.login
     @pytest.mark.regression
     @pytest.mark.alltest
+    @pytest.mark.new
     def test_couple_login(self, request):
 
         self.login = LoginPage(self.driver)

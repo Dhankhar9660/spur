@@ -2,6 +2,7 @@
 import os
 import time
 import pytest
+from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 
 from Config.config import TestData
@@ -16,7 +17,7 @@ from Pages.BasePage import BasePage
 
 class Test_Order(BaseTest):
     # create method for Login and create object of Test_Login to access various functions from Parent Class
-    @pytest.mark.alltesta
+    @pytest.mark.alltest
     @pytest.mark.regression
     @pytest.mark.plceorder
     def test_order(self, request):
@@ -45,9 +46,7 @@ class Test_Order(BaseTest):
                     self.buy.click_element(BasePage.Click_Yes_Button)
                     time.sleep(2)
                     break
-                else:
-                    print(" Item not added in cart")
-        except AssertionError:
+        except TimeoutException:
             print(" Item not added in cart.")
             timestamp = str(int(time.time()))
 

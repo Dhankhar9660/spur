@@ -5,6 +5,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
+import zipfile
 
 # Run the test case and generate the report
 folder_path = "C:/Users/HP/PycharmProjects/spur-automations/Reports/"
@@ -31,15 +32,27 @@ def send_email_with_report(report_file, recipient_email):
     message["To"] = recipient_email
     message["Subject"] = "Automation Test Report of Spur"
 
-    # Attach report file
-    with open(report_file, "rb") as file:
-        attachment = MIMEApplication(file.read(), _subtype="html")
-        attachment.add_header("Content-Disposition", "attachment", filename=os.path.basename(report_file))
+    # # Attach report file
+    # with open(report_file, "rb") as file:
+    #     attachment = MIMEApplication(file.read(), _subtype="html")
+    #     attachment.add_header("Content-Disposition", "attachment", filename=os.path.basename(report_file))
+    #     message.attach(attachment)
+    # Compress the report folder into a zip file
+    zip_filename = "report.zip"
+    with zipfile.ZipFile(zip_filename, 'w') as zipf:
+        for root, _, files in os.walk(folder_path):
+            for file in files:
+                zipf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), folder_path))
+
+    # Attach the zip file to the email
+    with open(zip_filename, "rb") as file:
+        attachment = MIMEApplication(file.read())
+        attachment.add_header("Content-Disposition", "attachment", filename=zip_filename)
         message.attach(attachment)
 
         # Add a custom message to the email
         custom_message = '''Hello sir,
-                            please find attached html file for the automation test report of Spur Experiences.
+                            please find attached Zip file for the automation test report of Spur Experiences.
                             
                             Thank you
                             Balkishan Dhankhar'''
