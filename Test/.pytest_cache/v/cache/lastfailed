@@ -18,5 +18,5 @@
   "test_prcie_filter.py::TestPriceFilter::test_price_filter_c[chrome]": true,
   "test_partiallypurchase.py::Test_PartiallyPurchase::test_partiallypurchase[chrome]": true,
   "test_partiallypurchase.py": true,
-  "test_ticket_page.py::Test_Ticket::test_ticket_search[chrome]": true
+  "test_search_experiences.py::TestCmsPage::test_about_us[chrome]": true
 }

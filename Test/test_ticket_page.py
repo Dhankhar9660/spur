@@ -1,5 +1,5 @@
 """ Test Page for Login Checks"""
-import os
+
 import time
 import pytest
 from selenium.webdriver.common.by import By
@@ -9,36 +9,26 @@ from Test.test_Base import BaseTest
 from Pages.BasePage import BasePage
 
 
-@pytest.mark.smoke
-@pytest.mark.regression
-@pytest.mark.alltesta
-class Test_Ticket(BaseTest):
+class TestTicket(BaseTest):
     # create method for Login and create object of Test_Login to access various functions from Parent Class
-
-    def test_ticket_search(self, request):
+    @pytest.mark.ticketsearch
+    @pytest.mark.regression
+    @pytest.mark.alltesta
+    def test_ticket_search(self):
         self.login = LoginPage(self.driver)
         self.login.login(BasePage.COUPLE_EMAIL, BasePage.AUTOMATION_PASSWORD)
         # time.sleep(5)
         self.ticket = TicketPage(self.driver)
         self.ticket.ticket_search()
-        time.sleep(7)
+        time.sleep(2)
+        search_list = (By.XPATH, "//div[@class='eventInfo']")
+        try:
+            ticketnumber = len(self.ticket.get_list_of_elements(search_list))
+            print(ticketnumber)
+            if ticketnumber > 0:
+                print("List is not empty!")
+            else:
+                raise ValueError("List is empty!")
 
-        # try:
-        #     assert "ORDERCON" == BasePage.Orderconf
-        # except AssertionError:
-        #     timestamp = str(int(time.time()))
-        #
-        #     # Get the current test name
-        #     test_name = request.node.name
-        #     # Create a unique file name using the test name and timestamp
-        #     file_name = f"{test_name}_{timestamp}.png"
-        #
-        #     # Specify the directory path to save the screenshot
-        #     directory = "C:/Users/HP/PycharmProjects/Spurowebest/Screenshot/"
-        #
-        #     # Create the full path by joining the directory path and file name
-        #     screenshot_path = os.path.join(directory, file_name)
-        #
-        #     # Save the screenshot
-        #     self.driver.save_screenshot(screenshot_path)
-        #     raise
+        except ValueError as e:
+            print(e)

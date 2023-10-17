@@ -2,7 +2,13 @@
 platform win32 -- Python 3.10.11, pytest-7.4.0, pluggy-1.2.0
 rootdir: C:\Users\HP\PycharmProjects\spur-automations
 plugins: html-3.2.0, metadata-3.0.0
-collected 47 items / 2 deselected / 45 selected
+collected 48 items / 3 deselected / 45 selected
 
-Test\test_Charity_reg_page.py F                                          [  2%]
-Test\test_Create_Exp.py 
+Test\test_Charity_reg_page.py .                                          [  2%]
+Test\test_Create_Exp.py .                                                [  4%]
+Test\test_EP_register.py .                                               [  6%]
+Test\test_Loginpage.py .........                                         [ 26%]
+Test\test_UpdateProfile.py .                                             [ 28%]
+Test\test_account.py .                                                   [ 31%]
+Test\test_change_password.py ..F...                                      [ 44%]
+Test\test_cms.py ........F
