@@ -326,8 +326,9 @@ class TestCmsPage(BaseTest):
         self.blog.blogs()
         time.sleep(1)
         try:
-            image = (By.XPATH, "//img[@class='banner_mobile lazyloaded']//parent::div")
+            image = (By.XPATH, "//img[@class='banner_mobile ls-is-cached lazyloaded']//parent::div")
             result = self.blog.is_visible(image)
+            print(result)
             assert result, "Image not visible"
         except Exception as e:
             print(e, "Image not loading")

@@ -12,6 +12,9 @@ class TestCmsPage(BaseTest):
     policy = (By.XPATH, "//h2[@class='termsHeading']")
     results = (By.XPATH, "//div[@class='wsa_list_head']")
     heading = (By.XPATH, "//h2//a")
+    expheading = (By.XPATH, "//div[@class='nexExp_heading']")
+    exphead = (By.XPATH, "//div[@class='newExpDetail_head']")
+    price = (By.XPATH, "//div[@class='newExpPrice ng-star-inserted']")
 
     @pytest.mark.regression
     @pytest.mark.alltest
@@ -196,4 +199,78 @@ class TestCmsPage(BaseTest):
             self.driver.save_screenshot(screenshot_path)
             self.search.click_element(BasePage.HOME)
             time.sleep(3)
+            raise
+
+    @pytest.mark.regression
+    @pytest.mark.alltest
+    @pytest.mark.expdetails
+    def test_exp_details_page(self):
+
+        self.details = SearchExp(self.driver)
+        self.details.exp_details_from_home_page("Test live exp")
+        time.sleep(8)
+
+        try:
+            expheading = self.search.get_element_text(self.expheading)
+            expname = self.search.get_element_text(self.exphead)
+            expprice = self.search.get_element_text(self.price)
+        except TimeoutException:
+            print("details page elements are not loading")
+            self.search.click_element(BasePage.HOME)
+            time.sleep(3)
+            raise
+        try:
+            assert "Test live exp" == expheading
+            self.search.click_element(BasePage.HOME)
+            time.sleep(3)
+        except AssertionError:
+            self.search.click_element(BasePage.HOME)
+            print("Page heading not loading")
+            raise
+        try:
+            assert "Test live exp" == expname
+        except AssertionError:
+            print("Experience name is not loading")
+            raise
+        try:
+            assert "$110 { Per Group }" == expprice
+        except AssertionError:
+            print("Experience price is not loading")
+            raise
+
+    @pytest.mark.regression
+    @pytest.mark.alltest
+    @pytest.mark.expdetails
+    def test_exp_details_page_from_location_search(self):
+
+        self.details = SearchExp(self.driver)
+        self.details.search_by_location("New york", "Test live exp")
+        time.sleep(8)
+
+        try:
+            expheading = self.details.get_element_text(self.expheading)
+            expname = self.details.get_element_text(self.exphead)
+            expprice = self.details.get_element_text(self.price)
+        except TimeoutException:
+            print("details page elements are not loading")
+            self.details.click_element(BasePage.HOME)
+            time.sleep(3)
+            raise
+        try:
+            assert "Test live exp" == expheading
+            self.details.click_element(BasePage.HOME)
+            time.sleep(3)
+        except AssertionError:
+            self.details.click_element(BasePage.HOME)
+            print("Page heading not loading")
+            raise
+        try:
+            assert "Test live exp" == expname
+        except AssertionError:
+            print("Experience name is not loading")
+            raise
+        try:
+            assert "$110 { Per Group }" == expprice
+        except AssertionError:
+            print("Experience price is not loading")
             raise

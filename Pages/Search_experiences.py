@@ -13,6 +13,8 @@ class SearchExp(BasePage):
     location_input = (By.XPATH, "//input[@placeholder='Search Location...']")
     letsgo_button = (By.XPATH, "//div[@class='filterDropdownList']//input[@type= 'submit']")
     SearchByinput = (By.XPATH, "//input[@placeholder='Find by Name/Category']")
+    location = (By.XPATH, "(//a[text()= 'Locations'])[1]")
+    location_auto = (By.XPATH, "(//div[@id='submenu11']//input[@placeholder='Search location...'])[1]")
 
     # Constructor for this class :
     def __init__(self, driver):
@@ -44,3 +46,27 @@ class SearchExp(BasePage):
         time.sleep(2)
         self.driver.find_element(*self.location_input).send_keys(Keys.DOWN)
         self.driver.find_element(*self.location_input).send_keys(Keys.ENTER)
+
+    def exp_details_from_home_page(self, exp_name):
+        self.send_keys(BasePage.SEARCHBOXEXP, exp_name)
+        time.sleep(2)
+        self.driver.find_element(*BasePage.SEARCHBOXEXP).send_keys(Keys.DOWN)
+        self.driver.find_element(*BasePage.SEARCHBOXEXP).send_keys(Keys.ENTER)
+
+    def search_by_location(self, location, expname):
+        self.hover_element(self.location)
+        self.send_keys(self.location_auto, location)
+        time.sleep(3)
+        self.driver.find_element(*self.location_auto).send_keys(Keys.DOWN)
+        self.driver.find_element(*self.location_auto).send_keys(Keys.ENTER)
+        time.sleep(3)
+        self.driver.refresh()
+        time.sleep(6)
+        self.driver.execute_script(f"window.scrollBy(0, 400);")
+        self.send_keys(self.SearchByinput, expname)
+        time.sleep(2)
+        # self.click_element(self.SearchByinput)
+        # self.hover_element(self.SearchByinput)
+        self.driver.find_element(*self.SearchByinput).send_keys(Keys.DOWN)
+        self.driver.find_element(*self.SearchByinput).send_keys(Keys.ENTER)
+        self.click_on_hidden_element("(//h2//a)[2]")

@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>1697540344.html</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onLoad="init()">
+<script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) { // eslint-disable-line no-redeclare
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function findAll(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sortColumn(elem) {
+    toggleSortStates(elem);
+    const colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    let key;
+    if (elem.classList.contains('result')) {
+        key = keyResult;
+    } else if (elem.classList.contains('links')) {
+        key = keyLink;
+    } else {
+        key = keyAlpha;
+    }
+    sortTable(elem, key(colIndex));
+}
+
+function showAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(showExtras);
+}
+
+function hideAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(hideExtras);
+}
+
+function showExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.remove('collapsed');
+    expandcollapse.classList.remove('expander');
+    expandcollapse.classList.add('collapser');
+}
+
+function hideExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.add('collapsed');
+    expandcollapse.classList.remove('collapser');
+    expandcollapse.classList.add('expander');
+}
+
+function showFilters() {
+    let visibleString = getQueryParameter('visible') || 'all';
+    visibleString = visibleString.toLowerCase();
+    const checkedItems = visibleString.split(',');
+
+    const filterItems = document.getElementsByClassName('filter');
+    for (let i = 0; i < filterItems.length; i++) {
+        filterItems[i].hidden = false;
+
+        if (visibleString != 'all') {
+            filterItems[i].checked = checkedItems.includes(filterItems[i].getAttribute('data-test-result'));
+            filterTable(filterItems[i]);
+        }
+    }
+}
+
+function addCollapse() {
+    // Add links for show/hide all
+    const resulttable = find('table#results-table');
+    const showhideall = document.createElement('p');
+    showhideall.innerHTML = '<a href="javascript:showAllExtras()">Show all details</a> / ' +
+                            '<a href="javascript:hideAllExtras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    findAll('.col-result').forEach(function(elem) {
+        const collapsed = getQueryParameter('collapsed') || 'Passed';
+        const extras = elem.parentNode.nextElementSibling;
+        const expandcollapse = document.createElement('span');
+        if (extras.classList.contains('collapsed')) {
+            expandcollapse.classList.add('expander');
+        } else if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add('collapsed');
+            expandcollapse.classList.add('expander');
+        } else {
+            expandcollapse.classList.add('collapser');
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener('click', function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains('collapsed')) {
+                showExtras(event.currentTarget);
+            } else {
+                hideExtras(event.currentTarget);
+            }
+        });
+    });
+}
+
+function getQueryParameter(name) {
+    const match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () { // eslint-disable-line no-unused-vars
+    resetSortHeaders();
+
+    addCollapse();
+
+    showFilters();
+
+    sortColumn(find('.initial-sort'));
+
+    findAll('.sortable').forEach(function(elem) {
+        elem.addEventListener('click',
+            function() {
+                sortColumn(elem);
+            }, false);
+    });
+}
+
+function sortTable(clicked, keyFunc) {
+    const rows = findAll('.results-table-row');
+    const reversed = !clicked.classList.contains('asc');
+    const sortedRows = sort(rows, keyFunc, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    const thead = document.getElementById('results-table-head');
+    document.getElementById('results-table').remove();
+    const parent = document.createElement('table');
+    parent.id = 'results-table';
+    parent.appendChild(thead);
+    sortedRows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName('BODY')[0].appendChild(parent);
+}
+
+function sort(items, keyFunc, reversed) {
+    const sortArray = items.map(function(item, i) {
+        return [keyFunc(item), i];
+    });
+
+    sortArray.sort(function(a, b) {
+        const keyA = a[0];
+        const keyB = b[0];
+
+        if (keyA == keyB) return 0;
+
+        if (reversed) {
+            return keyA < keyB ? 1 : -1;
+        } else {
+            return keyA > keyB ? 1 : -1;
+        }
+    });
+
+    return sortArray.map(function(item) {
+        const index = item[1];
+        return items[index];
+    });
+}
+
+function keyAlpha(colIndex) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[colIndex].firstChild.data.toLowerCase();
+    };
+}
+
+function keyLink(colIndex) {
+    return function(elem) {
+        const dataCell = elem.childNodes[1].childNodes[colIndex].firstChild;
+        return dataCell == null ? '' : dataCell.innerText.toLowerCase();
+    };
+}
+
+function keyResult(colIndex) {
+    return function(elem) {
+        const strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+            'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[colIndex].firstChild.data);
+    };
+}
+
+function resetSortHeaders() {
+    findAll('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    findAll('.sortable').forEach(function(elem) {
+        const icon = document.createElement('div');
+        icon.className = 'sort-icon';
+        icon.textContent = 'vvv';
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove('desc', 'active');
+        elem.classList.add('asc', 'inactive');
+    });
+}
+
+function toggleSortStates(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        resetSortHeaders();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function isAllRowsHidden(value) {
+    return value.hidden == false;
+}
+
+function filterTable(elem) { // eslint-disable-line no-unused-vars
+    const outcomeAtt = 'data-test-result';
+    const outcome = elem.getAttribute(outcomeAtt);
+    const classOutcome = outcome + ' results-table-row';
+    const outcomeRows = document.getElementsByClassName(classOutcome);
+
+    for(let i = 0; i < outcomeRows.length; i++){
+        outcomeRows[i].hidden = !elem.checked;
+    }
+
+    const rows = findAll('.results-table-row').filter(isAllRowsHidden);
+    const allRowsHidden = rows.length == 0 ? true : false;
+    const notFoundMessage = document.getElementById('not-found-message');
+    notFoundMessage.hidden = !allRowsHidden;
+}
+
+</script>
+<h1>1697540344.html</h1>
+<p>Report generated on 17-Oct-2023 at 16:53:58 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a>
+    v3.2.0</p>
+<h2>Summary</h2>
+<p>48 tests ran in 1492.93 seconds. </p>
+<p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter"
+                                                                                     data-test-result="passed"
+                                                                                     hidden="true"
+                                                                                     name="filter_checkbox"
+                                                                                     onChange="filterTable(this)"
+                                                                                     type="checkbox"/><span
+        class="passed">42 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true"
+                                                hidden="true" name="filter_checkbox" onChange="filterTable(this)"
+                                                type="checkbox"/><span class="skipped">0 skipped</span>, <input
+        checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox"
+        onChange="filterTable(this)" type="checkbox"/><span class="failed">6 failed</span>, <input checked="true"
+                                                                                                   class="filter"
+                                                                                                   data-test-result="error"
+                                                                                                   disabled="true"
+                                                                                                   hidden="true"
+                                                                                                   name="filter_checkbox"
+                                                                                                   onChange="filterTable(this)"
+                                                                                                   type="checkbox"/><span
+        class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true"
+                                              hidden="true" name="filter_checkbox" onChange="filterTable(this)"
+                                              type="checkbox"/><span class="xfailed">0 expected failures</span>, <input
+        checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox"
+        onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+<h2>Results</h2>
+<table id="results-table">
+    <thead id="results-table-head">
+    <tr>
+        <th class="sortable result initial-sort" col="result">Result</th>
+        <th class="sortable" col="name">Test</th>
+        <th class="sortable" col="duration">Duration</th>
+        <th class="sortable links" col="links">Links</th>
+    </tr>
+    <tr hidden="true" id="not-found-message">
+        <th colspan="4">No results found. Try to check the filters</th>
+    </tr>
+    </thead>
+    <tbody class="failed results-table-row">
+    <tr>
+        <td class="col-result">Failed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_about_us[chrome]</td>
+        <td class="col-duration">29.95</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log">self = &lt;Test.test_cms.TestCmsPage object at 0x00000223F8DF78B0&gt;<br/>request = &lt;FixtureRequest
+                for &lt;Function test_about_us[chrome]&gt;&gt;<br/><br/> @pytest.mark.regression<br/>
+                @pytest.mark.alltest<br/> @pytest.mark.about<br/> def test_about_us(self, request):<br/> <br/> self.cms
+                = CmsPage(self.driver)<br/>&gt; self.cms.about()<br/><br/>Test\test_cms.py:22: <br/>_ _ _ _ _ _ _ _ _ _
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/>Pages\Cms.py:21: in about<br/>
+                self.hover_element(BasePage.ABOUTUS)<br/>Pages\BasePage.py:238: in hover_element<br/> element =
+                WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located(by_locator))<br/>_ _ _ _ _ _ _ _ _
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/><br/>self = &lt;selenium.webdriver.support.wait.WebDriverWait
+                (session=&quot;db0dc47dbcfa14a5d70109a1baea9020&quot;)&gt;<br/>method = &lt;function
+                visibility_of_element_located.&lt;locals&gt;._predicate at 0x00000223F9177D00&gt;<br/>message = &#x27;&#x27;<br/><br/>
+                def until(self, method, message: str = &quot;&quot;):<br/> &quot;&quot;&quot;Calls the method provided
+                with the driver as an argument until the \<br/> return value does not evaluate to ``False``.<br/> <br/>
+                :param method: callable(WebDriver)<br/> :param message: optional message for
+                :exc:`TimeoutException`<br/> :returns: the result of the last call to `method`<br/> :raises:
+                :exc:`selenium.common.exceptions.TimeoutException` if timeout occurs<br/> &quot;&quot;&quot;<br/> screen
+                = None<br/> stacktrace = None<br/> <br/> end_time = time.monotonic() + self._timeout<br/> while
+                True:<br/> try:<br/> value = method(self._driver)<br/> if value:<br/> return value<br/> except
+                self._ignored_exceptions as exc:<br/> screen = getattr(exc, &quot;screen&quot;, None)<br/> stacktrace =
+                getattr(exc, &quot;stacktrace&quot;, None)<br/> time.sleep(self._poll)<br/> if time.monotonic() &gt;
+                end_time:<br/> break<br/>&gt; raise TimeoutException(message, screen, stacktrace)<br/><span
+                        class="error">E       selenium.common.exceptions.TimeoutException: Message:</span><br/><br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\support\wait.py:95:
+                TimeoutException<br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="failed results-table-row">
+    <tr>
+        <td class="col-result">Failed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_blogs[chrome]</td>
+        <td class="col-duration">21.99</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log">self = &lt;Test.test_cms.TestCmsPage object at 0x00000223F901C4C0&gt;<br/>request = &lt;FixtureRequest
+                for &lt;Function test_blogs[chrome]&gt;&gt;<br/><br/> @pytest.mark.regression<br/>
+                @pytest.mark.alltest<br/> @pytest.mark.Blogs<br/> def test_blogs(self, request):<br/> self.blog =
+                CmsPage(self.driver)<br/> self.blog.blogs()<br/> time.sleep(1)<br/> try:<br/> image = (By.XPATH, &quot;//img[@class=&#x27;banner_mobile
+                lazyloaded&#x27;]//parent::div&quot;)<br/>&gt; result = self.blog.is_visible(image)<br/><br/>Test\test_cms.py:330:
+                <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/>Pages\BasePage.py:267:
+                in is_visible<br/> element = WebDriverWait(self.driver,
+                20).until(EC.visibility_of_element_located(by_locator))<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/><br/>self = &lt;selenium.webdriver.support.wait.WebDriverWait
+                (session=&quot;db0dc47dbcfa14a5d70109a1baea9020&quot;)&gt;<br/>method = &lt;function
+                visibility_of_element_located.&lt;locals&gt;._predicate at 0x00000223F9177EB0&gt;<br/>message = &#x27;&#x27;<br/><br/>
+                def until(self, method, message: str = &quot;&quot;):<br/> &quot;&quot;&quot;Calls the method provided
+                with the driver as an argument until the \<br/> return value does not evaluate to ``False``.<br/> <br/>
+                :param method: callable(WebDriver)<br/> :param message: optional message for
+                :exc:`TimeoutException`<br/> :returns: the result of the last call to `method`<br/> :raises:
+                :exc:`selenium.common.exceptions.TimeoutException` if timeout occurs<br/> &quot;&quot;&quot;<br/> screen
+                = None<br/> stacktrace = None<br/> <br/> end_time = time.monotonic() + self._timeout<br/> while
+                True:<br/> try:<br/> value = method(self._driver)<br/> if value:<br/> return value<br/> except
+                self._ignored_exceptions as exc:<br/> screen = getattr(exc, &quot;screen&quot;, None)<br/> stacktrace =
+                getattr(exc, &quot;stacktrace&quot;, None)<br/> time.sleep(self._poll)<br/> if time.monotonic() &gt;
+                end_time:<br/> break<br/>&gt; raise TimeoutException(message, screen, stacktrace)<br/><span
+                        class="error">E       selenium.common.exceptions.TimeoutException: Message: </span><br/><span
+                        class="error">E       Stacktrace:</span><br/><span class="error">E       	GetHandleVerifier [0x006F4DE3+43907]</span><br/><span
+                        class="error">E       	(No symbol) [0x00680741]</span><br/><span class="error">E       	(No symbol) [0x005733ED]</span><br/><span
+                        class="error">E       	(No symbol) [0x005A6760]</span><br/><span class="error">E       	(No symbol) [0x005A6C2B]</span><br/><span
+                        class="error">E       	(No symbol) [0x005D6F62]</span><br/><span class="error">E       	(No symbol) [0x005C2BA4]</span><br/><span
+                        class="error">E       	(No symbol) [0x005D55CA]</span><br/><span class="error">E       	(No symbol) [0x005C2956]</span><br/><span
+                        class="error">E       	(No symbol) [0x0059E17E]</span><br/><span class="error">E       	(No symbol) [0x0059F32D]</span><br/><span
+                        class="error">E       	GetHandleVerifier [0x009A5AF9+2865305]</span><br/><span class="error">E       	GetHandleVerifier [0x009EE78B+3163435]</span><br/><span
+                        class="error">E       	GetHandleVerifier [0x009E8441+3138017]</span><br/><span class="error">E       	GetHandleVerifier [0x0077E0F0+605840]</span><br/><span
+                        class="error">E       	(No symbol) [0x0068A64C]</span><br/><span class="error">E       	(No symbol) [0x00686638]</span><br/><span
+                        class="error">E       	(No symbol) [0x0068675F]</span><br/><span class="error">E       	(No symbol) [0x00678DB7]</span><br/><span
+                        class="error">E       	BaseThreadInitThunk [0x7662FCC9+25]</span><br/><span class="error">E       	RtlGetAppContainerNamedObjectPath [0x77767C6E+286]</span><br/><span
+                        class="error">E       	RtlGetAppContainerNamedObjectPath [0x77767C3E+238]</span><br/><br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\support\wait.py:95:
+                TimeoutException<br/> ------------------------------Captured stdout call------------------------------
+                <br/>Message:
+                Stacktrace:
+                GetHandleVerifier [0x006F4DE3+43907]
+                (No symbol) [0x00680741]
+                (No symbol) [0x005733ED]
+                (No symbol) [0x005A6760]
+                (No symbol) [0x005A6C2B]
+                (No symbol) [0x005D6F62]
+                (No symbol) [0x005C2BA4]
+                (No symbol) [0x005D55CA]
+                (No symbol) [0x005C2956]
+                (No symbol) [0x0059E17E]
+                (No symbol) [0x0059F32D]
+                GetHandleVerifier [0x009A5AF9+2865305]
+                GetHandleVerifier [0x009EE78B+3163435]
+                GetHandleVerifier [0x009E8441+3138017]
+                GetHandleVerifier [0x0077E0F0+605840]
+                (No symbol) [0x0068A64C]
+                (No symbol) [0x00686638]
+                (No symbol) [0x0068675F]
+                (No symbol) [0x00678DB7]
+                BaseThreadInitThunk [0x7662FCC9+25]
+                RtlGetAppContainerNamedObjectPath [0x77767C6E+286]
+                RtlGetAppContainerNamedObjectPath [0x77767C3E+238]
+                Image not loading
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="failed results-table-row">
+    <tr>
+        <td class="col-result">Failed</td>
+        <td class="col-name">Test/test_forgot_password.py::Test_forgot_password::test_forgot_password[chrome]</td>
+        <td class="col-duration">55.72</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log">self = &lt;Test.test_forgot_password.Test_forgot_password object at
+                0x00000223F9154430&gt;<br/>request = &lt;FixtureRequest for &lt;Function test_forgot_password[chrome]&gt;&gt;<br/><br/>
+                @pytest.mark.forgotpassword<br/> @pytest.mark.regression<br/> @pytest.mark.alltest<br/> def
+                test_forgot_password(self, request):<br/> # ----------reset password-----------<br/> self.forgot =
+                Forgot_password(self.driver)<br/>&gt; self.forgot.forgot_password(newemail, apppassword,
+                NewPassword)<br/><br/>Test\test_forgot_password.py:29: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/>Pages\Forgot_Password.py:28: in forgot_password<br/>
+                self.click_element(BasePage.LOGIN_ICON)<br/>Pages\BasePage.py:235: in click_element<br/>
+                WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located(by_locator)).click()<br/>_ _ _ _ _
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/><br/>self = &lt;selenium.webdriver.support.wait.WebDriverWait
+                (session=&quot;0a006c7d9b995ea2e7d47019064551c3&quot;)&gt;<br/>method = &lt;function
+                visibility_of_element_located.&lt;locals&gt;._predicate at 0x00000223F9177520&gt;<br/>message = &#x27;&#x27;<br/><br/>
+                def until(self, method, message: str = &quot;&quot;):<br/> &quot;&quot;&quot;Calls the method provided
+                with the driver as an argument until the \<br/> return value does not evaluate to ``False``.<br/> <br/>
+                :param method: callable(WebDriver)<br/> :param message: optional message for
+                :exc:`TimeoutException`<br/> :returns: the result of the last call to `method`<br/> :raises:
+                :exc:`selenium.common.exceptions.TimeoutException` if timeout occurs<br/> &quot;&quot;&quot;<br/> screen
+                = None<br/> stacktrace = None<br/> <br/> end_time = time.monotonic() + self._timeout<br/> while
+                True:<br/> try:<br/> value = method(self._driver)<br/> if value:<br/> return value<br/> except
+                self._ignored_exceptions as exc:<br/> screen = getattr(exc, &quot;screen&quot;, None)<br/> stacktrace =
+                getattr(exc, &quot;stacktrace&quot;, None)<br/> time.sleep(self._poll)<br/> if time.monotonic() &gt;
+                end_time:<br/> break<br/>&gt; raise TimeoutException(message, screen, stacktrace)<br/><span
+                        class="error">E       selenium.common.exceptions.TimeoutException: Message:</span><br/><br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\support\wait.py:95:
+                TimeoutException<br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="failed results-table-row">
+    <tr>
+        <td class="col-result">Failed</td>
+        <td class="col-name">Test/test_friendrequest.py::Test_Friendreq::test_Friendreq[chrome]</td>
+        <td class="col-duration">37.26</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log">self = &lt;Test.test_friendrequest.Test_Friendreq object at 0x00000223F9154A00&gt;<br/>request
+                = &lt;FixtureRequest for &lt;Function test_Friendreq[chrome]&gt;&gt;<br/><br/>
+                @pytest.mark.friendrequest<br/> @pytest.mark.alltest<br/> def test_Friendreq(self, request):<br/>
+                self.regist = LoginPage(self.driver)<br/> self.regist.login(BasePage.COUPLE_EMAIL,
+                BasePage.AUTOMATION_PASSWORD)<br/> time.sleep(8)<br/> self.friend = Friends(self.driver)<br/>&gt;
+                self.friend.Friendreq()<br/><br/>Test\test_friendrequest.py:23: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/>Pages\FriendrequestPage.py:22: in Friendreq<br/>
+                self.click_element(BasePage.FRIENDREQUEST)<br/>Pages\BasePage.py:235: in click_element<br/>
+                WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located(by_locator)).click()<br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\remote\webelement.py:94:
+                in click<br/> self._execute(Command.CLICK_ELEMENT)<br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\remote\webelement.py:403:
+                in _execute<br/> return self._parent.execute(command, params)<br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\remote\webdriver.py:440:
+                in execute<br/> self.error_handler.check_response(response)<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/><br/>self = &lt;selenium.webdriver.remote.errorhandler.ErrorHandler
+                object at 0x00000223F948AE60&gt;<br/>response = {&#x27;status&#x27;: 400, &#x27;value&#x27;: &#x27;{&quot;value&quot;:{&quot;error&quot;:&quot;element
+                click intercepted&quot;,&quot;message&quot;:&quot;element click intercepted: Element
+                ...\n\\tRtlGetAppContainerNamedObjectPath [0x77767C6E+286]\\n\\tRtlGetAppContainerNamedObjectPath
+                [0x77767C3E+238]\\n&quot;}}&#x27;}<br/><br/> def check_response(self, response: Dict[str, Any]) -&gt;
+                None:<br/> &quot;&quot;&quot;Checks that a JSON response from the WebDriver does not have an<br/> error.<br/>
+                <br/> :Args:<br/> - response - The JSON response from the WebDriver server as a dictionary<br/>
+                object.<br/> <br/> :Raises: If the response contains an error message.<br/> &quot;&quot;&quot;<br/>
+                status = response.get(&quot;status&quot;, None)<br/> if not status or status == ErrorCode.SUCCESS:<br/>
+                return<br/> value = None<br/> message = response.get(&quot;message&quot;, &quot;&quot;)<br/> screen: str
+                = response.get(&quot;screen&quot;, &quot;&quot;)<br/> stacktrace = None<br/> if isinstance(status, int):<br/>
+                value_json = response.get(&quot;value&quot;, None)<br/> if value_json and isinstance(value_json,
+                str):<br/> import json<br/> <br/> try:<br/> value = json.loads(value_json)<br/> if len(value) == 1:<br/>
+                value = value[&quot;value&quot;]<br/> status = value.get(&quot;error&quot;, None)<br/> if not
+                status:<br/> status = value.get(&quot;status&quot;, ErrorCode.UNKNOWN_ERROR)<br/> message = value.get(&quot;value&quot;)
+                or value.get(&quot;message&quot;)<br/> if not isinstance(message, str):<br/> value = message<br/>
+                message = message.get(&quot;message&quot;)<br/> else:<br/> message = value.get(&quot;message&quot;,
+                None)<br/> except ValueError:<br/> pass<br/> <br/> exception_class: Type[WebDriverException]<br/> if
+                status in ErrorCode.NO_SUCH_ELEMENT:<br/> exception_class = NoSuchElementException<br/> elif status in
+                ErrorCode.NO_SUCH_FRAME:<br/> exception_class = NoSuchFrameException<br/> elif status in
+                ErrorCode.NO_SUCH_SHADOW_ROOT:<br/> exception_class = NoSuchShadowRootException<br/> elif status in
+                ErrorCode.NO_SUCH_WINDOW:<br/> exception_class = NoSuchWindowException<br/> elif status in
+                ErrorCode.STALE_ELEMENT_REFERENCE:<br/> exception_class = StaleElementReferenceException<br/> elif
+                status in ErrorCode.ELEMENT_NOT_VISIBLE:<br/> exception_class = ElementNotVisibleException<br/> elif
+                status in ErrorCode.INVALID_ELEMENT_STATE:<br/> exception_class = InvalidElementStateException<br/> elif
+                (<br/> status in ErrorCode.INVALID_SELECTOR<br/> or status in ErrorCode.INVALID_XPATH_SELECTOR<br/> or
+                status in ErrorCode.INVALID_XPATH_SELECTOR_RETURN_TYPER<br/> ):<br/> exception_class =
+                InvalidSelectorException<br/> elif status in ErrorCode.ELEMENT_IS_NOT_SELECTABLE:<br/> exception_class =
+                ElementNotSelectableException<br/> elif status in ErrorCode.ELEMENT_NOT_INTERACTABLE:<br/>
+                exception_class = ElementNotInteractableException<br/> elif status in
+                ErrorCode.INVALID_COOKIE_DOMAIN:<br/> exception_class = InvalidCookieDomainException<br/> elif status in
+                ErrorCode.UNABLE_TO_SET_COOKIE:<br/> exception_class = UnableToSetCookieException<br/> elif status in
+                ErrorCode.TIMEOUT:<br/> exception_class = TimeoutException<br/> elif status in ErrorCode.SCRIPT_TIMEOUT:<br/>
+                exception_class = TimeoutException<br/> elif status in ErrorCode.UNKNOWN_ERROR:<br/> exception_class =
+                WebDriverException<br/> elif status in ErrorCode.UNEXPECTED_ALERT_OPEN:<br/> exception_class =
+                UnexpectedAlertPresentException<br/> elif status in ErrorCode.NO_ALERT_OPEN:<br/> exception_class =
+                NoAlertPresentException<br/> elif status in ErrorCode.IME_NOT_AVAILABLE:<br/> exception_class =
+                ImeNotAvailableException<br/> elif status in ErrorCode.IME_ENGINE_ACTIVATION_FAILED:<br/>
+                exception_class = ImeActivationFailedException<br/> elif status in
+                ErrorCode.MOVE_TARGET_OUT_OF_BOUNDS:<br/> exception_class = MoveTargetOutOfBoundsException<br/> elif
+                status in ErrorCode.JAVASCRIPT_ERROR:<br/> exception_class = JavascriptException<br/> elif status in
+                ErrorCode.SESSION_NOT_CREATED:<br/> exception_class = SessionNotCreatedException<br/> elif status in
+                ErrorCode.INVALID_ARGUMENT:<br/> exception_class = InvalidArgumentException<br/> elif status in
+                ErrorCode.NO_SUCH_COOKIE:<br/> exception_class = NoSuchCookieException<br/> elif status in
+                ErrorCode.UNABLE_TO_CAPTURE_SCREEN:<br/> exception_class = ScreenshotException<br/> elif status in
+                ErrorCode.ELEMENT_CLICK_INTERCEPTED:<br/> exception_class = ElementClickInterceptedException<br/> elif
+                status in ErrorCode.INSECURE_CERTIFICATE:<br/> exception_class = InsecureCertificateException<br/> elif
+                status in ErrorCode.INVALID_COORDINATES:<br/> exception_class = InvalidCoordinatesException<br/> elif
+                status in ErrorCode.INVALID_SESSION_ID:<br/> exception_class = InvalidSessionIdException<br/> elif
+                status in ErrorCode.UNKNOWN_METHOD:<br/> exception_class = UnknownMethodException<br/> else:<br/>
+                exception_class = WebDriverException<br/> if not value:<br/> value = response[&quot;value&quot;]<br/> if
+                isinstance(value, str):<br/> raise exception_class(value)<br/> if message == &quot;&quot; and &quot;message&quot;
+                in value:<br/> message = value[&quot;message&quot;]<br/> <br/> screen = None # type:
+                ignore[assignment]<br/> if &quot;screen&quot; in value:<br/> screen = value[&quot;screen&quot;]<br/>
+                <br/> stacktrace = None<br/> st_value = value.get(&quot;stackTrace&quot;) or value.get(&quot;stacktrace&quot;)<br/>
+                if st_value:<br/> if isinstance(st_value, str):<br/> stacktrace = st_value.split(&quot;\n&quot;)<br/>
+                else:<br/> stacktrace = []<br/> try:<br/> for frame in st_value:<br/> line = frame.get(&quot;lineNumber&quot;,
+                &quot;&quot;)<br/> file = frame.get(&quot;fileName&quot;, &quot;&lt;anonymous&gt;&quot;)<br/> if
+                line:<br/> file = f&quot;{file}:{line}&quot;<br/> meth = frame.get(&quot;methodName&quot;, &quot;&lt;anonymous&gt;&quot;)<br/>
+                if &quot;className&quot; in frame:<br/> meth = f&quot;{frame[&#x27;className&#x27;]}.{meth}&quot;<br/>
+                msg = &quot; at %s (%s)&quot;<br/> msg = msg % (meth, file)<br/> stacktrace.append(msg)<br/> except
+                TypeError:<br/> pass<br/> if exception_class == UnexpectedAlertPresentException:<br/> alert_text =
+                None<br/> if &quot;data&quot; in value:<br/> alert_text =
+                value[&quot;data&quot;].get(&quot;text&quot;)<br/> elif &quot;alert&quot; in value:<br/> alert_text =
+                value[&quot;alert&quot;].get(&quot;text&quot;)<br/> raise exception_class(message, screen, stacktrace,
+                alert_text) # type: ignore[call-arg] # mypy is not smart enough here<br/>&gt; raise
+                exception_class(message, screen, stacktrace)<br/><span class="error">E       selenium.common.exceptions.ElementClickInterceptedException: Message: element click intercepted: Element is not clickable at point (556, 709)</span><br/><span
+                        class="error">E         (Session info: chrome=118.0.5993.70)</span><br/><span class="error">E       Stacktrace:</span><br/><span
+                        class="error">E       	GetHandleVerifier [0x00FD4DE3+43907]</span><br/><span class="error">E       	(No symbol) [0x00F60741]</span><br/><span
+                        class="error">E       	(No symbol) [0x00E533ED]</span><br/><span class="error">E       	(No symbol) [0x00E8B5B1]</span><br/><span
+                        class="error">E       	(No symbol) [0x00E8A0AF]</span><br/><span class="error">E       	(No symbol) [0x00E8869B]</span><br/><span
+                        class="error">E       	(No symbol) [0x00E87A35]</span><br/><span class="error">E       	(No symbol) [0x00E7FF9A]</span><br/><span
+                        class="error">E       	(No symbol) [0x00EA2B5C]</span><br/><span class="error">E       	(No symbol) [0x00E7F9D6]</span><br/><span
+                        class="error">E       	(No symbol) [0x00EA2DD4]</span><br/><span class="error">E       	(No symbol) [0x00EB55CA]</span><br/><span
+                        class="error">E       	(No symbol) [0x00EA2956]</span><br/><span class="error">E       	(No symbol) [0x00E7E17E]</span><br/><span
+                        class="error">E       	(No symbol) [0x00E7F32D]</span><br/><span class="error">E       	GetHandleVerifier [0x01285AF9+2865305]</span><br/><span
+                        class="error">E       	GetHandleVerifier [0x012CE78B+3163435]</span><br/><span class="error">E       	GetHandleVerifier [0x012C8441+3138017]</span><br/><span
+                        class="error">E       	GetHandleVerifier [0x0105E0F0+605840]</span><br/><span class="error">E       	(No symbol) [0x00F6A64C]</span><br/><span
+                        class="error">E       	(No symbol) [0x00F66638]</span><br/><span class="error">E       	(No symbol) [0x00F6675F]</span><br/><span
+                        class="error">E       	(No symbol) [0x00F58DB7]</span><br/><span class="error">E       	BaseThreadInitThunk [0x7662FCC9+25]</span><br/><span
+                        class="error">E       	RtlGetAppContainerNamedObjectPath [0x77767C6E+286]</span><br/><span
+                        class="error">E       	RtlGetAppContainerNamedObjectPath [0x77767C3E+238]</span><br/><br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\remote\errorhandler.py:245:
+                ElementClickInterceptedException<br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="failed results-table-row">
+    <tr>
+        <td class="col-result">Failed</td>
+        <td class="col-name">Test/test_registry_page.py::Test_Registry::test_add_to_registry[chrome]</td>
+        <td class="col-duration">78.62</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log">self = &lt;Test.test_registry_page.Test_Registry object at 0x00000223F9138730&gt;<br/>request
+                = &lt;FixtureRequest for &lt;Function test_add_to_registry[chrome]&gt;&gt;<br/><br/>
+                @pytest.mark.alltest<br/> @pytest.mark.regression<br/> @pytest.mark.registry<br/> def
+                test_add_to_registry(self, request):<br/> self.registry = LoginPage(self.driver)<br/>
+                self.registry.login(BasePage.COUPLE_EMAIL, BasePage.AUTOMATION_PASSWORD)<br/> self.registry =
+                RegistryPage(self.driver)<br/> self.registry.registry()<br/> time.sleep(3)<br/> # title =
+                self.registry.get_element_text(self.EXP_title)<br/> # print(title+&quot; Added to registry&quot;)<br/>
+                self.registry.click_element(BasePage.ADD_TO_REGISTRY)<br/> time.sleep(3)<br/>&gt;
+                self.registry.click_element(BasePage.EXPERIENCE)<br/><br/>Test\test_registry_page.py:35: <br/>_ _ _ _ _
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/>Pages\BasePage.py:235: in
+                click_element<br/> WebDriverWait(self.driver,
+                20).until(EC.visibility_of_element_located(by_locator)).click()<br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\remote\webelement.py:94:
+                in click<br/> self._execute(Command.CLICK_ELEMENT)<br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\remote\webelement.py:403:
+                in _execute<br/> return self._parent.execute(command, params)<br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\remote\webdriver.py:440:
+                in execute<br/> self.error_handler.check_response(response)<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/><br/>self = &lt;selenium.webdriver.remote.errorhandler.ErrorHandler
+                object at 0x00000223F9447B80&gt;<br/>response = {&#x27;status&#x27;: 400, &#x27;value&#x27;: &#x27;{&quot;value&quot;:{&quot;error&quot;:&quot;element
+                click intercepted&quot;,&quot;message&quot;:&quot;element click intercepted: Element
+                ...\n\\tRtlGetAppContainerNamedObjectPath [0x77767C6E+286]\\n\\tRtlGetAppContainerNamedObjectPath
+                [0x77767C3E+238]\\n&quot;}}&#x27;}<br/><br/> def check_response(self, response: Dict[str, Any]) -&gt;
+                None:<br/> &quot;&quot;&quot;Checks that a JSON response from the WebDriver does not have an<br/> error.<br/>
+                <br/> :Args:<br/> - response - The JSON response from the WebDriver server as a dictionary<br/>
+                object.<br/> <br/> :Raises: If the response contains an error message.<br/> &quot;&quot;&quot;<br/>
+                status = response.get(&quot;status&quot;, None)<br/> if not status or status == ErrorCode.SUCCESS:<br/>
+                return<br/> value = None<br/> message = response.get(&quot;message&quot;, &quot;&quot;)<br/> screen: str
+                = response.get(&quot;screen&quot;, &quot;&quot;)<br/> stacktrace = None<br/> if isinstance(status, int):<br/>
+                value_json = response.get(&quot;value&quot;, None)<br/> if value_json and isinstance(value_json,
+                str):<br/> import json<br/> <br/> try:<br/> value = json.loads(value_json)<br/> if len(value) == 1:<br/>
+                value = value[&quot;value&quot;]<br/> status = value.get(&quot;error&quot;, None)<br/> if not
+                status:<br/> status = value.get(&quot;status&quot;, ErrorCode.UNKNOWN_ERROR)<br/> message = value.get(&quot;value&quot;)
+                or value.get(&quot;message&quot;)<br/> if not isinstance(message, str):<br/> value = message<br/>
+                message = message.get(&quot;message&quot;)<br/> else:<br/> message = value.get(&quot;message&quot;,
+                None)<br/> except ValueError:<br/> pass<br/> <br/> exception_class: Type[WebDriverException]<br/> if
+                status in ErrorCode.NO_SUCH_ELEMENT:<br/> exception_class = NoSuchElementException<br/> elif status in
+                ErrorCode.NO_SUCH_FRAME:<br/> exception_class = NoSuchFrameException<br/> elif status in
+                ErrorCode.NO_SUCH_SHADOW_ROOT:<br/> exception_class = NoSuchShadowRootException<br/> elif status in
+                ErrorCode.NO_SUCH_WINDOW:<br/> exception_class = NoSuchWindowException<br/> elif status in
+                ErrorCode.STALE_ELEMENT_REFERENCE:<br/> exception_class = StaleElementReferenceException<br/> elif
+                status in ErrorCode.ELEMENT_NOT_VISIBLE:<br/> exception_class = ElementNotVisibleException<br/> elif
+                status in ErrorCode.INVALID_ELEMENT_STATE:<br/> exception_class = InvalidElementStateException<br/> elif
+                (<br/> status in ErrorCode.INVALID_SELECTOR<br/> or status in ErrorCode.INVALID_XPATH_SELECTOR<br/> or
+                status in ErrorCode.INVALID_XPATH_SELECTOR_RETURN_TYPER<br/> ):<br/> exception_class =
+                InvalidSelectorException<br/> elif status in ErrorCode.ELEMENT_IS_NOT_SELECTABLE:<br/> exception_class =
+                ElementNotSelectableException<br/> elif status in ErrorCode.ELEMENT_NOT_INTERACTABLE:<br/>
+                exception_class = ElementNotInteractableException<br/> elif status in
+                ErrorCode.INVALID_COOKIE_DOMAIN:<br/> exception_class = InvalidCookieDomainException<br/> elif status in
+                ErrorCode.UNABLE_TO_SET_COOKIE:<br/> exception_class = UnableToSetCookieException<br/> elif status in
+                ErrorCode.TIMEOUT:<br/> exception_class = TimeoutException<br/> elif status in ErrorCode.SCRIPT_TIMEOUT:<br/>
+                exception_class = TimeoutException<br/> elif status in ErrorCode.UNKNOWN_ERROR:<br/> exception_class =
+                WebDriverException<br/> elif status in ErrorCode.UNEXPECTED_ALERT_OPEN:<br/> exception_class =
+                UnexpectedAlertPresentException<br/> elif status in ErrorCode.NO_ALERT_OPEN:<br/> exception_class =
+                NoAlertPresentException<br/> elif status in ErrorCode.IME_NOT_AVAILABLE:<br/> exception_class =
+                ImeNotAvailableException<br/> elif status in ErrorCode.IME_ENGINE_ACTIVATION_FAILED:<br/>
+                exception_class = ImeActivationFailedException<br/> elif status in
+                ErrorCode.MOVE_TARGET_OUT_OF_BOUNDS:<br/> exception_class = MoveTargetOutOfBoundsException<br/> elif
+                status in ErrorCode.JAVASCRIPT_ERROR:<br/> exception_class = JavascriptException<br/> elif status in
+                ErrorCode.SESSION_NOT_CREATED:<br/> exception_class = SessionNotCreatedException<br/> elif status in
+                ErrorCode.INVALID_ARGUMENT:<br/> exception_class = InvalidArgumentException<br/> elif status in
+                ErrorCode.NO_SUCH_COOKIE:<br/> exception_class = NoSuchCookieException<br/> elif status in
+                ErrorCode.UNABLE_TO_CAPTURE_SCREEN:<br/> exception_class = ScreenshotException<br/> elif status in
+                ErrorCode.ELEMENT_CLICK_INTERCEPTED:<br/> exception_class = ElementClickInterceptedException<br/> elif
+                status in ErrorCode.INSECURE_CERTIFICATE:<br/> exception_class = InsecureCertificateException<br/> elif
+                status in ErrorCode.INVALID_COORDINATES:<br/> exception_class = InvalidCoordinatesException<br/> elif
+                status in ErrorCode.INVALID_SESSION_ID:<br/> exception_class = InvalidSessionIdException<br/> elif
+                status in ErrorCode.UNKNOWN_METHOD:<br/> exception_class = UnknownMethodException<br/> else:<br/>
+                exception_class = WebDriverException<br/> if not value:<br/> value = response[&quot;value&quot;]<br/> if
+                isinstance(value, str):<br/> raise exception_class(value)<br/> if message == &quot;&quot; and &quot;message&quot;
+                in value:<br/> message = value[&quot;message&quot;]<br/> <br/> screen = None # type:
+                ignore[assignment]<br/> if &quot;screen&quot; in value:<br/> screen = value[&quot;screen&quot;]<br/>
+                <br/> stacktrace = None<br/> st_value = value.get(&quot;stackTrace&quot;) or value.get(&quot;stacktrace&quot;)<br/>
+                if st_value:<br/> if isinstance(st_value, str):<br/> stacktrace = st_value.split(&quot;\n&quot;)<br/>
+                else:<br/> stacktrace = []<br/> try:<br/> for frame in st_value:<br/> line = frame.get(&quot;lineNumber&quot;,
+                &quot;&quot;)<br/> file = frame.get(&quot;fileName&quot;, &quot;&lt;anonymous&gt;&quot;)<br/> if
+                line:<br/> file = f&quot;{file}:{line}&quot;<br/> meth = frame.get(&quot;methodName&quot;, &quot;&lt;anonymous&gt;&quot;)<br/>
+                if &quot;className&quot; in frame:<br/> meth = f&quot;{frame[&#x27;className&#x27;]}.{meth}&quot;<br/>
+                msg = &quot; at %s (%s)&quot;<br/> msg = msg % (meth, file)<br/> stacktrace.append(msg)<br/> except
+                TypeError:<br/> pass<br/> if exception_class == UnexpectedAlertPresentException:<br/> alert_text =
+                None<br/> if &quot;data&quot; in value:<br/> alert_text =
+                value[&quot;data&quot;].get(&quot;text&quot;)<br/> elif &quot;alert&quot; in value:<br/> alert_text =
+                value[&quot;alert&quot;].get(&quot;text&quot;)<br/> raise exception_class(message, screen, stacktrace,
+                alert_text) # type: ignore[call-arg] # mypy is not smart enough here<br/>&gt; raise
+                exception_class(message, screen, stacktrace)<br/><span class="error">E       selenium.common.exceptions.ElementClickInterceptedException: Message: element click intercepted: Element is not clickable at point (659, 1169)</span><br/><span
+                        class="error">E         (Session info: chrome=118.0.5993.70)</span><br/><span class="error">E       Stacktrace:</span><br/><span
+                        class="error">E       	GetHandleVerifier [0x010E4DE3+43907]</span><br/><span class="error">E       	(No symbol) [0x01070741]</span><br/><span
+                        class="error">E       	(No symbol) [0x00F633ED]</span><br/><span class="error">E       	(No symbol) [0x00F9B5B1]</span><br/><span
+                        class="error">E       	(No symbol) [0x00F9A0AF]</span><br/><span class="error">E       	(No symbol) [0x00F9869B]</span><br/><span
+                        class="error">E       	(No symbol) [0x00F97A35]</span><br/><span class="error">E       	(No symbol) [0x00F8FF9A]</span><br/><span
+                        class="error">E       	(No symbol) [0x00FB2B5C]</span><br/><span class="error">E       	(No symbol) [0x00F8F9D6]</span><br/><span
+                        class="error">E       	(No symbol) [0x00FB2DD4]</span><br/><span class="error">E       	(No symbol) [0x00FC55CA]</span><br/><span
+                        class="error">E       	(No symbol) [0x00FB2956]</span><br/><span class="error">E       	(No symbol) [0x00F8E17E]</span><br/><span
+                        class="error">E       	(No symbol) [0x00F8F32D]</span><br/><span class="error">E       	GetHandleVerifier [0x01395AF9+2865305]</span><br/><span
+                        class="error">E       	GetHandleVerifier [0x013DE78B+3163435]</span><br/><span class="error">E       	GetHandleVerifier [0x013D8441+3138017]</span><br/><span
+                        class="error">E       	GetHandleVerifier [0x0116E0F0+605840]</span><br/><span class="error">E       	(No symbol) [0x0107A64C]</span><br/><span
+                        class="error">E       	(No symbol) [0x01076638]</span><br/><span class="error">E       	(No symbol) [0x0107675F]</span><br/><span
+                        class="error">E       	(No symbol) [0x01068DB7]</span><br/><span class="error">E       	BaseThreadInitThunk [0x7662FCC9+25]</span><br/><span
+                        class="error">E       	RtlGetAppContainerNamedObjectPath [0x77767C6E+286]</span><br/><span
+                        class="error">E       	RtlGetAppContainerNamedObjectPath [0x77767C3E+238]</span><br/><br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\remote\errorhandler.py:245:
+                ElementClickInterceptedException<br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="failed results-table-row">
+    <tr>
+        <td class="col-result">Failed</td>
+        <td class="col-name">Test/test_registry_page.py::Test_Registry::test_add_to_bucket_list[chrome]</td>
+        <td class="col-duration">27.63</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log">self = &lt;Test.test_registry_page.Test_Registry object at 0x00000223F9138880&gt;<br/>request
+                = &lt;FixtureRequest for &lt;Function test_add_to_bucket_list[chrome]&gt;&gt;<br/><br/>
+                @pytest.mark.alltest<br/> @pytest.mark.regression<br/> @pytest.mark.addbucket<br/> def
+                test_add_to_bucket_list(self, request):<br/> self.regist = LoginPage(self.driver)<br/>
+                self.regist.login(BasePage.INDIVIDUAL_EMAIL, BasePage.AUTOMATION_PASSWORD)<br/> self.registry =
+                RegistryPage(self.driver)<br/> self.registry.registry()<br/> time.sleep(3)<br/> # title =
+                self.regist.get_element_text(self.EXP_title)<br/> # print(title+&quot; Added to registry&quot;)<br/>
+                self.regist.click_element(BasePage.ADD_TO_REGISTRY)<br/> time.sleep(3)<br/>&gt;
+                self.regist.click_element(BasePage.EXPERIENCE)<br/><br/>Test\test_registry_page.py:77: <br/>_ _ _ _ _ _
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/>Pages\BasePage.py:235: in
+                click_element<br/> WebDriverWait(self.driver,
+                20).until(EC.visibility_of_element_located(by_locator)).click()<br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\remote\webelement.py:94:
+                in click<br/> self._execute(Command.CLICK_ELEMENT)<br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\remote\webelement.py:403:
+                in _execute<br/> return self._parent.execute(command, params)<br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\remote\webdriver.py:440:
+                in execute<br/> self.error_handler.check_response(response)<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/><br/>self = &lt;selenium.webdriver.remote.errorhandler.ErrorHandler
+                object at 0x00000223F9447B80&gt;<br/>response = {&#x27;status&#x27;: 400, &#x27;value&#x27;: &#x27;{&quot;value&quot;:{&quot;error&quot;:&quot;element
+                click intercepted&quot;,&quot;message&quot;:&quot;element click intercepted: Element
+                ...\n\\tRtlGetAppContainerNamedObjectPath [0x77767C6E+286]\\n\\tRtlGetAppContainerNamedObjectPath
+                [0x77767C3E+238]\\n&quot;}}&#x27;}<br/><br/> def check_response(self, response: Dict[str, Any]) -&gt;
+                None:<br/> &quot;&quot;&quot;Checks that a JSON response from the WebDriver does not have an<br/> error.<br/>
+                <br/> :Args:<br/> - response - The JSON response from the WebDriver server as a dictionary<br/>
+                object.<br/> <br/> :Raises: If the response contains an error message.<br/> &quot;&quot;&quot;<br/>
+                status = response.get(&quot;status&quot;, None)<br/> if not status or status == ErrorCode.SUCCESS:<br/>
+                return<br/> value = None<br/> message = response.get(&quot;message&quot;, &quot;&quot;)<br/> screen: str
+                = response.get(&quot;screen&quot;, &quot;&quot;)<br/> stacktrace = None<br/> if isinstance(status, int):<br/>
+                value_json = response.get(&quot;value&quot;, None)<br/> if value_json and isinstance(value_json,
+                str):<br/> import json<br/> <br/> try:<br/> value = json.loads(value_json)<br/> if len(value) == 1:<br/>
+                value = value[&quot;value&quot;]<br/> status = value.get(&quot;error&quot;, None)<br/> if not
+                status:<br/> status = value.get(&quot;status&quot;, ErrorCode.UNKNOWN_ERROR)<br/> message = value.get(&quot;value&quot;)
+                or value.get(&quot;message&quot;)<br/> if not isinstance(message, str):<br/> value = message<br/>
+                message = message.get(&quot;message&quot;)<br/> else:<br/> message = value.get(&quot;message&quot;,
+                None)<br/> except ValueError:<br/> pass<br/> <br/> exception_class: Type[WebDriverException]<br/> if
+                status in ErrorCode.NO_SUCH_ELEMENT:<br/> exception_class = NoSuchElementException<br/> elif status in
+                ErrorCode.NO_SUCH_FRAME:<br/> exception_class = NoSuchFrameException<br/> elif status in
+                ErrorCode.NO_SUCH_SHADOW_ROOT:<br/> exception_class = NoSuchShadowRootException<br/> elif status in
+                ErrorCode.NO_SUCH_WINDOW:<br/> exception_class = NoSuchWindowException<br/> elif status in
+                ErrorCode.STALE_ELEMENT_REFERENCE:<br/> exception_class = StaleElementReferenceException<br/> elif
+                status in ErrorCode.ELEMENT_NOT_VISIBLE:<br/> exception_class = ElementNotVisibleException<br/> elif
+                status in ErrorCode.INVALID_ELEMENT_STATE:<br/> exception_class = InvalidElementStateException<br/> elif
+                (<br/> status in ErrorCode.INVALID_SELECTOR<br/> or status in ErrorCode.INVALID_XPATH_SELECTOR<br/> or
+                status in ErrorCode.INVALID_XPATH_SELECTOR_RETURN_TYPER<br/> ):<br/> exception_class =
+                InvalidSelectorException<br/> elif status in ErrorCode.ELEMENT_IS_NOT_SELECTABLE:<br/> exception_class =
+                ElementNotSelectableException<br/> elif status in ErrorCode.ELEMENT_NOT_INTERACTABLE:<br/>
+                exception_class = ElementNotInteractableException<br/> elif status in
+                ErrorCode.INVALID_COOKIE_DOMAIN:<br/> exception_class = InvalidCookieDomainException<br/> elif status in
+                ErrorCode.UNABLE_TO_SET_COOKIE:<br/> exception_class = UnableToSetCookieException<br/> elif status in
+                ErrorCode.TIMEOUT:<br/> exception_class = TimeoutException<br/> elif status in ErrorCode.SCRIPT_TIMEOUT:<br/>
+                exception_class = TimeoutException<br/> elif status in ErrorCode.UNKNOWN_ERROR:<br/> exception_class =
+                WebDriverException<br/> elif status in ErrorCode.UNEXPECTED_ALERT_OPEN:<br/> exception_class =
+                UnexpectedAlertPresentException<br/> elif status in ErrorCode.NO_ALERT_OPEN:<br/> exception_class =
+                NoAlertPresentException<br/> elif status in ErrorCode.IME_NOT_AVAILABLE:<br/> exception_class =
+                ImeNotAvailableException<br/> elif status in ErrorCode.IME_ENGINE_ACTIVATION_FAILED:<br/>
+                exception_class = ImeActivationFailedException<br/> elif status in
+                ErrorCode.MOVE_TARGET_OUT_OF_BOUNDS:<br/> exception_class = MoveTargetOutOfBoundsException<br/> elif
+                status in ErrorCode.JAVASCRIPT_ERROR:<br/> exception_class = JavascriptException<br/> elif status in
+                ErrorCode.SESSION_NOT_CREATED:<br/> exception_class = SessionNotCreatedException<br/> elif status in
+                ErrorCode.INVALID_ARGUMENT:<br/> exception_class = InvalidArgumentException<br/> elif status in
+                ErrorCode.NO_SUCH_COOKIE:<br/> exception_class = NoSuchCookieException<br/> elif status in
+                ErrorCode.UNABLE_TO_CAPTURE_SCREEN:<br/> exception_class = ScreenshotException<br/> elif status in
+                ErrorCode.ELEMENT_CLICK_INTERCEPTED:<br/> exception_class = ElementClickInterceptedException<br/> elif
+                status in ErrorCode.INSECURE_CERTIFICATE:<br/> exception_class = InsecureCertificateException<br/> elif
+                status in ErrorCode.INVALID_COORDINATES:<br/> exception_class = InvalidCoordinatesException<br/> elif
+                status in ErrorCode.INVALID_SESSION_ID:<br/> exception_class = InvalidSessionIdException<br/> elif
+                status in ErrorCode.UNKNOWN_METHOD:<br/> exception_class = UnknownMethodException<br/> else:<br/>
+                exception_class = WebDriverException<br/> if not value:<br/> value = response[&quot;value&quot;]<br/> if
+                isinstance(value, str):<br/> raise exception_class(value)<br/> if message == &quot;&quot; and &quot;message&quot;
+                in value:<br/> message = value[&quot;message&quot;]<br/> <br/> screen = None # type:
+                ignore[assignment]<br/> if &quot;screen&quot; in value:<br/> screen = value[&quot;screen&quot;]<br/>
+                <br/> stacktrace = None<br/> st_value = value.get(&quot;stackTrace&quot;) or value.get(&quot;stacktrace&quot;)<br/>
+                if st_value:<br/> if isinstance(st_value, str):<br/> stacktrace = st_value.split(&quot;\n&quot;)<br/>
+                else:<br/> stacktrace = []<br/> try:<br/> for frame in st_value:<br/> line = frame.get(&quot;lineNumber&quot;,
+                &quot;&quot;)<br/> file = frame.get(&quot;fileName&quot;, &quot;&lt;anonymous&gt;&quot;)<br/> if
+                line:<br/> file = f&quot;{file}:{line}&quot;<br/> meth = frame.get(&quot;methodName&quot;, &quot;&lt;anonymous&gt;&quot;)<br/>
+                if &quot;className&quot; in frame:<br/> meth = f&quot;{frame[&#x27;className&#x27;]}.{meth}&quot;<br/>
+                msg = &quot; at %s (%s)&quot;<br/> msg = msg % (meth, file)<br/> stacktrace.append(msg)<br/> except
+                TypeError:<br/> pass<br/> if exception_class == UnexpectedAlertPresentException:<br/> alert_text =
+                None<br/> if &quot;data&quot; in value:<br/> alert_text =
+                value[&quot;data&quot;].get(&quot;text&quot;)<br/> elif &quot;alert&quot; in value:<br/> alert_text =
+                value[&quot;alert&quot;].get(&quot;text&quot;)<br/> raise exception_class(message, screen, stacktrace,
+                alert_text) # type: ignore[call-arg] # mypy is not smart enough here<br/>&gt; raise
+                exception_class(message, screen, stacktrace)<br/><span class="error">E       selenium.common.exceptions.ElementClickInterceptedException: Message: element click intercepted: Element is not clickable at point (659, 1080)</span><br/><span
+                        class="error">E         (Session info: chrome=118.0.5993.70)</span><br/><span class="error">E       Stacktrace:</span><br/><span
+                        class="error">E       	GetHandleVerifier [0x010E4DE3+43907]</span><br/><span class="error">E       	(No symbol) [0x01070741]</span><br/><span
+                        class="error">E       	(No symbol) [0x00F633ED]</span><br/><span class="error">E       	(No symbol) [0x00F9B5B1]</span><br/><span
+                        class="error">E       	(No symbol) [0x00F9A0AF]</span><br/><span class="error">E       	(No symbol) [0x00F9869B]</span><br/><span
+                        class="error">E       	(No symbol) [0x00F97A35]</span><br/><span class="error">E       	(No symbol) [0x00F8FF9A]</span><br/><span
+                        class="error">E       	(No symbol) [0x00FB2B5C]</span><br/><span class="error">E       	(No symbol) [0x00F8F9D6]</span><br/><span
+                        class="error">E       	(No symbol) [0x00FB2DD4]</span><br/><span class="error">E       	(No symbol) [0x00FC55CA]</span><br/><span
+                        class="error">E       	(No symbol) [0x00FB2956]</span><br/><span class="error">E       	(No symbol) [0x00F8E17E]</span><br/><span
+                        class="error">E       	(No symbol) [0x00F8F32D]</span><br/><span class="error">E       	GetHandleVerifier [0x01395AF9+2865305]</span><br/><span
+                        class="error">E       	GetHandleVerifier [0x013DE78B+3163435]</span><br/><span class="error">E       	GetHandleVerifier [0x013D8441+3138017]</span><br/><span
+                        class="error">E       	GetHandleVerifier [0x0116E0F0+605840]</span><br/><span class="error">E       	(No symbol) [0x0107A64C]</span><br/><span
+                        class="error">E       	(No symbol) [0x01076638]</span><br/><span class="error">E       	(No symbol) [0x0107675F]</span><br/><span
+                        class="error">E       	(No symbol) [0x01068DB7]</span><br/><span class="error">E       	BaseThreadInitThunk [0x7662FCC9+25]</span><br/><span
+                        class="error">E       	RtlGetAppContainerNamedObjectPath [0x77767C6E+286]</span><br/><span
+                        class="error">E       	RtlGetAppContainerNamedObjectPath [0x77767C3E+238]</span><br/><br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\remote\errorhandler.py:245:
+                ElementClickInterceptedException<br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Charity_reg_page.py::Test_CHARITY_SIGNUP::test_charity_signup[chrome]</td>
+        <td class="col-duration">60.23</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>charity
+                signup working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Create_Exp.py::Test_Create_Exp::test_create_exp[chrome]</td>
+        <td class="col-duration">63.36</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_EP_register.py::Test_EXPRegistration::test_ep_rgistration[chrome]</td>
+        <td class="col-duration">77.75</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>EP
+                signup working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_check_with_blank[chrome]</td>
+        <td class="col-duration">37.64</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_couple_login[chrome]</td>
+        <td class="col-duration">12.16</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Couple
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_couple_login_by_username[chrome]</td>
+        <td class="col-duration">12.18</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Couple
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_individual_login[chrome]</td>
+        <td class="col-duration">9.10</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Individual
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_EP_login[chrome]</td>
+        <td class="col-duration">8.99</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>EP
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_charity_login[chrome]</td>
+        <td class="col-duration">9.08</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Charity
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_joy_login[chrome]</td>
+        <td class="col-duration">66.50</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Joy
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_zola_login[chrome]</td>
+        <td class="col-duration">9.51</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Zola
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_knot_login[chrome]</td>
+        <td class="col-duration">15.02</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Knot
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_UpdateProfile.py::Test_Update_Profile::test_update_profile[chrome]</td>
+        <td class="col-duration">57.04</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_account.py::Test_Account::test_deactivate_account[chrome]</td>
+        <td class="col-duration">73.26</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_change_password.py::Test_change_password::test_change_password_a[chrome]</td>
+        <td class="col-duration">22.81</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_change_password.py::Test_change_password::test_change_password_b[chrome]</td>
+        <td class="col-duration">10.05</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_change_password.py::Test_change_password::test_change_password_c[chrome]</td>
+        <td class="col-duration">10.72</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_change_password.py::Test_change_password::test_change_password_d[chrome]</td>
+        <td class="col-duration">10.34</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_change_password.py::Test_change_password::test_change_password_e[chrome]</td>
+        <td class="col-duration">13.33</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_change_password.py::Test_change_password::test_change_password_f[chrome]</td>
+        <td class="col-duration">34.22</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_how_it_work[chrome]</td>
+        <td class="col-duration">8.56</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_privacy_policy1[chrome]</td>
+        <td class="col-duration">4.11</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_terms_condition[chrome]</td>
+        <td class="col-duration">2.16</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_contactus[chrome]</td>
+        <td class="col-duration">3.85</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_faq[chrome]</td>
+        <td class="col-duration">4.35</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_find_couple[chrome]</td>
+        <td class="col-duration">4.51</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_wedding_registry[chrome]</td>
+        <td class="col-duration">3.61</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_blogs_details[chrome]</td>
+        <td class="col-duration">7.06</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_invitepartner.py::TestInvitePartner::test_update_partner[chrome]</td>
+        <td class="col-duration">90.82</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_order.py::Test_Order::test_order[chrome]</td>
+        <td class="col-duration">64.82</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_prcie_filter.py::TestPriceFilter::test_price_filter_a[chrome]</td>
+        <td class="col-duration">44.46</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_prcie_filter.py::TestPriceFilter::test_price_filter_b[chrome]</td>
+        <td class="col-duration">33.94</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>[156,
+                110, 180, 144, 110, 175, 125, 100, 150, 122, 118, 130, 198, 158, 159, 178, 178, 178]
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_prcie_filter.py::TestPriceFilter::test_price_filter_c[chrome]</td>
+        <td class="col-duration">35.16</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>[248,
+                238, 248, 268, 300, 220, 248, 300, 425, 298, 318, 500, 240, 248, 250, 1644, 558, 548]
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_prcie_filter.py::TestPriceFilter::test_price_filter_d[chrome]</td>
+        <td class="col-duration">37.12</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>[20,
+                48, 0, 0]
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_registry_page.py::Test_Registry::test_guest_view[chrome]</td>
+        <td class="col-duration">69.39</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>TEST
+                LIVE EXP (NEW YORK)
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_search_experiences.py::TestCmsPage::test_search_on_homepage[chrome]</td>
+        <td class="col-duration">26.77</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_search_experiences.py::TestCmsPage::test_search_by_name_and_location[chrome]</td>
+        <td class="col-duration">13.44</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>[&#x27;TEST
+                LIVE EXP (NEW YORK)&#x27;]
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_search_experiences.py::TestCmsPage::test_search_by_namesearch_page[chrome]</td>
+        <td class="col-duration">12.26</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>[&#x27;TEST
+                LIVE EXP (NEW YORK)&#x27;]
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">
+            Test/test_search_experiences.py::TestCmsPage::test_search_by_name_category_search_page[chrome]
+        </td>
+        <td class="col-duration">16.75</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>[&#x27;TEST
+                LIVE EXP (NEW YORK)&#x27;]
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_update_honeymoon.py::Test_Honeymoon::test_update_honeymoon[chrome]</td>
+        <td class="col-duration">49.78</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_update_shipping.py::Test_Update_Shipping::test_update_shipping[chrome]</td>
+        <td class="col-duration">49.02</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_url.py::Test_URL::test_registryurl[chrome]</td>
+        <td class="col-duration">37.30</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
