@@ -8,7 +8,7 @@ from Pages.BasePage import BasePage
 from Pages.Search_experiences import SearchExp
 
 
-class TestCmsPage(BaseTest):
+class TestSearchPage(BaseTest):
     policy = (By.XPATH, "//h2[@class='termsHeading']")
     results = (By.XPATH, "//div[@class='wsa_list_head']")
     heading = (By.XPATH, "//h2//a")
@@ -211,20 +211,20 @@ class TestCmsPage(BaseTest):
         time.sleep(8)
 
         try:
-            expheading = self.search.get_element_text(self.expheading)
-            expname = self.search.get_element_text(self.exphead)
-            expprice = self.search.get_element_text(self.price)
+            expheading = self.details.get_element_text(self.expheading)
+            expname = self.details.get_element_text(self.exphead)
+            expprice = self.details.get_element_text(self.price)
         except TimeoutException:
             print("details page elements are not loading")
-            self.search.click_element(BasePage.HOME)
+            self.details.click_element(BasePage.HOME)
             time.sleep(3)
             raise
         try:
             assert "Test live exp" == expheading
-            self.search.click_element(BasePage.HOME)
+            self.details.click_element(BasePage.HOME)
             time.sleep(3)
         except AssertionError:
-            self.search.click_element(BasePage.HOME)
+            self.details.click_element(BasePage.HOME)
             print("Page heading not loading")
             raise
         try:

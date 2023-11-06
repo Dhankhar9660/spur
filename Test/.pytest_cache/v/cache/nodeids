@@ -92,6 +92,7 @@
   "test_search_experiences.py::TestCmsPage::test_search_by_name_category_search_page[chrome]",
   "test_search_experiences.py::TestCmsPage::test_search_by_namesearch_page[chrome]",
   "test_search_experiences.py::TestCmsPage::test_search_on_homepage[chrome]",
+  "test_search_experiences.py::TestSearchPage::test_exp_details_page[chrome]",
   "test_ticket_page.py::Test_Ticket::test_ticket_buy[chrome]",
   "test_ticket_page.py::Test_Ticket::test_ticket_search[chrome]",
   "test_update_honeymoon.py::Test_Honeymoon::test_update_honeymoon",

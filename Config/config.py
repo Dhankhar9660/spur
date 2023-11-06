@@ -13,7 +13,7 @@ class TestData:
 
     # ------------- Details for live -------------------
     BASE_URL = "https://spurexperiences.com/"
-    Registry_Url = "https://spurexperiences.com/registries/Test44"
+    Registry_Url = "https://spurexperiences.com/registries/Automatoin"
     Profile_Url = "https://spurexperiences.com/profile"
     Exprience_Name = "test live exp"
     Exp_Actual_Name = "TEST LIVE EXP (NEW YORK)"

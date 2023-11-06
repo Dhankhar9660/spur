@@ -19,5 +19,6 @@
   "test_partiallypurchase.py::Test_PartiallyPurchase::test_partiallypurchase[chrome]": true,
   "test_partiallypurchase.py": true,
   "test_search_experiences.py::TestCmsPage::test_about_us[chrome]": true,
-  "test_claim_voucher.py::TestClaimVoucher::test_claim_voucher_login[chrome]": true
+  "test_claim_voucher.py::TestClaimVoucher::test_claim_voucher_login[chrome]": true,
+  "test_registry_page.py::Test_Registry::test_add_to_registry[chrome]": true
 }

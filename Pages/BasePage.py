@@ -119,7 +119,7 @@ class BasePage:
 
     # -----------------login details for live server---------------------
     COUPLE_EMAIL = "Testuser76@yopmail.com"
-    COUPLE_USER_NAME = "Test44"
+    COUPLE_USER_NAME = "Automatoin"
     INDIVIDUAL_EMAIL = "individualuser@yopmail.com"
     EP_EMAIL = "testexperience@yopmail.com"
     CHARITY_EMAIL = "testcharity@yopmail.com"

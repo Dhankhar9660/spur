@@ -18,6 +18,7 @@ class Test_Registry(BaseTest):
     # create method for Login and create object of Test_Login to access various functions from Parent Class
     EXP_title = (By.XPATH, "//div[@class='nexExp_heading']")
     body = (By.XPATH, "//div[@class='product-name']//h2")
+    EXPERIENCE = "(//div[@class='product-name']//h2)[2]"
 
     @pytest.mark.alltest
     @pytest.mark.regression
@@ -31,19 +32,16 @@ class Test_Registry(BaseTest):
         # title = self.registry.get_element_text(self.EXP_title)
         # print(title+" Added to registry")
         self.registry.click_element(BasePage.ADD_TO_REGISTRY)
-        time.sleep(3)
-        self.registry.click_element(BasePage.EXPERIENCE)
-        Remove = self.registry.get_element_text(BasePage.ADD_TO_REGISTRY)
+        time.sleep(4)
+        self.registry.click_on_hidden_element(self.EXPERIENCE)
+        remove = self.registry.get_element_text(BasePage.ADD_TO_REGISTRY)
         try:
-            assert Remove == "REMOVE FROM REGISTRY"
+            assert remove == "REMOVE FROM REGISTRY"
             self.registry.click_element(BasePage.ADD_TO_REGISTRY)
-
-            # print(title + " " + Remove)
             time.sleep(3)
 
         except AssertionError:
             timestamp = str(int(time.time()))
-
             # Get the current test name
             test_name = request.node.name
             # Create a unique file name using the test name and timestamp
@@ -57,6 +55,10 @@ class Test_Registry(BaseTest):
 
             # Save the screenshot
             self.driver.save_screenshot(screenshot_path)
+            self.registry.refresh_page(self.driver)
+            time.sleep(3)
+            self.registry.click_element(BasePage.Log_Out)
+            time.sleep(3)
             raise
         self.registry.click_element(BasePage.Log_Out)
         time.sleep(2)
@@ -74,10 +76,11 @@ class Test_Registry(BaseTest):
         # print(title+" Added to registry")
         self.regist.click_element(BasePage.ADD_TO_REGISTRY)
         time.sleep(3)
-        self.regist.click_element(BasePage.EXPERIENCE)
-        Remove = self.regist.get_element_text(BasePage.ADD_TO_REGISTRY)
+        self.regist.click_on_hidden_element(self.EXPERIENCE)
+        remove = self.regist.get_element_text(BasePage.ADD_TO_REGISTRY)
         try:
-            assert Remove == "REMOVE FROM BUCKET LIST"
+            assert remove == "REMOVE FROM BUCKET LIST"
+            print("test 2")
             self.regist.click_element(BasePage.ADD_TO_REGISTRY)
 
             # print(title + " " + Remove)
@@ -99,6 +102,10 @@ class Test_Registry(BaseTest):
 
             # Save the screenshot
             self.driver.save_screenshot(screenshot_path)
+            self.registry.refresh_page(self.driver)
+            time.sleep(3)
+            self.registry.click_element(BasePage.Log_Out)
+            time.sleep(3)
             raise
         self.registry.click_element(BasePage.Log_Out)
         time.sleep(2)

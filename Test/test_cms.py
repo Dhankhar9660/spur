@@ -250,7 +250,7 @@ class TestCmsPage(BaseTest):
     @pytest.mark.findcouple
     def test_find_couple(self, request):
         self.couple = CmsPage(self.driver)
-        self.couple.find_couples("Balkishan Dhankhar testpartner partner")
+        self.couple.find_couples("automation gmail  account using")
         name_result = []
         try:
             result_list = self.couple.get_list_of_elements(self.results)
@@ -261,7 +261,7 @@ class TestCmsPage(BaseTest):
             print("Search result not coming")
 
         try:
-            assert "BALKISHAN DHANKHAR & TESTPARTNER PARTNER" in name_result
+            assert "AUTOMATION GMAIL & ACCOUNT USING" in name_result
 
         except AssertionError:
             # Create a unique timestamp for the screenshot

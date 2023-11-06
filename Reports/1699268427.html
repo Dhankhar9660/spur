@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>1699268427.html</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onLoad="init()">
+<script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) { // eslint-disable-line no-redeclare
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function findAll(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sortColumn(elem) {
+    toggleSortStates(elem);
+    const colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    let key;
+    if (elem.classList.contains('result')) {
+        key = keyResult;
+    } else if (elem.classList.contains('links')) {
+        key = keyLink;
+    } else {
+        key = keyAlpha;
+    }
+    sortTable(elem, key(colIndex));
+}
+
+function showAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(showExtras);
+}
+
+function hideAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(hideExtras);
+}
+
+function showExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.remove('collapsed');
+    expandcollapse.classList.remove('expander');
+    expandcollapse.classList.add('collapser');
+}
+
+function hideExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.add('collapsed');
+    expandcollapse.classList.remove('collapser');
+    expandcollapse.classList.add('expander');
+}
+
+function showFilters() {
+    let visibleString = getQueryParameter('visible') || 'all';
+    visibleString = visibleString.toLowerCase();
+    const checkedItems = visibleString.split(',');
+
+    const filterItems = document.getElementsByClassName('filter');
+    for (let i = 0; i < filterItems.length; i++) {
+        filterItems[i].hidden = false;
+
+        if (visibleString != 'all') {
+            filterItems[i].checked = checkedItems.includes(filterItems[i].getAttribute('data-test-result'));
+            filterTable(filterItems[i]);
+        }
+    }
+}
+
+function addCollapse() {
+    // Add links for show/hide all
+    const resulttable = find('table#results-table');
+    const showhideall = document.createElement('p');
+    showhideall.innerHTML = '<a href="javascript:showAllExtras()">Show all details</a> / ' +
+                            '<a href="javascript:hideAllExtras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    findAll('.col-result').forEach(function(elem) {
+        const collapsed = getQueryParameter('collapsed') || 'Passed';
+        const extras = elem.parentNode.nextElementSibling;
+        const expandcollapse = document.createElement('span');
+        if (extras.classList.contains('collapsed')) {
+            expandcollapse.classList.add('expander');
+        } else if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add('collapsed');
+            expandcollapse.classList.add('expander');
+        } else {
+            expandcollapse.classList.add('collapser');
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener('click', function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains('collapsed')) {
+                showExtras(event.currentTarget);
+            } else {
+                hideExtras(event.currentTarget);
+            }
+        });
+    });
+}
+
+function getQueryParameter(name) {
+    const match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () { // eslint-disable-line no-unused-vars
+    resetSortHeaders();
+
+    addCollapse();
+
+    showFilters();
+
+    sortColumn(find('.initial-sort'));
+
+    findAll('.sortable').forEach(function(elem) {
+        elem.addEventListener('click',
+            function() {
+                sortColumn(elem);
+            }, false);
+    });
+}
+
+function sortTable(clicked, keyFunc) {
+    const rows = findAll('.results-table-row');
+    const reversed = !clicked.classList.contains('asc');
+    const sortedRows = sort(rows, keyFunc, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    const thead = document.getElementById('results-table-head');
+    document.getElementById('results-table').remove();
+    const parent = document.createElement('table');
+    parent.id = 'results-table';
+    parent.appendChild(thead);
+    sortedRows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName('BODY')[0].appendChild(parent);
+}
+
+function sort(items, keyFunc, reversed) {
+    const sortArray = items.map(function(item, i) {
+        return [keyFunc(item), i];
+    });
+
+    sortArray.sort(function(a, b) {
+        const keyA = a[0];
+        const keyB = b[0];
+
+        if (keyA == keyB) return 0;
+
+        if (reversed) {
+            return keyA < keyB ? 1 : -1;
+        } else {
+            return keyA > keyB ? 1 : -1;
+        }
+    });
+
+    return sortArray.map(function(item) {
+        const index = item[1];
+        return items[index];
+    });
+}
+
+function keyAlpha(colIndex) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[colIndex].firstChild.data.toLowerCase();
+    };
+}
+
+function keyLink(colIndex) {
+    return function(elem) {
+        const dataCell = elem.childNodes[1].childNodes[colIndex].firstChild;
+        return dataCell == null ? '' : dataCell.innerText.toLowerCase();
+    };
+}
+
+function keyResult(colIndex) {
+    return function(elem) {
+        const strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+            'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[colIndex].firstChild.data);
+    };
+}
+
+function resetSortHeaders() {
+    findAll('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    findAll('.sortable').forEach(function(elem) {
+        const icon = document.createElement('div');
+        icon.className = 'sort-icon';
+        icon.textContent = 'vvv';
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove('desc', 'active');
+        elem.classList.add('asc', 'inactive');
+    });
+}
+
+function toggleSortStates(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        resetSortHeaders();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function isAllRowsHidden(value) {
+    return value.hidden == false;
+}
+
+function filterTable(elem) { // eslint-disable-line no-unused-vars
+    const outcomeAtt = 'data-test-result';
+    const outcome = elem.getAttribute(outcomeAtt);
+    const classOutcome = outcome + ' results-table-row';
+    const outcomeRows = document.getElementsByClassName(classOutcome);
+
+    for(let i = 0; i < outcomeRows.length; i++){
+        outcomeRows[i].hidden = !elem.checked;
+    }
+
+    const rows = findAll('.results-table-row').filter(isAllRowsHidden);
+    const allRowsHidden = rows.length == 0 ? true : false;
+    const notFoundMessage = document.getElementById('not-found-message');
+    notFoundMessage.hidden = !allRowsHidden;
+}
+
+</script>
+<h1>1699268427.html</h1>
+<p>Report generated on 06-Nov-2023 at 16:51:41 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a>
+    v3.2.0</p>
+<h2>Summary</h2>
+<p>51 tests ran in 1273.49 seconds. </p>
+<p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter"
+                                                                                     data-test-result="passed"
+                                                                                     hidden="true"
+                                                                                     name="filter_checkbox"
+                                                                                     onChange="filterTable(this)"
+                                                                                     type="checkbox"/><span
+        class="passed">50 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true"
+                                                hidden="true" name="filter_checkbox" onChange="filterTable(this)"
+                                                type="checkbox"/><span class="skipped">0 skipped</span>, <input
+        checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox"
+        onChange="filterTable(this)" type="checkbox"/><span class="failed">1 failed</span>, <input checked="true"
+                                                                                                   class="filter"
+                                                                                                   data-test-result="error"
+                                                                                                   disabled="true"
+                                                                                                   hidden="true"
+                                                                                                   name="filter_checkbox"
+                                                                                                   onChange="filterTable(this)"
+                                                                                                   type="checkbox"/><span
+        class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true"
+                                              hidden="true" name="filter_checkbox" onChange="filterTable(this)"
+                                              type="checkbox"/><span class="xfailed">0 expected failures</span>, <input
+        checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox"
+        onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+<h2>Results</h2>
+<table id="results-table">
+    <thead id="results-table-head">
+    <tr>
+        <th class="sortable result initial-sort" col="result">Result</th>
+        <th class="sortable" col="name">Test</th>
+        <th class="sortable" col="duration">Duration</th>
+        <th class="sortable links" col="links">Links</th>
+    </tr>
+    <tr hidden="true" id="not-found-message">
+        <th colspan="4">No results found. Try to check the filters</th>
+    </tr>
+    </thead>
+    <tbody class="failed results-table-row">
+    <tr>
+        <td class="col-result">Failed</td>
+        <td class="col-name">Test/test_update_honeymoon.py::Test_Honeymoon::test_update_honeymoon[chrome]</td>
+        <td class="col-duration">59.24</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log">self = &lt;Test.test_update_honeymoon.Test_Honeymoon object at 0x0000019A80F40CA0&gt;<br/>request
+                = &lt;FixtureRequest for &lt;Function test_update_honeymoon[chrome]&gt;&gt;<br/><br/>
+                @pytest.mark.honeymoon<br/> @pytest.mark.alltest<br/> def test_update_honeymoon(self, request):<br/>
+                self.honeymoon = LoginPage(self.driver)<br/> self.honeymoon.login(BasePage.COUPLE_EMAIL,
+                BasePage.AUTOMATION_PASSWORD)<br/> <br/> self.honeymoon = Update_Honeymoon(self.driver)<br/>
+                self.honeymoon.Honeymoon(&quot;New Jersey, USA&quot;, 8787878787, &quot;Testing&quot;)<br/>
+                time.sleep(4)<br/> try:<br/>&gt; Location = self.honeymoon.get_element_value(BasePage.Honymoon_Location)<br/><br/>Test\test_update_honeymoon.py:25:
+                <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/>Pages\BasePage.py:257:
+                in get_element_value<br/> element = WebDriverWait(self.driver,
+                15).until(EC.visibility_of_element_located(by_locator)).get_attribute(<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/><br/>self = &lt;selenium.webdriver.support.wait.WebDriverWait
+                (session=&quot;7780fabd0afd83d7a53ff35502ea6b06&quot;)&gt;<br/>method = &lt;function
+                visibility_of_element_located.&lt;locals&gt;._predicate at 0x0000019A80FF0A60&gt;<br/>message = &#x27;&#x27;<br/><br/>
+                def until(self, method, message: str = &quot;&quot;):<br/> &quot;&quot;&quot;Calls the method provided
+                with the driver as an argument until the \<br/> return value does not evaluate to ``False``.<br/> <br/>
+                :param method: callable(WebDriver)<br/> :param message: optional message for
+                :exc:`TimeoutException`<br/> :returns: the result of the last call to `method`<br/> :raises:
+                :exc:`selenium.common.exceptions.TimeoutException` if timeout occurs<br/> &quot;&quot;&quot;<br/> screen
+                = None<br/> stacktrace = None<br/> <br/> end_time = time.monotonic() + self._timeout<br/> while
+                True:<br/> try:<br/> value = method(self._driver)<br/> if value:<br/> return value<br/> except
+                self._ignored_exceptions as exc:<br/> screen = getattr(exc, &quot;screen&quot;, None)<br/> stacktrace =
+                getattr(exc, &quot;stacktrace&quot;, None)<br/> time.sleep(self._poll)<br/> if time.monotonic() &gt;
+                end_time:<br/> break<br/>&gt; raise TimeoutException(message, screen, stacktrace)<br/><span
+                        class="error">E       selenium.common.exceptions.TimeoutException: Message: </span><br/><span
+                        class="error">E       Stacktrace:</span><br/><span class="error">E       	GetHandleVerifier [0x00B74DE3+43907]</span><br/><span
+                        class="error">E       	(No symbol) [0x00B00741]</span><br/><span class="error">E       	(No symbol) [0x009F33ED]</span><br/><span
+                        class="error">E       	(No symbol) [0x00A26760]</span><br/><span class="error">E       	(No symbol) [0x00A26C2B]</span><br/><span
+                        class="error">E       	(No symbol) [0x00A56F62]</span><br/><span class="error">E       	(No symbol) [0x00A42BA4]</span><br/><span
+                        class="error">E       	(No symbol) [0x00A555CA]</span><br/><span class="error">E       	(No symbol) [0x00A42956]</span><br/><span
+                        class="error">E       	(No symbol) [0x00A1E17E]</span><br/><span class="error">E       	(No symbol) [0x00A1F32D]</span><br/><span
+                        class="error">E       	GetHandleVerifier [0x00E25AF9+2865305]</span><br/><span class="error">E       	GetHandleVerifier [0x00E6E78B+3163435]</span><br/><span
+                        class="error">E       	GetHandleVerifier [0x00E68441+3138017]</span><br/><span class="error">E       	GetHandleVerifier [0x00BFE0F0+605840]</span><br/><span
+                        class="error">E       	(No symbol) [0x00B0A64C]</span><br/><span class="error">E       	(No symbol) [0x00B06638]</span><br/><span
+                        class="error">E       	(No symbol) [0x00B0675F]</span><br/><span class="error">E       	(No symbol) [0x00AF8DB7]</span><br/><span
+                        class="error">E       	BaseThreadInitThunk [0x7662FCC9+25]</span><br/><span class="error">E       	RtlGetAppContainerNamedObjectPath [0x77767C6E+286]</span><br/><span
+                        class="error">E       	RtlGetAppContainerNamedObjectPath [0x77767C3E+238]</span><br/><br/>..\..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\selenium\webdriver\support\wait.py:95:
+                TimeoutException<br/> ------------------------------Captured stdout call------------------------------
+                <br/>Honeymoon not updating
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Charity_reg_page.py::Test_CHARITY_SIGNUP::test_charity_signup[chrome]</td>
+        <td class="col-duration">57.84</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>charity
+                signup working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Create_Exp.py::Test_Create_Exp::test_create_exp[chrome]</td>
+        <td class="col-duration">60.50</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_EP_register.py::Test_EXPRegistration::test_ep_rgistration[chrome]</td>
+        <td class="col-duration">41.59</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>EP
+                signup working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_check_with_blank[chrome]</td>
+        <td class="col-duration">11.12</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_couple_login[chrome]</td>
+        <td class="col-duration">11.98</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Couple
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_couple_login_by_username[chrome]</td>
+        <td class="col-duration">11.92</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Couple
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_individual_login[chrome]</td>
+        <td class="col-duration">9.00</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Individual
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_EP_login[chrome]</td>
+        <td class="col-duration">8.98</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>EP
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_charity_login[chrome]</td>
+        <td class="col-duration">8.97</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Charity
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_joy_login[chrome]</td>
+        <td class="col-duration">9.32</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Joy
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_zola_login[chrome]</td>
+        <td class="col-duration">9.28</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Zola
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_Loginpage.py::Test_Login::test_knot_login[chrome]</td>
+        <td class="col-duration">14.34</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Knot
+                user login working fine.
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_UpdateProfile.py::Test_Update_Profile::test_update_profile[chrome]</td>
+        <td class="col-duration">54.08</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_account.py::Test_Account::test_deactivate_account[chrome]</td>
+        <td class="col-duration">29.52</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_change_password.py::Test_change_password::test_change_password_a[chrome]</td>
+        <td class="col-duration">18.81</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_change_password.py::Test_change_password::test_change_password_b[chrome]</td>
+        <td class="col-duration">9.36</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_change_password.py::Test_change_password::test_change_password_c[chrome]</td>
+        <td class="col-duration">9.70</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_change_password.py::Test_change_password::test_change_password_d[chrome]</td>
+        <td class="col-duration">9.58</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_change_password.py::Test_change_password::test_change_password_e[chrome]</td>
+        <td class="col-duration">12.67</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_change_password.py::Test_change_password::test_change_password_f[chrome]</td>
+        <td class="col-duration">37.60</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_claim_voucher.py::TestClaimVoucher::test_claim_voucher_login[chrome]</td>
+        <td class="col-duration">23.30</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_about_us[chrome]</td>
+        <td class="col-duration">19.94</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_how_it_work[chrome]</td>
+        <td class="col-duration">8.47</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_privacy_policy1[chrome]</td>
+        <td class="col-duration">4.14</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_terms_condition[chrome]</td>
+        <td class="col-duration">2.19</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_contactus[chrome]</td>
+        <td class="col-duration">3.31</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_faq[chrome]</td>
+        <td class="col-duration">4.30</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_find_couple[chrome]</td>
+        <td class="col-duration">4.09</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_wedding_registry[chrome]</td>
+        <td class="col-duration">3.58</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_blogs[chrome]</td>
+        <td class="col-duration">1.58</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>True
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_cms.py::TestCmsPage::test_blogs_details[chrome]</td>
+        <td class="col-duration">27.48</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Message:
+                Stacktrace:
+                GetHandleVerifier [0x00E64DE3+43907]
+                (No symbol) [0x00DF0741]
+                (No symbol) [0x00CE33ED]
+                (No symbol) [0x00D16760]
+                (No symbol) [0x00D16C2B]
+                (No symbol) [0x00D46F62]
+                (No symbol) [0x00D32BA4]
+                (No symbol) [0x00D455CA]
+                (No symbol) [0x00D32956]
+                (No symbol) [0x00D0E17E]
+                (No symbol) [0x00D0F32D]
+                GetHandleVerifier [0x01115AF9+2865305]
+                GetHandleVerifier [0x0115E78B+3163435]
+                GetHandleVerifier [0x01158441+3138017]
+                GetHandleVerifier [0x00EEE0F0+605840]
+                (No symbol) [0x00DFA64C]
+                (No symbol) [0x00DF6638]
+                (No symbol) [0x00DF675F]
+                (No symbol) [0x00DE8DB7]
+                BaseThreadInitThunk [0x7662FCC9+25]
+                RtlGetAppContainerNamedObjectPath [0x77767C6E+286]
+                RtlGetAppContainerNamedObjectPath [0x77767C3E+238]
+                heading not available
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_forgot_password.py::Test_forgot_password::test_forgot_password[chrome]</td>
+        <td class="col-duration">49.94</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_friendrequest.py::Test_Friendreq::test_Friendreq[chrome]</td>
+        <td class="col-duration">44.05</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_invitepartner.py::TestInvitePartner::test_update_partner[chrome]</td>
+        <td class="col-duration">55.40</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_order.py::Test_Order::test_order[chrome]</td>
+        <td class="col-duration">42.81</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_prcie_filter.py::TestPriceFilter::test_price_filter_a[chrome]</td>
+        <td class="col-duration">43.40</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_prcie_filter.py::TestPriceFilter::test_price_filter_b[chrome]</td>
+        <td class="col-duration">33.84</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>[156,
+                110, 180, 144, 110, 175, 125, 100, 150, 120, 122, 118, 130, 198, 158, 159, 178, 178]
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_prcie_filter.py::TestPriceFilter::test_price_filter_c[chrome]</td>
+        <td class="col-duration">34.85</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>[248,
+                220, 248, 300, 425, 298, 318, 500, 240, 248, 250, 1644, 558, 548, 250, 268, 498, 798]
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_prcie_filter.py::TestPriceFilter::test_price_filter_d[chrome]</td>
+        <td class="col-duration">37.08</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>[20,
+                48, 0, 0]
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_registry_page.py::Test_Registry::test_add_to_registry[chrome]</td>
+        <td class="col-duration">43.04</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_registry_page.py::Test_Registry::test_add_to_bucket_list[chrome]</td>
+        <td class="col-duration">31.62</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>test
+                2
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_registry_page.py::Test_Registry::test_guest_view[chrome]</td>
+        <td class="col-duration">69.48</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>TEST
+                LIVE EXP (NEW YORK)
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_search_experiences.py::TestSearchPage::test_search_on_homepage[chrome]</td>
+        <td class="col-duration">24.16</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_search_experiences.py::TestSearchPage::test_search_by_name_and_location[chrome]
+        </td>
+        <td class="col-duration">13.30</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>[&#x27;TEST
+                LIVE EXP (NEW YORK)&#x27;]
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_search_experiences.py::TestSearchPage::test_search_by_namesearch_page[chrome]
+        </td>
+        <td class="col-duration">12.22</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>[&#x27;TEST
+                LIVE EXP (NEW YORK)&#x27;]
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">
+            Test/test_search_experiences.py::TestSearchPage::test_search_by_name_category_search_page[chrome]
+        </td>
+        <td class="col-duration">14.01</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>[&#x27;TEST
+                LIVE EXP (NEW YORK)&#x27;]
+                <br/></div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_search_experiences.py::TestSearchPage::test_exp_details_page[chrome]</td>
+        <td class="col-duration">13.83</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">
+            Test/test_search_experiences.py::TestSearchPage::test_exp_details_page_from_location_search[chrome]
+        </td>
+        <td class="col-duration">37.09</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_update_shipping.py::Test_Update_Shipping::test_update_shipping[chrome]</td>
+        <td class="col-duration">46.75</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+    <tbody class="passed results-table-row">
+    <tr>
+        <td class="col-result">Passed</td>
+        <td class="col-name">Test/test_url.py::Test_URL::test_registryurl[chrome]</td>
+        <td class="col-duration">22.07</td>
+        <td class="col-links"></td>
+    </tr>
+    <tr>
+        <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
