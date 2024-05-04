@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2aa63c97-bf58-41c9-8834-5c5b42ef7542" name="Changes" comment="rtt">
+      <change beforePath="$PROJECT_DIR$/Test/test_homepage.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test/test_homepage.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Dhankhar9660"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Dhankhar9660/spur.git",
+    "accountId": "634bfc43-254f-48e8-bc88-fab7917f09ea"
+  }
+}]]></component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2fKE26HCF2MJjS1plvlej7mYbCE" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python tests.pytest for test_Loginpage.Test_Login.test_check_with_blank.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_Loginpage.Test_Login.test_joy_login.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_Loginpage.Test_Login.test_knot_login.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_booking.Test_Booking.test_booking.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_change_password.Test_change_password.test_change_password_a.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_claim_voucher.TestClaimVoucher.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_homepage.TestHomepage.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_homepage.TestHomepage.test_nav_link.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_homepage.TestHomepage.test_page_title.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_homepage.TestHomepage.test_popular_category.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_homepage.TestHomepage.test_popular_destination.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_homepage.TestHomepage.test_popular_destinations.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_homepage.TestHomepage.test_populer_destinations.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for test_homepage.TestHomepage.test_search_new.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest in test_Loginpage.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest in test_partiallypurchase.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.testexecution.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Bal/PycharmProjects/spur-automations&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;
+  }
+}</component>
+  <component name="RunManager" selected="Python tests.pytest for test_homepage.TestHomepage.test_search_new">
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="spur-automations" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Pages" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Pages/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_homepage.TestHomepage.test_nav_link" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="spur-automations" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_homepage.TestHomepage.test_nav_link&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_homepage.TestHomepage.test_popular_category" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="spur-automations" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_homepage.TestHomepage.test_popular_category&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_homepage.TestHomepage.test_popular_destination" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="spur-automations" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_homepage.TestHomepage.test_popular_destination&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_homepage.TestHomepage.test_search_new" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="spur-automations" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_homepage.TestHomepage.test_search_new&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.pytest for test_homepage.TestHomepage.test_search_new" />
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python tests.pytest for test_homepage.TestHomepage.test_nav_link" />
+        <item itemvalue="Python tests.pytest for test_homepage.TestHomepage.test_popular_destination" />
+        <item itemvalue="Python tests.pytest for test_homepage.TestHomepage.test_popular_category" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-0509580d9d50-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.14494.241" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2aa63c97-bf58-41c9-8834-5c5b42ef7542" name="Changes" comment="" />
+      <created>1713541159264</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1713541159264</updated>
+    </task>
+    <task id="LOCAL-00001" summary="rtt">
+      <option name="closed" value="true" />
+      <created>1714791456341</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1714791456341</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="rtt" />
+    <option name="LAST_COMMIT_MESSAGE" value="rtt" />
+  </component>
+</project>

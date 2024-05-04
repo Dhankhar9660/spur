@@ -76,21 +76,11 @@ class TestHomepage(BaseTest):
         try:
             assert page_title == "Home"
         except AssertionError:
-            # Create a unique timestamp for the screenshot
             timestamp = str(int(time.time()))
-
-            # Get the current test name
             test_name = request.node.name
-            # Create a unique file name using the test name and timestamp
             file_name = f"{test_name}_{timestamp}.png"
-
-            # Specify the directory path to save the screenshot
             directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
-
-            # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
-
-            # Save the screenshot
             self.driver.save_screenshot(screenshot_path)
             raise
 
