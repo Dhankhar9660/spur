@@ -1,15 +1,14 @@
 import time
 import os
 import pytest
-
 from Pages.BasePage import BasePage
-
 from Pages.Honeymoon import Update_Honeymoon
 from Pages.LoginPage import LoginPage
 from Test.test_Base import BaseTest
 import datetime
 
-class Test_Honeymoon(BaseTest):
+
+class TestHoneymoon(BaseTest):
     today = datetime.datetime.now().strftime("%B %d, %Y")
 
     @pytest.mark.honeymoon
@@ -22,20 +21,20 @@ class Test_Honeymoon(BaseTest):
         self.honeymoon.Honeymoon("New Jersey, USA", 8787878787, "Testing")
         time.sleep(4)
         try:
-            Location = self.honeymoon.get_element_value(BasePage.Honymoon_Location)
-            assert Location == "New Jersey, USA"
+            location = self.honeymoon.get_element_value(BasePage.Honymoon_Location)
+            assert location == "New Jersey, USA"
 
-            Mob_Number = self.honeymoon.get_element_value(BasePage.Mobile_Number)
-            assert Mob_Number == '8787878787'
+            mob_number = self.honeymoon.get_element_value(BasePage.Mobile_Number)
+            assert mob_number == '8787878787'
 
-            Trip_Start_Date = self.honeymoon.get_element_value(BasePage.Trip_Start_Date)
-            assert Trip_Start_Date == self.today
+            trip_start_date = self.honeymoon.get_element_value(BasePage.Trip_Start_Date)
+            assert trip_start_date == self.today
 
-            Trip_End_Date = self.honeymoon.get_element_value(BasePage.Trip_End_Date)
-            assert Trip_End_Date == self.today
+            trip_end_date = self.honeymoon.get_element_value(BasePage.Trip_End_Date)
+            assert trip_end_date == self.today
 
-            Hotel_Loding = self.honeymoon.get_element_value(BasePage.Hotel_Loding)
-            assert Hotel_Loding == "Testing"
+            hotel_landing = self.honeymoon.get_element_value(BasePage.Hotel_Loding)
+            assert hotel_landing == "Testing"
 
         except Exception:
             print("Honeymoon not updating")
@@ -47,7 +46,7 @@ class Test_Honeymoon(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)

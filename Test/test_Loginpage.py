@@ -15,9 +15,11 @@ import openpyxl
 from datetime import datetime
 
 
-class Test_Login(BaseTest):
+class TestLogin(BaseTest):
     # ______________create method for Login and create all login test cases____________________
+
     @pytest.mark.login
+    @pytest.mark.a
     @pytest.mark.alltest
     def test_check_with_blank(self, request):
 
@@ -42,7 +44,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -75,7 +77,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -103,7 +105,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -135,7 +137,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -163,7 +165,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -194,7 +196,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -223,7 +225,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -254,7 +256,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -283,7 +285,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -312,7 +314,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -346,7 +348,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -379,7 +381,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -409,7 +411,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -441,7 +443,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -471,7 +473,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -505,7 +507,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -534,7 +536,7 @@ class Test_Login(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)

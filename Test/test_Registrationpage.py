@@ -12,7 +12,7 @@
 #
 #
 # @pytest.mark.smoke
-# @pytest.mark.regression
+# @pytest.mark.regressiona
 # @pytest.mark.loginsignup
 # class Test_Registration(BaseTest):
 #

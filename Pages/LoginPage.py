@@ -4,7 +4,6 @@ from Pages.BasePage import BasePage
 
 
 class LoginPage(BasePage):
-    # Create Locators for elements on Login Page:
 
     # Constructor for this class :
     def __init__(self, driver):
@@ -18,3 +17,4 @@ class LoginPage(BasePage):
         self.clear_text_box(self.PASSWORD)
         self.send_keys(self.PASSWORD, password)
         self.click_element(self.LOGIN_BTN)
+

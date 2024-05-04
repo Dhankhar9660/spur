@@ -4,18 +4,13 @@ import time
 import pytest
 from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
-
-from Config.config import TestData
 from Pages.LoginPage import LoginPage
-
-from Pages.Order import OrderPage
-from Pages.RegistryPage import RegistryPage
 from Pages.Booking import Booking
 from Test.test_Base import BaseTest
 from Pages.BasePage import BasePage
 
 
-class Test_Order(BaseTest):
+class TestOrder(BaseTest):
     # create method for Login and create object of Test_Login to access various functions from Parent Class
     @pytest.mark.alltest
     @pytest.mark.regression
@@ -56,8 +51,7 @@ class Test_Order(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
-
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
 

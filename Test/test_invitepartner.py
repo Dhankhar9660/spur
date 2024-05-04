@@ -29,7 +29,7 @@ class TestInvitePartner(BaseTest):
             time.sleep(2)
 
         except AssertionError:
-            print('Partner Email is not updating')
+            print('Partner Email is not updating.')
             raise
         time.sleep(2)
         self.spur.click_element(BasePage.Log_Out)

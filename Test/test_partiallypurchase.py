@@ -1,22 +1,17 @@
 import time
-
 import pytest
-from selenium.webdriver.common.keys import Keys
 import pyperclip
-from selenium.webdriver.common.by import By
-from Pages.RegistryPage import RegistryPage
-from Config.config import TestData
 from Pages.LoginPage import LoginPage
 from Test.test_Base import BaseTest
 from Pages.BasePage import BasePage
 from Pages.Partially_Purchase import PartiallyPurchase
 
 
-class Test_PartiallyPurchase(BaseTest):
+class TestPartiallyPurchase(BaseTest):
 
     @pytest.mark.patial_purchase
     @pytest.mark.alltes
-    def test_partiallypurchase(self):
+    def test_partially_purchase(self):
         login = LoginPage(self.driver)
         login.login(BasePage.COUPLE_EMAIL, BasePage.AUTOMATION_PASSWORD)
         time.sleep(5)

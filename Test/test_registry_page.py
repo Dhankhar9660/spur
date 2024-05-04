@@ -1,12 +1,9 @@
 """ Test Page for Login Checks"""
 import os
 import time
-from _ast import Assert
-
 import pyperclip
 import pytest
 from selenium.webdriver.common.by import By
-
 from Config.config import TestData
 from Pages.LoginPage import LoginPage
 from Pages.RegistryPage import RegistryPage
@@ -14,7 +11,7 @@ from Test.test_Base import BaseTest
 from Pages.BasePage import BasePage
 
 
-class Test_Registry(BaseTest):
+class TestRegistry(BaseTest):
     # create method for Login and create object of Test_Login to access various functions from Parent Class
     EXP_title = (By.XPATH, "//div[@class='nexExp_heading']")
     body = (By.XPATH, "//div[@class='product-name']//h2")
@@ -48,7 +45,7 @@ class Test_Registry(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -95,7 +92,7 @@ class Test_Registry(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -146,9 +143,9 @@ class Test_Registry(BaseTest):
         time.sleep(2)
         self.regist.click_element(BasePage.Click_On_Cart)
         try:
-            Product_Name = self.regist.get_element_text(BasePage.Product)
+            product_name = self.regist.get_element_text(BasePage.Product)
             name_upper = TestData.Exprience_Name.upper()
-            assert Product_Name == name_upper
+            assert product_name == name_upper
             self.regist.click_element(BasePage.Remove_From_Cart)
             self.regist.click_element(BasePage.Click_Yes_Button)
         except AssertionError:

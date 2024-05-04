@@ -7,6 +7,7 @@ from selenium.webdriver.chrome.service import Service
 import pyperclip
 import re
 from datetime import datetime
+
 # import datetime
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))

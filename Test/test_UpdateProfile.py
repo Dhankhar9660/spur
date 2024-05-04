@@ -8,7 +8,7 @@ from Pages.UpdateProfile import UpdateProfile
 from Test.test_Base import BaseTest
 
 
-class Test_Update_Profile(BaseTest):
+class TestUpdateProfile(BaseTest):
 
     @pytest.mark.profile
     @pytest.mark.alltest
@@ -56,49 +56,32 @@ class Test_Update_Profile(BaseTest):
             raise
 
         try:
-            Partner_Last_Name = self.update.get_element_value(BasePage.Partner_Last_Name)
-            assert Partner_Last_Name == "test"
+            partner_last_name = self.update.get_element_value(BasePage.Partner_Last_Name)
+            assert partner_last_name == "test"
 
         except AssertionError:
             print("Partner_Last_Name is not updating")
             raise
 
-        # try:
-        #     Partner_Email = self.update.get_element_value(BasePage.Partner_Email)
-        #     print(Partner_Email)
-        #     assert Partner_Email == "partner11@yopmail.com"
-        #
-        # except AssertionError:
-        #     print("Partner_Email is not updating")
-        #     raise
-
-        # try:
-        #     Wedding_Date = self.asd.get_element_value(BasePage.Wedding_Date)
-        #     assert Wedding_Date == "July 6, 2023"
-        #
-        # except AssertionError:
-        #     print("Wedding_Date is not updating")
-        #     raise
-
         try:
-            Greetings = self.update.get_element_value(BasePage.Greetings)
-            assert Greetings == "Thanks for the visiting"
+            greetings = self.update.get_element_value(BasePage.Greetings)
+            assert greetings == "Thanks for the visiting"
 
         except AssertionError:
             print("Greetings is not updating")
             raise
 
         try:
-            Couple_Hashtag = self.update.get_element_value(BasePage.Couple_Hashtag)
-            assert Couple_Hashtag == "Hss"
+            couple_hashtag = self.update.get_element_value(BasePage.Couple_Hashtag)
+            assert couple_hashtag == "Hss"
 
         except AssertionError:
             print("Couple_Hashtag is not updating")
             raise
 
         try:
-            Home_Region = self.update.get_element_value(BasePage.Home_Region)
-            assert Home_Region == "New Jersey"
+            home_region = self.update.get_element_value(BasePage.Home_Region)
+            assert home_region == "New Jersey"
 
         except AssertionError:
             print("Home_Region is not updating")

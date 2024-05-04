@@ -12,10 +12,10 @@ from Config.config import TestData
 @pytest.fixture(params=["chrome"], scope="class")
 def init_driver_here(request):
     """________________SETUP-----------------"""
+    global driver
     if request.param == "chrome":
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--incognito")
-
         chrome_options.add_argument("--disable-infobars")
         chrome_options.add_argument("start-maximized")
         chrome_options.add_argument("--disable-extensions")
@@ -28,9 +28,10 @@ def init_driver_here(request):
             "profile.default_content_setting_values.geolocation": 2,
             "profile.default_content_setting_values.notifications": 2
         })
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), chrome_options=chrome_options)
 
-    #     # Update for Mac based on the PATH or use web-driver manager
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+
+        # Update for Mac based on the PATH or use web-driver manager
     # elif request.param == "edge":
     #     # Comment or Uncomment as required for running on Mac
     #     # desired_cap = {}
@@ -51,7 +52,6 @@ def init_driver_here(request):
     """driver.set_window_size(375, 820)
     driver.set_window_position(500, 0)"""
     driver.get(TestData.BASE_URL)
-    # driver.get(TestData.PROD_LOGIN_URL)
     driver.implicitly_wait(20)
 
     yield

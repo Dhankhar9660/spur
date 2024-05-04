@@ -14,7 +14,7 @@ import openpyxl
 from datetime import datetime
 
 
-class Test_Login(BaseTest):
+class TestLogin(BaseTest):
     productlist = (By.XPATH, "//div[@class='item-box']")
     # productname = (By.XPATH, "//h2[@class='product-title']")
     nextpage = (By.XPATH, "//li[@class='next-page']")

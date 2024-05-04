@@ -8,7 +8,7 @@ from email.mime.application import MIMEApplication
 import zipfile
 
 # Run the test case and generate the report
-folder_path = "C:/Users/HP/PycharmProjects/spur-automations/Reports/"
+folder_path = "C:/Users/Bal/PycharmProjects/spur-automations/Reports/"
 timestamp = str(int(time.time()))
 
 # Create a unique file name using the timestamp
@@ -19,7 +19,7 @@ file_path = os.path.join(folder_path, file_name)
 pytest.main(["--html=" + file_path, "-m alltest"])
 
 
-def send_email_with_report(report_file, recipient_email):
+def send_email_with_report(recipient_email):
     # Email details
     sender_email = "projectonqa@gmail.com"
     sender_password = "reqfailndcijwifo"
@@ -72,7 +72,7 @@ def send_email_with_report(report_file, recipient_email):
 
 # report file path and recipient email
 report_file_path = file_path
-recipient_emails = "balkishan.dhankhar@owebest.in, bharat.singh@owebest.com, mahendra.singh@owebest.in"
+recipient_emails = "balkishan.dhankhar@owebest.in"
 
 # Call the function to send the email with the report
-send_email_with_report(report_file_path, recipient_emails)
+send_email_with_report(recipient_emails)

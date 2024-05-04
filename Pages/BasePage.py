@@ -54,11 +54,11 @@ class BasePage:
     CALENDER = (By.XPATH, "//input[@placeholder='Select Date']")
     DATE = (By.XPATH, "(//div[@class='p-datepicker-calendar-container ng-tns-c85-60 ng-star-inserted']//td)[33]")
     TIMESLOT = (By.XPATH, "//div[@class='availDateSEl selectMar']//select")
-    ADDNEWEXP = (By.XPATH, "(//div[@class='expericence_addView']//span)[2]")
+    ADDNEWEXP = "(//div[@class='expericence_addView']//span)[2]"
     EXPNAMEINPUT = (By.XPATH, "//div[@class='form-group']//input")
-    NEXT2 = (By.XPATH, "//button[@class='form-control submit-button']")
+    NEXT2 = "//button[@class='form-control submit-button']"
     SUMMERY = (By.XPATH, "//div[@class='form-group']//textarea")
-    NEXT3 = (By.XPATH, "//input[@class='twobtns-accept']")
+    NEXT3 = "//input[@class='twobtns-accept']"
     DETAILS = (By.XPATH, "//div[@class='form-group']//div//textarea")
     INCLUDE = (By.XPATH, "(//div[@class='mb-2']//textarea)[1]")
     EXCLUDE = (By.XPATH, "(//div[@class='mb-2']//textarea)[2]")
@@ -68,12 +68,13 @@ class BasePage:
     PRICE = (By.XPATH, "(//div[@class='ex-pricing-input']//input)[1]")
     TEX = (By.XPATH, "(//div[@class='ex-pricing-input']//input)[2]")
     REDIO_NO = (By.XPATH, "(//div[@class='customradio_wrap']//label)[2]")
-    SUBMIT = (By.XPATH, "//button[@class='form-control submit-button']")
+    SUBMIT = "//button[@class='form-control submit-button']"
     EXP_HEADING = (By.XPATH, "//h1[@class='main_heading mb-4']")
+    EXP_cong_msg = (By.XPATH, "//p[@class='my-5']")
     Buy_AS_VOUCHER = (By.XPATH, "//button[text()='BUY AS A VOUCHER']")
     Cart_popup_close = (By.XPATH, "//div[@class='cartpopup_box']//i")
 
-    EXP_Name = "Test Auto Exp 123"
+    exp_name = "Test Auto Exp 123"
     Details = "Check out the complete schedule and route details of the 12935 Mumbai Bandra T Surat Intercity Exp on " \
               "RailYatri."
     Include = "drink , food, hotel"

@@ -8,7 +8,7 @@ from Pages.UpdateShipping import Shipping
 from Test.test_Base import BaseTest
 
 
-class Test_Update_Shipping(BaseTest):
+class TestUpdateShipping(BaseTest):
 
     @pytest.mark.shipping
     @pytest.mark.alltest
@@ -21,17 +21,17 @@ class Test_Update_Shipping(BaseTest):
         self.spur.UpdateShipping("Test", "user", "only for testing", "Aruba")
 
         try:
-            FirstName = self.spur.get_element_value(BasePage.FirstName)
-            assert FirstName == 'Test'
+            firstname = self.spur.get_element_value(BasePage.FirstName)
+            assert firstname == 'Test'
 
-            LastName = self.spur.get_element_value(BasePage.LastName)
-            assert LastName == 'user'
+            lastname = self.spur.get_element_value(BasePage.LastName)
+            assert lastname == 'user'
 
-            Address = self.spur.get_element_value(BasePage.Address)
-            assert Address == 'only for testing'
+            address = self.spur.get_element_value(BasePage.Address)
+            assert address == 'only for testing'
 
-            Country = self.spur.get_element_text(BasePage.Country)
-            assert Country == "Aruba"
+            country = self.spur.get_element_text(BasePage.Country)
+            assert country == "Aruba"
 
         except AssertionError:
             print('shipping page not updating')

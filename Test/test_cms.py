@@ -41,7 +41,7 @@ class TestCmsPage(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -75,7 +75,7 @@ class TestCmsPage(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -111,7 +111,7 @@ class TestCmsPage(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -145,7 +145,7 @@ class TestCmsPage(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -185,7 +185,7 @@ class TestCmsPage(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -236,7 +236,7 @@ class TestCmsPage(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -273,7 +273,7 @@ class TestCmsPage(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)

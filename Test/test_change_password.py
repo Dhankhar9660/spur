@@ -9,7 +9,7 @@ from Test.test_Base import BaseTest
 from Config.config import TestData
 
 
-class Test_change_password(BaseTest):
+class TestChangPassword(BaseTest):
 
     @pytest.mark.changepassword
     @pytest.mark.alltest
@@ -41,7 +41,7 @@ class Test_change_password(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -74,7 +74,7 @@ class Test_change_password(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -107,7 +107,7 @@ class Test_change_password(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -140,7 +140,7 @@ class Test_change_password(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -178,7 +178,7 @@ class Test_change_password(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)
@@ -219,7 +219,7 @@ class Test_change_password(BaseTest):
             file_name = f"{test_name}_{timestamp}.png"
 
             # Specify the directory path to save the screenshot
-            directory = "C:/Users/HP/PycharmProjects/spur-automations/Screenshot/"
+            directory = "C:/Users/Bal/PycharmProjects/spur-automations/Screenshot"
 
             # Create the full path by joining the directory path and file name
             screenshot_path = os.path.join(directory, file_name)

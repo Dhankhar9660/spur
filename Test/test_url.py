@@ -1,18 +1,17 @@
 import time
 import pyperclip
 import pytest
-from selenium.webdriver.common.by import By
 from Config.config import TestData
 from Pages.BasePage import BasePage
 from Pages.LoginPage import LoginPage
 from Test.test_Base import BaseTest
 
 
-class Test_URL(BaseTest):
+class TestURL(BaseTest):
 
     @pytest.mark.copyurl
     @pytest.mark.alltest
-    def test_registryurl(self):
+    def test_registry_url(self):
 
         self.login = LoginPage(self.driver)
         self.login.login(BasePage.COUPLE_EMAIL, BasePage.AUTOMATION_PASSWORD)
@@ -32,6 +31,3 @@ class Test_URL(BaseTest):
         self.asd.click_element(BasePage.Close_Popup)
         time.sleep(2)
         self.asd.click_element(BasePage.Log_Out)
-
-        # Print the clipboard text
-        # print("Clipboard text:", clipboard_text)

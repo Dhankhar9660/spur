@@ -1,5 +1,4 @@
 """ Test Page for Login Checks"""
-
 import time
 import pytest
 from selenium.webdriver.common.by import By

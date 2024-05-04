@@ -5,7 +5,6 @@ from selenium.webdriver.common.by import By
 from Pages.BasePage import BasePage
 
 
-
 class Shipping(BasePage):
     def __int__(self, driver):
         super.__init__(driver)
