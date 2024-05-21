@@ -47,7 +47,7 @@ class BasePage:
     CVV = (By.XPATH, "//input[@formcontrolname='cvv']")
     PLACE_ORDER = (By.XPATH, "//input[@value='Place order']")
     ORDERCONFMESSAGE = (By.XPATH, "//div[@class='col-12']//h1")
-    SEARCHBOXEXP = (By.XPATH, "//div[@class='primeAutocomplete homeAutoCompCountryParent']//input")
+    SEARCHBOXEXP = (By.XPATH, "//div[@class='primeAutocomplete homeAutoCompCountryParent homeSerachWidth']//input")
     SEARCHITEM = (By.XPATH, "//div[text()='Test live exp']")
     QTY = (By.XPATH, "//option[text() ='Select Quantity']//parent::select")
     person = (By.XPATH, "//option[text() ='2 People']")

@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2aa63c97-bf58-41c9-8834-5c5b42ef7542" name="Changes" comment="rtt">
+      <change afterPath="$PROJECT_DIR$/Test/test_booking_date.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/spur-automations.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/spur-automations.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/BasePage.py" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/BasePage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/Booking.py" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Booking.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Test/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test/conftest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,18 +29,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Dhankhar9660"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Dhankhar9660&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Dhankhar9660/spur.git",
-    "accountId": "634bfc43-254f-48e8-bc88-fab7917f09ea"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Dhankhar9660/spur.git&quot;,
+    &quot;accountId&quot;: &quot;634bfc43-254f-48e8-bc88-fab7917f09ea&quot;
   }
-}]]></component>
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -45,34 +52,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python tests.pytest for test_Loginpage.Test_Login.test_check_with_blank.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_Loginpage.Test_Login.test_joy_login.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_Loginpage.Test_Login.test_knot_login.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_booking.Test_Booking.test_booking.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_change_password.Test_change_password.test_change_password_a.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_claim_voucher.TestClaimVoucher.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_homepage.TestHomepage.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_homepage.TestHomepage.test_nav_link.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_homepage.TestHomepage.test_page_title.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_homepage.TestHomepage.test_popular_category.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_homepage.TestHomepage.test_popular_destination.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_homepage.TestHomepage.test_popular_destinations.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_homepage.TestHomepage.test_populer_destinations.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest for test_homepage.TestHomepage.test_search_new.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest in test_Loginpage.py.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.pytest in test_partiallypurchase.py.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test.executor&quot;: &quot;Run&quot;,
-    &quot;Python.testexecution.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Bal/PycharmProjects/spur-automations&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python tests.pytest for test_Loginpage.Test_Login.test_check_with_blank.executor": "Run",
+    "Python tests.pytest for test_Loginpage.Test_Login.test_joy_login.executor": "Run",
+    "Python tests.pytest for test_Loginpage.Test_Login.test_knot_login.executor": "Run",
+    "Python tests.pytest for test_booking.Test_Booking.test_booking.executor": "Run",
+    "Python tests.pytest for test_booking_date.TestBookingDate.executor": "Run",
+    "Python tests.pytest for test_booking_date.TestBookingDate.test_get_available_dates.executor": "Run",
+    "Python tests.pytest for test_change_password.Test_change_password.test_change_password_a.executor": "Run",
+    "Python tests.pytest for test_claim_voucher.TestClaimVoucher.executor": "Run",
+    "Python tests.pytest for test_homepage.TestHomepage.executor": "Run",
+    "Python tests.pytest for test_homepage.TestHomepage.test_nav_link.executor": "Run",
+    "Python tests.pytest for test_homepage.TestHomepage.test_page_title.executor": "Run",
+    "Python tests.pytest for test_homepage.TestHomepage.test_popular_category.executor": "Run",
+    "Python tests.pytest for test_homepage.TestHomepage.test_popular_destination.executor": "Run",
+    "Python tests.pytest for test_homepage.TestHomepage.test_popular_destinations.executor": "Run",
+    "Python tests.pytest for test_homepage.TestHomepage.test_populer_destinations.executor": "Run",
+    "Python tests.pytest for test_homepage.TestHomepage.test_search_new.executor": "Run",
+    "Python tests.pytest in test_Loginpage.py.executor": "Run",
+    "Python tests.pytest in test_booking_date.py.executor": "Run",
+    "Python tests.pytest in test_partiallypurchase.py.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.test.executor": "Run",
+    "Python.testexecution.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/Bal/PycharmProjects/spur-automations",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
-  <component name="RunManager" selected="Python tests.pytest for test_homepage.TestHomepage.test_search_new">
-    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+}]]></component>
+  <component name="RunManager" selected="Python tests.pytest for test_booking_date.TestBookingDate">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="spur-automations" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -81,11 +92,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Pages" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Pages/test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -94,7 +105,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_homepage.TestHomepage.test_nav_link" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_booking_date.TestBookingDate" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="spur-automations" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -107,11 +118,11 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_homepage.TestHomepage.test_nav_link&quot;" />
+      <option name="_new_target" value="&quot;test_booking_date.TestBookingDate&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_homepage.TestHomepage.test_popular_category" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_booking_date.TestBookingDate.test_get_available_dates" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="spur-automations" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -124,24 +135,7 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_homepage.TestHomepage.test_popular_category&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pytest for test_homepage.TestHomepage.test_popular_destination" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="spur-automations" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Test" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_homepage.TestHomepage.test_popular_destination&quot;" />
+      <option name="_new_target" value="&quot;test_booking_date.TestBookingDate.test_get_available_dates&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -162,13 +156,30 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
+    <configuration name="pytest in test_booking_date.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="spur-automations" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/Test/test_booking_date.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest for test_booking_date.TestBookingDate" />
+        <item itemvalue="Python tests.pytest for test_booking_date.TestBookingDate.test_get_available_dates" />
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python tests.pytest in test_booking_date.py" />
         <item itemvalue="Python tests.pytest for test_homepage.TestHomepage.test_search_new" />
-        <item itemvalue="Python.test" />
-        <item itemvalue="Python tests.pytest for test_homepage.TestHomepage.test_nav_link" />
-        <item itemvalue="Python tests.pytest for test_homepage.TestHomepage.test_popular_destination" />
-        <item itemvalue="Python tests.pytest for test_homepage.TestHomepage.test_popular_category" />
       </list>
     </recent_temporary>
   </component>

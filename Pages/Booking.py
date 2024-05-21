@@ -1,7 +1,7 @@
 import time
 from selenium.webdriver.common.by import By
 from Pages.BasePage import BasePage
-
+import requests
 
 class Booking(BasePage):
 
@@ -38,3 +38,9 @@ class Booking(BasePage):
         self.click_element(BasePage.CALENDER)
         self.click_element(BasePage.DATE)
         self.click_element(BasePage.TIMESLOT)
+
+    @staticmethod
+    def get_available_dates(url, payload):
+        response = requests.post(url, json=payload)
+        data = response.json()
+        return data.get("data", [])

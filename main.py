@@ -10,7 +10,7 @@ from datetime import datetime
 
 # import datetime
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+# driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 # driver.get("")
 
 # driver.find_element(By.XPATH, " //input[@placeholder='Find by Name/Category']").send_keys("test")
@@ -48,9 +48,22 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 # b = 553
 # assert b in ab
 # print("b  in list")
-now = datetime.now()
-today = "98899"
-print(type(today))
-str_value_without_zeros = today.lstrip('0')
-print(str_value_without_zeros)
-driver.switch_to.default_content()
+# now = datetime.now()
+# today = "98899"
+# print(type(today))
+# str_value_without_zeros = today.lstrip('0')
+# print(str_value_without_zeros)
+# driver.switch_to.default_content()
+
+print(datetime.now().month)
+print(datetime.now().year)
+a = []
+b = [1, 2, 3, 4]
+
+
+
+
+c = ['2024-05-25', '2024-05-31']
+d = c[0]
+d = d.split('-')[-1]
+print(d)
