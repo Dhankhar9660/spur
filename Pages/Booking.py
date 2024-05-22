@@ -43,4 +43,4 @@ class Booking(BasePage):
     def get_available_dates(url, payload):
         response = requests.post(url, json=payload)
         data = response.json()
-        return data.get("data", [])
+        return data.get("data")
